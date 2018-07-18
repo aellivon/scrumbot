@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { CreateTeamComponent } from './components/forms/create-team/create-team.component';
 import { JoinTeamComponent } from './components/prompts/join-team/join-team.component';
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component';
+import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SlackLoginComponent } from './components/prompts/slack-login/slack-logi
     AppComponent,
     JoinTeamComponent,
     CreateTeamComponent,
-    SlackLoginComponent
+    SlackLoginComponent,
+    ScrumboardComponent
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,7 @@ export class CreateTeamComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
   }
 
   createTeam(createTeamForm: NgForm){

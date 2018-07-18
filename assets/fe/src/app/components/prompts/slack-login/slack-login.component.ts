@@ -9,11 +9,10 @@ export class SlackLoginComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  client_id: ''
 
-  login(){
-      console.log('okie')
+  ngOnInit() {
+      
   }
 
 }

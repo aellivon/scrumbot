@@ -6,18 +6,18 @@ class Team(models.Model):
     """
     Team model
     """
-
-    name = models.CharField(max_length=100, primary_key=True)
+    id = models.CharField(max_length=100, primary_key=True)
+    domain = models.CharField(max_length=100, default='')
 
     def __str__(self):
-        return self.name
+        return self.domain
         
 
 class User(AbstractUser):
     """
     User model
     """
-    slack_id = models.CharField(max_length=100, default='')
+    slack_id = models.CharField(max_length=200, unique=True, default='')
     team = models.ManyToManyField('Team')
 
     def __str__(self):

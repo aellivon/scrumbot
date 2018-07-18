@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import LogAPI
+from .views import ScrumAPI
 
 app_name = 'logs'
 urlpatterns = [
-	path('', LogAPI.as_view(), name='list')
+	path('', ScrumAPI.as_view(), name='list')
 ]

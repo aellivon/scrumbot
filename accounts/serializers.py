@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Team
+from .models import Team, User
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -9,11 +9,10 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = ('__all__')
 
-    def save(self):
-        team = Team.objects.create(name=self.validated_data['name'])
-        team.save()
 
-    def update(self, id):
-        team = Team.objects.get(id=id)
-        team.name = self.validated_data['name']
-        team.save()
+class UserSerializer(serializers.ModelSerializer):
+    """Serializer of a user"""
+
+    class Meta:
+        model = User
+        fields = ['username', 'slack_id', 'team']
