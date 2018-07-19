@@ -1,0 +1,3 @@
+<select (click)="setFilter(type)" #type>
+    <option *ngFor="let user of users">{{ user.username }}</option>
+</select>

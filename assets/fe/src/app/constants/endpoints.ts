@@ -1,1 +1,4 @@
-export const API_CREATE = (api_name) => '/api/'+api_name+'/create/';
+var team_id = 'TBQPB0RMJ'
+
+export const GET_LOGS = () => '/api/scrum/';
+export const GET_TEAM_MEMBERS = () => '/api/accounts/'+team_id+'/';

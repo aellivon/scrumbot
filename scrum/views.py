@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from accounts.models import User, Team
 from .models import Log, Issue
 from accounts.serializers import UserSerializer, TeamSerializer
-from .serializers import LogSerializer, IssueSerializer
+from .serializers import LogSerializer, IssueSerializer, ScrumSerializer
 from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
 import json
@@ -14,8 +14,10 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
     """
     
     def post(self, request, *args, **kwargs):
-        # data = self.parsePayload(request.data['payload'])
-        # # import pdb; pdb.set_trace()
+        """
+        adds scrum reports to db
+        """
+
         data = self.parseData(request.POST)
 
         try:
@@ -51,3 +53,12 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         self.create(issue_data, Issue, IssueSerializer)
 
         return Response(data=data, status=201)
+
+    def get(self, request, *args, **kwargs):
+        """
+        lists scrum reports
+        """
+
+        logs = Log.objects.all()
+        serializer = ScrumSerializer(logs, many=True)
+        return Response(serializer.data, status=200)

@@ -1,0 +1,21 @@
+<!-- <form>
+    <span>DATE:</span>
+    <br>
+    <input type="text" name="from">
+    <span> - </span>
+    <input type="text" name="to">
+</form> -->
+
+<form #dateFilterForm="ngForm" novalidate (ngSubmit)="setFilter(dateFilterForm)">
+    <span>DATE:</span>
+    <br>
+    <span> From </span>
+    <my-date-picker name="from" [options]="myDatePickerOptions"
+                    [(ngModel)]="from_model" required></my-date-picker>
+    <span> To </span>
+    <my-date-picker name="to" [options]="myDatePickerOptions"
+                    [(ngModel)]="to_model" required></my-date-picker>
+    <button type="submit">
+        DONE
+    </button>
+</form>

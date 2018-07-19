@@ -1,16 +1,29 @@
+// ANGULAR MODULES
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Pipe, PipeTransform } from '@angular/core';
 
+// INSTALLED MODULES
+import {DataTableModule} from 'angular-6-datatable';
 import { UIRouterModule } from '@uirouter/angular';
-import { APP_STATES } from './app.states';
+import { MyDatePickerModule } from 'mydatepicker';
 
+// IMPORTED FROM PROJECT
+import { APP_STATES } from './app.states';
 import { AppComponent } from './app.component';
 import { CreateTeamComponent } from './components/forms/create-team/create-team.component';
 import { JoinTeamComponent } from './components/prompts/join-team/join-team.component';
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component';
 import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component';
+import { FilterboxComponent } from './components/containers/filterbox/filterbox.component';
+import { UserFilterComponent } from './components/forms/filters/user-filter/user-filter.component';
+import { DateFilterComponent } from './components/forms/filters/date-filter/date-filter.component';
+import { TypeFilterComponent } from './components/forms/filters/type-filter/type-filter.component';
+import { FilterTypePipe } from './pipes/filter-type.pipe';
+import { FilterDatePipe } from './pipes/filter-date.pipe';
+import { FilterUserPipe } from './pipes/filter-user.pipe';
 
 
 @NgModule({
@@ -19,13 +32,22 @@ import { ScrumboardComponent } from './components/containers/scrumboard/scrumboa
     JoinTeamComponent,
     CreateTeamComponent,
     SlackLoginComponent,
-    ScrumboardComponent
+    ScrumboardComponent,
+    FilterboxComponent,
+    UserFilterComponent,
+    DateFilterComponent,
+    TypeFilterComponent,
+    FilterTypePipe,
+    FilterDatePipe,
+    FilterUserPipe,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     UIRouterModule.forRoot(APP_STATES),
     FormsModule,
+    DataTableModule,
+    MyDatePickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,38 @@
-<p>
-  scrumboard works!
-</p>
+<app-filterbox></app-filterbox>
+<br>
+<br>
+<table class="table table-striped" [mfData]="scrums" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+        <tr>
+            <th style="width: 20%">
+                <mfDefaultSorter by="log_type">Type</mfDefaultSorter>
+            </th>
+            <th style="width: 50%">
+                <mfDefaultSorter by="message">Message</mfDefaultSorter>
+            </th>
+            <th style="width: 10%">
+                <mfDefaultSorter by="user">Username</mfDefaultSorter>
+            </th>
+            <th style="width: 20%">
+                <mfDefaultSorter by="date_created">Date</mfDefaultSorter>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let log of mf.data">
+            <td>{{ log.log_type | filterType: 'DONE' }}</td>
+            <td>{{ log.message }}</td>
+            <td>{{ log.user }}</td>
+            <td>{{ log.date_created | date }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<p>{{ scrums | filterType: 'DONE' }}</p>
