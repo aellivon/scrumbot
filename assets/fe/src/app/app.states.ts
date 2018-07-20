@@ -4,21 +4,21 @@ import { JoinTeamComponent } from './components/prompts/join-team/join-team.comp
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component'
 import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component'
 
-let CREATE_TEAM_STATE: Object[] = [
-    {
-        name: 'create-team',
-        url: '/create',
-        views: ContentOnly(CreateTeamComponent),
-    }
-]
+// let CREATE_TEAM_STATE: Object[] = [
+//     {
+//         name: 'create-team',
+//         url: '/create',
+//         views: ContentOnly(CreateTeamComponent),
+//     }
+// ]
 
-let JOIN_TEAM_STATE: Object[] = [
-    {
-        name: 'join-team',
-        url: '/join',
-        views: ContentOnly(JoinTeamComponent),
-    }
-]
+// let JOIN_TEAM_STATE: Object[] = [
+//     {
+//         name: 'join-team',
+//         url: '/join',
+//         views: ContentOnly(JoinTeamComponent),
+//     }
+// ]
 
 let HOME_STATE: Object[] = [
     {
@@ -28,20 +28,20 @@ let HOME_STATE: Object[] = [
     }
 ]
 
-let SLACK_LOGIN_STATE: Object[] = [
-    {
-        name: 'slack-login',
-        url: '/login',
-        views: ContentOnly(SlackLoginComponent),
-    }
-]
+// let SLACK_LOGIN_STATE: Object[] = [
+//     {
+//         name: 'slack-login',
+//         url: '/login',
+//         views: ContentOnly(SlackLoginComponent),
+//     }
+// ]
 
 export const APP_STATES = {
 	otherwise: '/',
 	states: [].concat(
-		CREATE_TEAM_STATE,
-        JOIN_TEAM_STATE,
-        SLACK_LOGIN_STATE,
+		// CREATE_TEAM_STATE,
+  //       JOIN_TEAM_STATE,
+        // SLACK_LOGIN_STATE,
         HOME_STATE
 	)
 }

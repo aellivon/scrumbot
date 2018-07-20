@@ -16,7 +16,7 @@ export class TypeFilterComponent implements OnInit {
   }
 
   setFilter(type){
-      this.filterService.filterByType(type.value)
+      // this.filterService.filterByType(type.value)
   }
 
 }

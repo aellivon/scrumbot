@@ -1,5 +1,6 @@
 <!-- <app-filterbox></app-filterbox> -->
 <select (click)="setFilter(type.value, dateFilterForm.value, username.value)" #type>
+    <option>ALL</option>
     <option>DONE</option>
     <option>WIP</option>
     <option>ISSUES</option>
@@ -21,11 +22,12 @@
 </form>
 <br>
 <select (click)="setFilter(type.value, dateFilterForm.value, username.value)" #username>
+    <option>ALL</option>
     <option *ngFor="let user of users">{{ user.username }}</option>
 </select>
 <br>
 <br>
-<table class="table table-striped" [mfData]="filtered" #mf="mfDataTable" [mfRowsOnPage]="5">
+<table class="table table-striped" [mfData]="filtered" mfSortBy="date_created" mfSortOrder="desc" #mf="mfDataTable" [mfRowsOnPage]="5">
     <thead>
         <tr>
             <th style="width: 20%">
@@ -58,5 +60,3 @@
         </tr>
     </tfoot>
 </table>
-
-<p>{{ scrums | filterType: 'DONE' }}</p>

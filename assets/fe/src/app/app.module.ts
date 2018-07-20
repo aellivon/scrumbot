@@ -17,13 +17,13 @@ import { CreateTeamComponent } from './components/forms/create-team/create-team.
 import { JoinTeamComponent } from './components/prompts/join-team/join-team.component';
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component';
 import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component';
-import { FilterboxComponent } from './components/containers/filterbox/filterbox.component';
-import { UserFilterComponent } from './components/forms/filters/user-filter/user-filter.component';
-import { DateFilterComponent } from './components/forms/filters/date-filter/date-filter.component';
-import { TypeFilterComponent } from './components/forms/filters/type-filter/type-filter.component';
-import { FilterTypePipe } from './pipes/filter-type.pipe';
-import { FilterDatePipe } from './pipes/filter-date.pipe';
-import { FilterUserPipe } from './pipes/filter-user.pipe';
+// import { FilterboxComponent } from './components/containers/filterbox/filterbox.component';
+// import { UserFilterComponent } from './components/forms/filters/user-filter/user-filter.component';
+// import { DateFilterComponent } from './components/forms/filters/date-filter/date-filter.component';
+// import { TypeFilterComponent } from './components/forms/filters/type-filter/type-filter.component';
+// import { FilterTypePipe } from './pipes/filter-type.pipe';
+// import { FilterDatePipe } from './pipes/filter-date.pipe';
+// import { FilterUserPipe } from './pipes/filter-user.pipe';
 
 
 @NgModule({
@@ -33,13 +33,13 @@ import { FilterUserPipe } from './pipes/filter-user.pipe';
     CreateTeamComponent,
     SlackLoginComponent,
     ScrumboardComponent,
-    FilterboxComponent,
-    UserFilterComponent,
-    DateFilterComponent,
-    TypeFilterComponent,
-    FilterTypePipe,
-    FilterDatePipe,
-    FilterUserPipe,
+    // FilterboxComponent,
+    // UserFilterComponent,
+    // DateFilterComponent,
+    // TypeFilterComponent,
+    // FilterTypePipe,
+    // FilterDatePipe,
+    // FilterUserPipe,
   ],
   imports: [
     BrowserModule,

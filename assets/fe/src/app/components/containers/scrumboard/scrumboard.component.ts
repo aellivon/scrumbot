@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StateService } from '@uirouter/angular'
 import { HttpClient } from '@angular/common/http';
-import {IMyDpOptions} from 'mydatepicker';
+import { IMyDpOptions } from 'mydatepicker';
 import { NgForm } from '@angular/forms';
 
 import { FilterService } from '../../../services/filter.service';
@@ -20,8 +20,20 @@ export class ScrumboardComponent implements OnInit {
         width: '150'
     };
 
-    from_model: any = { date: { year: 2018, month: 10, day: 9 } };
-    to_model: any = { date: { year: 2018, month: 10, day: 9 } };
+    from_model: any = {
+      date: {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+        day: new Date().getDate()
+      }
+    };
+    to_model: any = {
+      date: {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+        day: new Date().getDate() + 7
+      }
+    };
 
   constructor(
       private stateService: StateService,
@@ -29,9 +41,7 @@ export class ScrumboardComponent implements OnInit {
       private filterService: FilterService,
   ) { }
 
-  client_id: ''
-
-  scrums: {}
+  scrums
   filtered: {}
   users: {}
 
@@ -40,7 +50,12 @@ export class ScrumboardComponent implements OnInit {
           .subscribe(
               data => {
                   this.scrums = data
-                  this.setFilter('','','')
+                  this.setFilter(
+                    'ALL',{
+                        from: this.from_model,
+                        to: this.to_model
+                     }
+                    ,'ALL')
               }
           );
 
@@ -53,10 +68,7 @@ export class ScrumboardComponent implements OnInit {
   }
 
   setFilter(type, dateFilterForm, username){
-      console.log(dateFilterForm.from)
-      console.log(dateFilterForm.to)
-      console.log(new Date(this.scrums[0].date_created).toDateString())
-      // this.filtered = this.scrums.filter(scrum => scrum.log_type.includes(type) && scrum.user.includes(username))
+      this.filtered = this.filterService.filterData(type, dateFilterForm, username, this.scrums)
   }
 
 }
