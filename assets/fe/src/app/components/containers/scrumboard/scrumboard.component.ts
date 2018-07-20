@@ -6,7 +6,9 @@ import { NgForm } from '@angular/forms';
 
 import { FilterService } from '../../../services/filter.service';
 import { GET_LOGS } from '../../../constants/endpoints';
+import { GET_ISSUES } from '../../../constants/endpoints';
 import { GET_TEAM_MEMBERS } from '../../../constants/endpoints';
+import { UPDATE_ISSUE_STATUS } from '../../../constants/endpoints';
 
 @Component({
   selector: 'app-scrumboard',
@@ -31,7 +33,7 @@ export class ScrumboardComponent implements OnInit {
       date: {
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
-        day: new Date().getDate() + 7
+        day: new Date().getDate() + 6
       }
     };
 
@@ -42,15 +44,27 @@ export class ScrumboardComponent implements OnInit {
   ) { }
 
   scrums
-  filtered: {}
+  issues
+  filtered_scrum: {}
+  filtered_issues: {}
   users: {}
+  post_status: {
+    status: ""
+  }
 
   ngOnInit() {
+      this.fetchIssues()
+      this.fetchLogs()
+      this.fetchUsers()
+  }
+
+  fetchLogs(){
       this.http.get(GET_LOGS())
           .subscribe(
               data => {
                   this.scrums = data
                   this.setFilter(
+                    'ALL',
                     'ALL',{
                         from: this.from_model,
                         to: this.to_model
@@ -58,7 +72,25 @@ export class ScrumboardComponent implements OnInit {
                     ,'ALL')
               }
           );
+  }
 
+  fetchIssues(){
+      this.http.get(GET_ISSUES())
+          .subscribe(
+              data => {
+                  this.issues = data
+                  this.setFilter(
+                    'ALL',
+                    'ALL',{
+                        from: this.from_model,
+                        to: this.to_model
+                     }
+                    ,'ALL')
+              }
+          );
+  }
+
+  fetchUsers(){
       this.http.get(GET_TEAM_MEMBERS())
           .subscribe(
               data => {
@@ -67,8 +99,19 @@ export class ScrumboardComponent implements OnInit {
           );
   }
 
-  setFilter(type, dateFilterForm, username){
-      this.filtered = this.filterService.filterData(type, dateFilterForm, username, this.scrums)
+  setFilter(type, status, dateFilterForm, username){
+      if(!this.scrums || !this.issues){
+          return
+      }
+      this.filtered_scrum = this.filterService.filterScrum(type, dateFilterForm, username, this.scrums)
+      this.filtered_issues = this.filterService.filterIssues(status, dateFilterForm, username, this.issues)
+  }
+
+  updateStatus(id, status){
+      this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
+      .subscribe(
+          () => this.fetchIssues()
+      );
   }
 
 }

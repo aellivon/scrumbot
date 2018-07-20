@@ -1,5 +1,5 @@
 <!-- <app-filterbox></app-filterbox> -->
-<select (click)="setFilter(type.value, dateFilterForm.value, username.value)" #type>
+<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value)" #type>
     <option>ALL</option>
     <option>DONE</option>
     <option>WIP</option>
@@ -7,7 +7,7 @@
     <option>HOURS</option>
 </select>
 <br>
-<form #dateFilterForm="ngForm" novalidate (ngSubmit)="setFilter(type.value, dateFilterForm.value, username.value)">
+<form #dateFilterForm="ngForm" novalidate (ngSubmit)="setFilter(type.value, status.value, dateFilterForm.value, username.value)">
     <span>DATE:</span>
     <br>
     <span> From </span>
@@ -21,13 +21,14 @@
     </button>
 </form>
 <br>
-<select (click)="setFilter(type.value, dateFilterForm.value, username.value)" #username>
+<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value)" #username>
     <option>ALL</option>
     <option *ngFor="let user of users">{{ user.username }}</option>
 </select>
 <br>
 <br>
-<table class="table table-striped" [mfData]="filtered" mfSortBy="date_created" mfSortOrder="desc" #mf="mfDataTable" [mfRowsOnPage]="5">
+<h1>Stand up updates</h1>
+<table class="table table-striped" [mfData]="filtered_scrum" mfSortBy="date_created" mfSortOrder="desc" #scrumTable="mfDataTable" [mfRowsOnPage]="5">
     <thead>
         <tr>
             <th style="width: 20%">
@@ -45,11 +46,56 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let log of mf.data">
+        <tr *ngFor="let log of scrumTable.data">
             <td>{{ log.log_type }}</td>
             <td>{{ log.message }}</td>
             <td>{{ log.user }}</td>
             <td>{{ log.date_created | date }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<br>
+<br>
+<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value)" #status>
+    <option>ALL</option>
+    <option>Pending</option>
+    <option>Resolved</option>
+    <option>Closed</option>
+</select>
+<h1>Issues list</h1>
+<table class="table table-striped" [mfData]="filtered_issues" mfSortBy="date_created" mfSortOrder="desc" #issuesTable="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+        <tr>
+            <th style="width: 20%">
+                <mfDefaultSorter by="status">Status</mfDefaultSorter>
+            </th>
+            <th style="width: 50%">
+                <mfDefaultSorter by="issue">Issue</mfDefaultSorter>
+            </th>
+            <th style="width: 10%">
+                <mfDefaultSorter by="user">Username</mfDefaultSorter>
+            </th>
+            <th style="width: 20%">
+                <mfDefaultSorter by="date_created">Date</mfDefaultSorter>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let issue of issuesTable.data">
+            <td>{{ issue.status }}
+                <button #rButton (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'Pending'" value="R">Mark as Solved</button>
+                <button #cButton (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'Pending'" value="C">Closed</button>
+            </td>
+            <td>{{ issue.issue }}</td>
+            <td>{{ issue.user }}</td>
+            <td>{{ issue.date_created | date }}</td>
         </tr>
     </tbody>
     <tfoot>

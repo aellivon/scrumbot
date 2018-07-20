@@ -1,9 +1,16 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
+from django.shortcuts import get_object_or_404
 from accounts.models import User, Team
 from .models import Log, Issue
 from accounts.serializers import UserSerializer, TeamSerializer
-from .serializers import LogSerializer, IssueSerializer, ScrumSerializer
+from .serializers import (
+                        LogSerializer,
+                        IssueSerializer,
+                        ScrumSerializer,
+                        IssueStatusSerializer
+                        )
 from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
 import json
@@ -17,7 +24,6 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         """
         adds scrum reports to db
         """
-
         data = self.parseData(request.POST)
 
         try:
@@ -58,7 +64,24 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         """
         lists scrum reports
         """
+        return self.list_all(Log, ScrumSerializer)
 
-        logs = Log.objects.all()
-        serializer = ScrumSerializer(logs, many=True)
-        return Response(serializer.data, status=200)
+class IssuesAPI(ViewSet, CRUDMixin):
+    """
+    Issues API
+    """
+
+    def list(self, request, *args, **kwargs):
+        """
+        lists issue reports
+        """
+        return self.list_all(Issue, IssueSerializer)
+
+    def update_status(self, request, *args, **kwargs):
+        """
+        updates an issue's status
+        """
+        issue_id = self.kwargs.get('issue_id', None)
+        issue = get_object_or_404(Issue, id=issue_id)
+        return self.update_object(self.request.data, issue.id, IssueStatusSerializer)
+        

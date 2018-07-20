@@ -19,7 +19,22 @@ class ScrumSerializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     """Serializer of an issue model"""
+    status = serializers.CharField(source='get_status_display')
+    user = serializers.CharField(source='user.username')
 
     class Meta:
         model = Issue
         fields = ('__all__')
+
+class IssueStatusSerializer(serializers.ModelSerializer):
+    """Serializer of an issue's status"""
+
+    class Meta:
+        model = Issue
+        fields = ['status']
+
+    def update(self, id):
+        issue = Issue.objects.get(id=id)
+        issue.status = self.validated_data['status']
+
+        issue.save()

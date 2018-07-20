@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 // INSTALLED MODULES
@@ -44,10 +44,14 @@ import { ScrumboardComponent } from './components/containers/scrumboard/scrumboa
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken',
+    }),
     UIRouterModule.forRoot(APP_STATES),
     FormsModule,
     DataTableModule,
-    MyDatePickerModule
+    MyDatePickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
