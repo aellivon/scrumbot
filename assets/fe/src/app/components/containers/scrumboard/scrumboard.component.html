@@ -1,7 +1,31 @@
-<app-filterbox></app-filterbox>
+<!-- <app-filterbox></app-filterbox> -->
+<select (click)="setFilter(type.value, dateFilterForm.value, username.value)" #type>
+    <option>DONE</option>
+    <option>WIP</option>
+    <option>ISSUES</option>
+    <option>HOURS</option>
+</select>
+<br>
+<form #dateFilterForm="ngForm" novalidate (ngSubmit)="setFilter(type.value, dateFilterForm.value, username.value)">
+    <span>DATE:</span>
+    <br>
+    <span> From </span>
+    <my-date-picker name="from" [options]="myDatePickerOptions"
+                    [(ngModel)]="from_model" required></my-date-picker>
+    <span> To </span>
+    <my-date-picker name="to" [options]="myDatePickerOptions"
+                    [(ngModel)]="to_model" required></my-date-picker>
+    <button type="submit">
+        DONE
+    </button>
+</form>
+<br>
+<select (click)="setFilter(type.value, dateFilterForm.value, username.value)" #username>
+    <option *ngFor="let user of users">{{ user.username }}</option>
+</select>
 <br>
 <br>
-<table class="table table-striped" [mfData]="scrums" #mf="mfDataTable" [mfRowsOnPage]="5">
+<table class="table table-striped" [mfData]="filtered" #mf="mfDataTable" [mfRowsOnPage]="5">
     <thead>
         <tr>
             <th style="width: 20%">
@@ -20,7 +44,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let log of mf.data">
-            <td>{{ log.log_type | filterType: 'DONE' }}</td>
+            <td>{{ log.log_type }}</td>
             <td>{{ log.message }}</td>
             <td>{{ log.user }}</td>
             <td>{{ log.date_created | date }}</td>

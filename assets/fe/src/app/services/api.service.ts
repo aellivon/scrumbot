@@ -14,6 +14,21 @@ export class ApiService {
       private stateService: StateService
   ) { }
 
+  users={}
+
+  set_list(endpoint){
+      this.http.get(endpoint)
+          .subscribe(
+              data => {
+                  this.users = data
+              }
+          );
+  }
+
+  get_list(){
+    return this.users
+  }
+
   create(api_name, data){
       // var request = this.http.post(API_CREATE(api_name),data)
       // this.http.post(API_CREATE(api_name), data)

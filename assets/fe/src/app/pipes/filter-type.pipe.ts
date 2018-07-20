@@ -5,11 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterTypePipe implements PipeTransform {
 
-  transform(value: any, type: any): any {
+  transform(value: any, type: any, display: any): any {
       if(!value)
           return value
-      if(value === type){
-          return value;
+      if(value.log_type === type){
+          return display;
       }
       return '';
   }
