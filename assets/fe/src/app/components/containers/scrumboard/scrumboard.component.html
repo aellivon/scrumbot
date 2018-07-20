@@ -26,6 +26,11 @@
     <option *ngFor="let user of users">{{ user.username }}</option>
 </select>
 <br>
+<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value)" #project>
+    <option>ALL</option>
+    <option *ngFor="let project of projects">{{ project.name }}</option>
+</select>
+<br>
 <br>
 <h1>Stand up updates</h1>
 <table class="table table-striped" [mfData]="filtered_scrum" mfSortBy="date_created" mfSortOrder="desc" #scrumTable="mfDataTable" [mfRowsOnPage]="5">

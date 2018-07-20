@@ -2,9 +2,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import get_object_or_404
-from accounts.models import User, Team
+from accounts.models import User, Team, Project
 from .models import Log, Issue
-from accounts.serializers import UserSerializer, TeamSerializer
+from accounts.serializers import (
+                                UserSerializer,
+                                TeamSerializer,
+                                ProjectSerializer
+                                )
 from .serializers import (
                         LogSerializer,
                         IssueSerializer,
@@ -25,6 +29,14 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         adds scrum reports to db
         """
         data = self.parseData(request.POST)
+
+        try:
+            Project.objects.get(id=data['channel_id'])
+        except Project.DoesNotExist:
+            project_data = QueryDict('', mutable=True)
+            project_data['id'] = data['channel_id']
+            project_data['name'] = data['channel_name']
+            self.create(project_data, Project, ProjectSerializer)
 
         try:
             Team.objects.get(id=data['team_id'])
