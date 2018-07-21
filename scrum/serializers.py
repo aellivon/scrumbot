@@ -8,19 +8,28 @@ class LogSerializer(serializers.ModelSerializer):
         model = Log
         fields = ('__all__')
 
+class IssueSerializer(serializers.ModelSerializer):
+    """Serializer of an issue model"""
+
+    class Meta:
+        model = Issue
+        fields = ('__all__')
+        
 class ScrumSerializer(serializers.ModelSerializer):
-    """Serializer of a log model"""
+    """Serializer of a scrum model"""
     log_type = serializers.CharField(source='get_log_type_display')
     user = serializers.CharField(source='user.username')
+    project = serializers.CharField(source='project.name')
 
     class Meta:
         model = Log
         fields = ('__all__')
 
-class IssueSerializer(serializers.ModelSerializer):
-    """Serializer of an issue model"""
+class IssueReportSerializer(serializers.ModelSerializer):
+    """Serializer of an issue report model"""
     status = serializers.CharField(source='get_status_display')
     user = serializers.CharField(source='user.username')
+    project = serializers.CharField(source='project.name')
 
     class Meta:
         model = Issue

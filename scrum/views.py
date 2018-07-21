@@ -13,6 +13,7 @@ from .serializers import (
                         LogSerializer,
                         IssueSerializer,
                         ScrumSerializer,
+                        IssueReportSerializer,
                         IssueStatusSerializer
                         )
 from scrumbot.mixins import CRUDMixin, ParseMixin
@@ -31,14 +32,6 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         data = self.parseData(request.POST)
 
         try:
-            Project.objects.get(id=data['channel_id'])
-        except Project.DoesNotExist:
-            project_data = QueryDict('', mutable=True)
-            project_data['id'] = data['channel_id']
-            project_data['name'] = data['channel_name']
-            self.create(project_data, Project, ProjectSerializer)
-
-        try:
             Team.objects.get(id=data['team_id'])
         except Team.DoesNotExist:
             team_data = QueryDict('', mutable=True)
@@ -55,7 +48,17 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
             user_data['slack_id'] = data['user_id']
             self.create(user_data, User, UserSerializer)
 
+        try:
+            Project.objects.get(id=data['channel_id'])
+        except Project.DoesNotExist:
+            project_data = QueryDict('', mutable=True)
+            project_data['id'] = data['channel_id']
+            project_data['name'] = data['channel_name']
+            project_data['team'] = data['team_id']
+            self.create(project_data, Project, ProjectSerializer)
+
         user = User.objects.get(slack_id=data['user_id'])
+        project = Project.objects.get(id=data['channel_id'])
         message = self.parseStringData(data)
 
         log_data = QueryDict('', mutable=True)
@@ -63,11 +66,13 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
             log_data['log_type'] = message[x][0]
             log_data['message'] = message[x][3:]
             log_data['user'] = user.id
+            log_data['project'] = project.id
             self.create(log_data, Log, LogSerializer)
 
         issue_data = QueryDict('', mutable=True)
         issue_data['issue'] = message[2][3:]
         issue_data['user'] = user.id
+        issue_data['project'] = project.id
         self.create(issue_data, Issue, IssueSerializer)
 
         return Response(data=data, status=201)
@@ -87,7 +92,7 @@ class IssuesAPI(ViewSet, CRUDMixin):
         """
         lists issue reports
         """
-        return self.list_all(Issue, IssueSerializer)
+        return self.list_all(Issue, IssueReportSerializer)
 
     def update_status(self, request, *args, **kwargs):
         """

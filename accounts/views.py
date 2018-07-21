@@ -1,8 +1,10 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import render
-from .serializers import TeamSerializer, UserSerializer
-from .models import User, Team
+from .serializers import (TeamSerializer,
+                        UserSerializer,
+                        ProjectSerializer)
+from .models import User, Team, Project
 from scrumbot.mixins import CRUDMixin
 
 class TeamAPI(ViewSet, CRUDMixin):
@@ -26,23 +28,23 @@ class UserAPI(ViewSet, CRUDMixin):
     
     def list_by_team(self, *args, **kwargs):
         """
-        Creates a user
+        lists users by team
         """
         team_id = self.kwargs.get('team_id', None)
         users = User.objects.filter(team__id=team_id)
-        self.list_by(users, self.serializer_class)
+        return self.list_by(users, self.serializer_class)
 
 
 class ProjectAPI(ViewSet, CRUDMixin):
     """
     Slack project API
     """
-    serializer_class = TeamSerializer
+    serializer_class = ProjectSerializer
     
     def list_by_team(self, *args, **kwargs):
         """
-        Creates a user
+        lists projects by team
         """
         team_id = self.kwargs.get('team_id', None)
-        users = User.objects.filter(team__id=team_id)
-        self.list_by(users, self.serializer_class)
+        projects = Project.objects.filter(team__id=team_id)
+        return self.list_by(projects, self.serializer_class)

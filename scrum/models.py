@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+from accounts.models import User, Project
 
 class Log(models.Model):
     """
@@ -15,6 +15,7 @@ class Log(models.Model):
     log_type = models.CharField(max_length=10, choices=LOG_CHOICES)
     message = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -35,6 +36,7 @@ class Issue(models.Model):
                 choices=STATUS_CHOICES, default='P')
     issue = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

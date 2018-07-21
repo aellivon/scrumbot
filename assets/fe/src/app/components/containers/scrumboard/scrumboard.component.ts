@@ -5,10 +5,10 @@ import { IMyDpOptions } from 'mydatepicker';
 import { NgForm } from '@angular/forms';
 
 import { FilterService } from '../../../services/filter.service';
-import { GET_LOGS } from '../../../constants/endpoints';
-import { GET_ISSUES } from '../../../constants/endpoints';
-import { GET_TEAM_MEMBERS } from '../../../constants/endpoints';
-import { UPDATE_ISSUE_STATUS } from '../../../constants/endpoints';
+import { GET_LOGS, GET_ISSUES,
+          GET_TEAM_MEMBERS,
+          GET_TEAM_PROJECTS,
+          UPDATE_ISSUE_STATUS,  } from '../../../constants/endpoints';
 
 @Component({
   selector: 'app-scrumboard',
@@ -48,6 +48,7 @@ export class ScrumboardComponent implements OnInit {
   filtered_scrum: {}
   filtered_issues: {}
   users: {}
+  projects: {}
   post_status: {
     status: ""
   }
@@ -56,6 +57,7 @@ export class ScrumboardComponent implements OnInit {
       this.fetchIssues()
       this.fetchLogs()
       this.fetchUsers()
+      this.fetchProjects()
   }
 
   fetchLogs(){
@@ -68,8 +70,9 @@ export class ScrumboardComponent implements OnInit {
                     'ALL',{
                         from: this.from_model,
                         to: this.to_model
-                     }
-                    ,'ALL')
+                     },
+                    'ALL',
+                    'ALL')
               }
           );
   }
@@ -84,8 +87,9 @@ export class ScrumboardComponent implements OnInit {
                     'ALL',{
                         from: this.from_model,
                         to: this.to_model
-                     }
-                    ,'ALL')
+                     },
+                    'ALL',
+                    'ALL')
               }
           );
   }
@@ -99,12 +103,21 @@ export class ScrumboardComponent implements OnInit {
           );
   }
 
-  setFilter(type, status, dateFilterForm, username){
+  fetchProjects(){
+      this.http.get(GET_TEAM_PROJECTS())
+          .subscribe(
+              data => {
+                  this.projects = data
+              }
+          );
+  }
+
+  setFilter(type, status, dateFilterForm, username, project){
       if(!this.scrums || !this.issues){
           return
       }
-      this.filtered_scrum = this.filterService.filterScrum(type, dateFilterForm, username, this.scrums)
-      this.filtered_issues = this.filterService.filterIssues(status, dateFilterForm, username, this.issues)
+      this.filtered_scrum = this.filterService.filterScrum(type, dateFilterForm, username, project, this.scrums)
+      this.filtered_issues = this.filterService.filterIssues(status, dateFilterForm, username, project, this.issues)
   }
 
   updateStatus(id, status){
