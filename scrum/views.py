@@ -100,5 +100,11 @@ class IssuesAPI(ViewSet, CRUDMixin):
         """
         issue_id = self.kwargs.get('issue_id', None)
         issue = get_object_or_404(Issue, id=issue_id)
-        return self.update_object(self.request.data, issue.id, IssueStatusSerializer)
+        serializer = IssueStatusSerializer(data=self.request.data)
+        if serializer.is_valid():
+            serializer.update(issue.id)
+            issue = get_object_or_404(Issue, id=issue_id)
+            serializer = IssueReportSerializer(issue)
+            return Response(serializer.data,status=200)
+        return Response(status=400)
         

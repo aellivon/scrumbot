@@ -1,5 +1,78 @@
-<!-- <app-filterbox></app-filterbox> -->
-<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)" #type>
+<div class="container-fluid">
+    <div class="row border-bottom d-flex justify-content-between">
+        <div class="m-3 ml-5 d-flex align-items-center">
+            <i class="fas fa-search border-0 m-1 mr-2"></i>
+            <input type="text" placeholder="Search" class="border-0">
+        </div>
+        <div class="m-3 mr-5">
+            <div class="dot d-flex justify-content-center align-items-center">
+                <b class="avatar">JD</b>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col p-5 mt-2 ml-5">
+            <div class="row mt-3">
+                <h1>Welcome back, John!</h1>
+            </div>
+            <div class="row">
+                <p>There are 2 issues and 2 urgent tickets</p>
+            </div>
+                <hr>
+            <div class="row pt-4 pb-5">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex flex-row align-items-center">
+                        <span class="w-25">Select Project</span>
+                        <input type="text" placeholder="All Projects" class="form-control">
+                    </div>
+                    <br>
+                    <div class="d-flex flex-row align-items-center">
+                        <span class="w-25">Members</span>
+                        <input type="text" placeholder="All Members" class="form-control">
+                    </div>
+                </div>
+                <div class="col d-flex flex-row-reverse">
+                    <div>
+                        <input type="text" placeholder="Search">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4><b>Stand up updates</b></h4>
+                </div>
+                <div class="col-sm-6">
+                    <h4><b>Issues list</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p>date</p>
+                </div>
+                <div class="col-sm-10">
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>scrum</h1>
+                </div>
+                <div class="col-sm-6">
+                    <h1>issue</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 border-left">
+            <div class="row m-3">
+                <b>Issues stream</b>
+            </div>
+            <div class="row">
+                <h1>issue</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)" #type>
     <option>ALL</option>
     <option>DONE</option>
     <option>WIP</option>
@@ -110,4 +183,4 @@
             </td>
         </tr>
     </tfoot>
-</table>
+</table> -->

@@ -36,10 +36,9 @@ class CRUDMixin(object):
 
     def update_object(self, passed_data, model_id, passed_serializer):
         serializer = passed_serializer(data=passed_data)
-        # import pdb; pdb.set_trace()
         if serializer.is_valid():
             serializer.update(model_id)
-            return Response(status=200)
+            return Response(serializer.data,status=200)
         return Response(status=400)
 
 

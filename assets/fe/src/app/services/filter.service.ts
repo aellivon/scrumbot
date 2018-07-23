@@ -61,4 +61,10 @@ export class FilterService {
       })
   }
 
+  filterById(id, issues){
+      return issues.findIndex(issue => {
+        return issue.id == id
+      })
+  }
+
 }

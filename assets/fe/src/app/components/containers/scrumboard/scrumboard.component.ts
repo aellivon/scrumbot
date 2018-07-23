@@ -123,7 +123,10 @@ export class ScrumboardComponent implements OnInit {
   updateStatus(id, status){
       this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
       .subscribe(
-          () => this.fetchIssues()
+          (data) => {
+            var index = this.filterService.filterById(id, this.filtered_issues)
+            this.filtered_issues[index].status = data['status']
+          }
       );
   }
 
