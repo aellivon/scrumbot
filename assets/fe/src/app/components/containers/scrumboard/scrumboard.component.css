@@ -1,10 +1,9 @@
-.dot{
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background-color: blue;
+.list{
+    overflow-y: auto;
+    height: 800px;
 }
 
-.avatar{
-    color: white
+.statusbtn{
+    width: 150px;
+    height: 45px
 }

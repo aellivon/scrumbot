@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
+    "@ng-bootstrap/ng-bootstrap": "^2.2.0",
     "@ng-select/ng-select": "^2.3.3",
     "@uirouter/angular": "^2.0.0",
     "angular-6-datatable": "^0.8.0",
@@ -27,7 +28,9 @@
     "core-js": "^2.5.4",
     "mydatepicker": "^2.6.4",
     "ng2-material-dropdown": "^0.10.0",
+    "node-sass": "^4.9.2",
     "rxjs": "^6.0.0",
+    "sass": "^1.10.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

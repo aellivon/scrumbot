@@ -9,6 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {DataTableModule} from 'angular-6-datatable';
 import { UIRouterModule } from '@uirouter/angular';
 import { MyDatePickerModule } from 'mydatepicker';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 // IMPORTED FROM PROJECT
 import { APP_STATES } from './app.states';
@@ -17,6 +18,7 @@ import { CreateTeamComponent } from './components/forms/create-team/create-team.
 import { JoinTeamComponent } from './components/prompts/join-team/join-team.component';
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component';
 import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
 // import { FilterboxComponent } from './components/containers/filterbox/filterbox.component';
 // import { UserFilterComponent } from './components/forms/filters/user-filter/user-filter.component';
 // import { DateFilterComponent } from './components/forms/filters/date-filter/date-filter.component';
@@ -33,6 +35,7 @@ import { ScrumboardComponent } from './components/containers/scrumboard/scrumboa
     CreateTeamComponent,
     SlackLoginComponent,
     ScrumboardComponent,
+    AvatarComponent,
     // FilterboxComponent,
     // UserFilterComponent,
     // DateFilterComponent,
@@ -42,6 +45,7 @@ import { ScrumboardComponent } from './components/containers/scrumboard/scrumboa
     // FilterUserPipe,
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule,
     HttpClientModule,
     HttpClientXsrfModule.withOptions({

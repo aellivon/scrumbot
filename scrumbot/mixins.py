@@ -53,4 +53,4 @@ class ParseMixin(object):
         
     def parseStringData(self, data):
         message = data['text']
-        return message.split('\r\n')
+        return message.split('.')

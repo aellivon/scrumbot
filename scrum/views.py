@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import get_object_or_404
 from accounts.models import User, Team, Project
-from .models import Log, Issue
+from .models import Log, Issue, Scrum
 from accounts.serializers import (
                                 UserSerializer,
                                 TeamSerializer,
@@ -18,7 +18,6 @@ from .serializers import (
                         )
 from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
-import json
 
 class ScrumAPI(APIView, CRUDMixin, ParseMixin):
     """
@@ -59,21 +58,31 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
 
         user = User.objects.get(slack_id=data['user_id'])
         project = Project.objects.get(id=data['channel_id'])
-        message = self.parseStringData(data)
+        scrum = Scrum.objects.create()
+        # splitby_dot = data['text'].split('.')
 
         log_data = QueryDict('', mutable=True)
         for x in range(4):
-            log_data['log_type'] = message[x][0]
-            log_data['message'] = message[x][3:]
-            log_data['user'] = user.id
-            log_data['project'] = project.id
-            self.create(log_data, Log, LogSerializer)
-
-        issue_data = QueryDict('', mutable=True)
-        issue_data['issue'] = message[2][3:]
-        issue_data['user'] = user.id
-        issue_data['project'] = project.id
-        self.create(issue_data, Issue, IssueSerializer)
+            startIndex = data['text'].index(str(x+1))+2
+            messages = data['text'][startIndex:]
+            if x <= 2:
+                lastIndex = messages.index(str(x+2))
+                messages = messages[:lastIndex]
+            # import pdb; pdb.set_trace()
+            splitby_line = messages.split('\r\n')
+            log_data['log_type'] = str(x+1)
+            for y in range(len(splitby_line)):
+                log_data['user'] = user.id
+                log_data['project'] = project.id
+                log_data['scrum'] = scrum.id
+                log_data['message'] = splitby_line[y]
+                self.create(log_data, Log, LogSerializer)
+                if (x == 2):
+                    issue_data = QueryDict('', mutable=True)
+                    issue_data['issue'] = splitby_line[y]
+                    issue_data['user'] = user.id
+                    issue_data['project'] = project.id
+                    self.create(issue_data, Issue, IssueSerializer)
 
         return Response(data=data, status=201)
 

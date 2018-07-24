@@ -10,7 +10,7 @@ class Scrum(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.id        
+        return str(self.id)
 
 
 class Log(models.Model):
