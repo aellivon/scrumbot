@@ -25,7 +25,7 @@ export class ScrumboardComponent implements OnInit {
     from_model: any = {
       date: {
         year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
+        month: new Date().getMonth(),
         day: new Date().getDate()
       }
     };
@@ -53,6 +53,17 @@ export class ScrumboardComponent implements OnInit {
     status: ""
   }
 
+  filter_user = ''
+  filter_project = ''
+
+  filter_done: boolean = true;
+  filter_wip: boolean = true;
+  filter_hours: boolean = true;
+
+  filter_pending: boolean = true;
+  filter_resolved: boolean = false;
+  filter_closed: boolean = false;
+
   ngOnInit() {
       this.fetchIssues()
       this.fetchLogs()
@@ -64,15 +75,16 @@ export class ScrumboardComponent implements OnInit {
       this.http.get(GET_LOGS())
           .subscribe(
               data => {
-                  this.scrums = data
-                  this.setFilter(
-                    'ALL',
-                    'ALL',{
-                        from: this.from_model,
-                        to: this.to_model
-                     },
-                    'ALL',
-                    'ALL')
+                  this.filtered_scrum = data
+                  // this.scrums = data
+                  // this.setFilter(
+                  //   'ALL',
+                  //   'ALL',{
+                  //       from: this.from_model,
+                  //       to: this.to_model
+                  //    },
+                  //   'ALL',
+                  //   'ALL')
               }
           );
   }
@@ -81,15 +93,15 @@ export class ScrumboardComponent implements OnInit {
       this.http.get(GET_ISSUES())
           .subscribe(
               data => {
-                  this.issues = data
-                  this.setFilter(
-                    'ALL',
-                    'ALL',{
-                        from: this.from_model,
-                        to: this.to_model
-                     },
-                    'ALL',
-                    'ALL')
+                  this.filtered_issues = data
+                  // this.setFilter(
+                  //   'ALL',
+                  //   'ALL',{
+                  //       from: this.from_model,
+                  //       to: this.to_model
+                  //    },
+                  //   'ALL',
+                  //   'ALL')
               }
           );
   }
@@ -124,10 +136,19 @@ export class ScrumboardComponent implements OnInit {
       this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
       .subscribe(
           (data) => {
-            var index = this.filterService.filterById(id, this.filtered_issues)
-            this.filtered_issues[index].status = data['status']
+            // var index = this.filterService.filterById(id, this.filtered_issues)
+            // this.filtered_issues[index].status = data['status']
+            // console.log(this.filtered_issues[index].status)
+            this.fetchLogs()
           }
       );
   }
+
+  // hasPending(){
+  //   if(!this.filtered_issues){
+  //       return false
+  //   }
+  //   return this.filterService.filterPending(this.filtered_issues)
+  // }
 
 }

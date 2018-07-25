@@ -67,4 +67,10 @@ export class FilterService {
       })
   }
 
+  filterPending(issues){
+      return issues.find(issue => {
+         issue.status == "Pending"
+      })
+  }
+
 }

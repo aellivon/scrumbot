@@ -13,7 +13,7 @@ from .serializers import (
                         LogSerializer,
                         IssueSerializer,
                         ScrumSerializer,
-                        IssueReportSerializer,
+                        ScrumReportSerializer,
                         IssueStatusSerializer
                         )
 from scrumbot.mixins import CRUDMixin, ParseMixin
@@ -39,50 +39,58 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
             self.create(team_data, Team, TeamSerializer)
 
         try:
-            User.objects.get(slack_id=data['user_id'])
+            user = User.objects.get(slack_id=data['user_id'])
         except User.DoesNotExist:
             user_data = QueryDict('', mutable=True)
             user_data['username'] = data['user_name']
             user_data['team'] = data['team_id']
             user_data['slack_id'] = data['user_id']
-            self.create(user_data, User, UserSerializer)
+            user = self.create(user_data, User, UserSerializer)
 
         try:
-            Project.objects.get(id=data['channel_id'])
+            project = Project.objects.get(id=data['channel_id'])
         except Project.DoesNotExist:
             project_data = QueryDict('', mutable=True)
             project_data['id'] = data['channel_id']
             project_data['name'] = data['channel_name']
             project_data['team'] = data['team_id']
-            self.create(project_data, Project, ProjectSerializer)
+            project = self.create(project_data, Project, ProjectSerializer)
 
-        user = User.objects.get(slack_id=data['user_id'])
-        project = Project.objects.get(id=data['channel_id'])
-        scrum = Scrum.objects.create()
-        # splitby_dot = data['text'].split('.')
+        # user = User.objects.get(slack_id=data['user_id'])
+        # project = Project.objects.get(id=data['channel_id'])
 
-        log_data = QueryDict('', mutable=True)
-        for x in range(4):
-            startIndex = data['text'].index(str(x+1))+2
-            messages = data['text'][startIndex:]
-            if x <= 2:
-                lastIndex = messages.index(str(x+2))
-                messages = messages[:lastIndex]
-            # import pdb; pdb.set_trace()
-            splitby_line = messages.split('\r\n')
-            log_data['log_type'] = str(x+1)
-            for y in range(len(splitby_line)):
-                log_data['user'] = user.id
-                log_data['project'] = project.id
-                log_data['scrum'] = scrum.id
-                log_data['message'] = splitby_line[y]
-                self.create(log_data, Log, LogSerializer)
-                if (x == 2):
-                    issue_data = QueryDict('', mutable=True)
-                    issue_data['issue'] = splitby_line[y]
-                    issue_data['user'] = user.id
-                    issue_data['project'] = project.id
-                    self.create(issue_data, Issue, IssueSerializer)
+        scrum_data = QueryDict('', mutable=True)
+        scrum_data['user'] = user.id
+        scrum_data['project'] = project.id
+        try:
+            hoursIndex = data['text'].index("4.")+2
+            scrum_data['hours'] = data['text'][hoursIndex:]
+        except:
+            return Response(data="Invalid input format")
+        scrum = self.create(scrum_data, Scrum, ScrumSerializer)
+        # import pdb; pdb.set_trace()
+
+        try:
+            for x in range(3):
+                log_data = QueryDict('', mutable=True)
+                startIndex = data['text'].index(str(x+1)+".")+2
+                messages = data['text'][startIndex:]
+                if x <= 2:
+                    lastIndex = messages.index(str(x+2)+".")
+                    messages = messages[:lastIndex]
+                splitby_line = messages.split('\r\n')
+                log_data['log_type'] = str(x+1)
+                for y in range(len(splitby_line)):
+                    log_data['scrum'] = scrum.id
+                    log_data['message'] = splitby_line[y]
+                    self.create(log_data, Log, LogSerializer)
+                    if (x == 2):
+                        issue_data = QueryDict('', mutable=True)
+                        issue_data['issue'] = splitby_line[y]
+                        issue_data['scrum'] = scrum.id
+                        self.create(issue_data, Issue, IssueSerializer)
+        except:
+            return Response(data="Invalid input format")
 
         return Response(data=data, status=201)
 
@@ -90,7 +98,7 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         """
         lists scrum reports
         """
-        return self.list_all(Log, ScrumSerializer)
+        return self.list_all(Scrum, ScrumReportSerializer, 'date_created')
 
 class IssuesAPI(ViewSet, CRUDMixin):
     """
@@ -101,7 +109,7 @@ class IssuesAPI(ViewSet, CRUDMixin):
         """
         lists issue reports
         """
-        return self.list_all(Issue, IssueReportSerializer)
+        return self.list_all(Issue, IssueSerializer, 'scrum__date_created')
 
     def update_status(self, request, *args, **kwargs):
         """
@@ -113,7 +121,7 @@ class IssuesAPI(ViewSet, CRUDMixin):
         if serializer.is_valid():
             serializer.update(issue.id)
             issue = get_object_or_404(Issue, id=issue_id)
-            serializer = IssueReportSerializer(issue)
+            serializer = IssueSerializer(issue)
             return Response(serializer.data,status=200)
         return Response(status=400)
         

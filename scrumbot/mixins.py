@@ -17,17 +17,18 @@ class CRUDMixin(object):
         """
         serializer = passed_serializer(data=passed_data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(status=201)
+            saved_object = serializer.save()
+            return saved_object
         return Response(serializer.errors, status=400)
 
-    def list_all(self, passed_model, passed_serializer):
+    def list_all(self, passed_model, passed_serializer, sort_column):
         """
         function that accepts: model, serializer
         returns complete list of serialized data of passed model
         """
         model_data = passed_model.objects.all()
-        serializer = passed_serializer(model_data, many=True)
+        sorted_data = model_data.order_by(sort_column).reverse()
+        serializer = passed_serializer(sorted_data, many=True)
         return Response(serializer.data, status=200)
 
     def list_by(self, passed_data, passed_serializer):

@@ -1,9 +1,14 @@
 .list{
     overflow-y: auto;
+    overflow-x: hidden;
     height: 800px;
 }
 
 .statusbtn{
     width: 150px;
     height: 45px
+}
+
+.wraplongtext{
+    word-wrap: break-word;
 }
