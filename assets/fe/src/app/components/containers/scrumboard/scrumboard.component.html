@@ -2,7 +2,7 @@
     <div class="row border-bottom d-flex justify-content-between">
         <div class="m-3 ml-5 d-flex align-items-center">
             <i class="fas fa-search border-0 m-1 mr-3"></i>
-            <input type="text" placeholder="Search" class="border-0">
+            <input type="text" placeholder="Search" class="border-0" (input)="getScrum(search.value)" #search>
         </div>
         <div class="m-3 mr-5 reduce">
             <app-avatar></app-avatar>
@@ -22,51 +22,42 @@
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25">Select Project</span>
                         <div class="input-group">
-                          <select class="custom-select" #select_project>
+                          <select class="custom-select" (change)="filter_project=select_project.value; filtered_scrum=scrum_data" #select_project>
                             <option selected value="">All Projects</option>
                             <option *ngFor="let project of projects">{{ project.name }}</option>
                           </select>
-                          <div class="input-group-append">
-                            <button (click)="filter_project=select_project.value; filtered_scrum=scrum_data" class="btn btn-outline-secondary" type="button">Filter</button>
-                          </div>
                         </div>
                     </div>
                     <br>
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25">Members</span>
                         <div class="input-group">
-                          <select class="custom-select" #select_user>
+                          <select class="custom-select" (change)="filter_user=select_user.value; filtered_scrum=scrum_data" #select_user>
                             <option selected value="">All Members</option>
                             <option *ngFor="let user of users">{{ user.username }}</option>
                           </select>
-                          <div class="input-group-append">
-                            <button (click)="filter_user=select_user.value; filtered_scrum=scrum_data" class="btn btn-outline-secondary" type="button">Filter</button>
-                          </div>
                         </div>
                     </div>
                 </div>
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row-reverse">
-                        <div>
-                            <form #dateFilterForm="ngForm" novalidate (ngSubmit)="setDateFilter(dateFilterForm.value); filtered_scrum=scrum_data" class="d-flex">
-                                <div class="input-group">
-                                    <input class="form-control datepicker" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="myOptions" #from_dp="ngx-mydatepicker"/>
-                                    <button type="button" class="btn btn-light border border-secondary rounded-0" (click)="from_dp.toggleCalendar()">
+                            <div class="input-group date_filters">
+                                <input class="form-control datepicker" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="myOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrum_data"/>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-light border border-secondary" (click)="to_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
                                     </button>
-                                    <h3 class="m-0 mr-2 ml-2">-</h3>
-                                    <input class="form-control datepicker" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="myOptions" #to_dp="ngx-mydatepicker"/>
-
-                                    <span class="input-group-append">
-                                        <button type="button" class="btn btn-light border border-secondary" (click)="to_dp.toggleCalendar()">
-                                            <i class="far fa-calendar"></i>
-                                        </button>
-                                        <button class="btn btn-outline-secondary" type="submit">
-                                        Filter
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
+                                </span>
+                            </div>
+                            <h3 class="m-0 mr-2 ml-2">-</h3>
+                            <div class="input-group date_filters">
+                                <input class="form-control datepicker" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="myOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrum_data"/>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-light border border-secondary" (click)="from_dp.toggleCalendar()">
+                                        <i class="far fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
                             <!-- <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="p-2 d-flex align-items-center border rounded-left">
@@ -78,11 +69,10 @@
                                     <button class="btn btn-light border border-left-0" (click)="d.toggle()"><i class="fas fa-chevron-down"></i></button>
                                 </div>
                             </div> -->
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row" *ngIf="filter_user">
+            <div class="row" *ngIf="filter_user && filter_hours">
                 <div>
                     <h2 class="p-3 m-0">{{ filter_user }} has logged a total of {{ getTotalHours(filter_user, filter_project, filter_from, filter_to) }} hours <span *ngIf="filter_project">in project {{ filter_project }}</span> from {{ filter_from | date:'longDate' }} to {{ filter_to | date:'longDate' }}</h2>
                 </div>
@@ -133,7 +123,8 @@
             </div>
             <div class="d-flex flex-column m-1 scrumlist">
                 <div *ngFor="let scrum of filtered_scrum">
-                    <div class="d-flex flex-fill" *ngIf="(filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project) && (((scrum.date_created | date:'longDate') >= (filter_from | date:'longDate')) && ((scrum.date_created | date:'longDate') <= (filter_to | date:'longDate')))">
+                    <span>{{scrum.issue_log}}</span>
+                    <div class="d-flex flex-fill" *ngIf="((filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project) && isWithinDate(scrum.date_created, filter_from, filter_to)) && ((filter_hours || filter_done || filter_wip) || (hasIssues(scrum)))">
                         <div class="col-sm-6">
                             <div class="row d-flex flex-column shadow p-3 ml-3 mr-3 mb-5">
                                 <div class="row d-flex justify-content-between">
@@ -172,12 +163,12 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <!-- <div class="row d-flex flex-column p-3 ml-3 mr-3 mb-5" *ngIf="hasPending() && !filter_closed && !filter_resolved">
+                            <div class="row d-flex flex-column p-3 ml-3 mr-3 mb-5" *ngIf="!hasPending(scrum)">
                                 <div class="row d-flex pt-3 pl-5 pr-5 pb-0 ml-2 mr-2">
                                     <i class="far fa-smile fa-lg mr-3"></i>
-                                    <p>No Issues</p>
+                                    <p>No pending issues</p>
                                 </div>
-                            </div> -->
+                            </div>
                             <div *ngFor="let issue_log of scrum.issue_logs">
                                 <div class="row d-flex flex-column shadow p-3 ml-3 mr-3 mb-5" *ngIf="(filter_pending && issue_log.status=='Pending') || (filter_closed && issue_log.status=='Closed') || (filter_resolved && issue_log.status=='Resolved')">
                                     <div class="row d-flex flex-column pt-3 pl-5 pr-5 pb-0 ml-2 mr-2">
@@ -201,7 +192,7 @@
             </div>
             <div class="d-flex flex-column">
                 <div *ngFor="let issue of issues_data">
-                    <div class="d-flex pl-4 pt-3 pb-3 hoverable" (click)="getIssue(issue.id)">
+                    <div class="d-flex pl-4 pt-3 pb-3 hoverable" (click)="getIssue(issue.id)" *ngIf="issue.status=='Pending'">
                         <div class="reduce d-flex">
                             <app-avatar></app-avatar>
                         </div>

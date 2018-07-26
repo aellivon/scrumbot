@@ -40,7 +40,6 @@ class Log(models.Model):
     log_type = models.CharField(max_length=10, choices=LOG_CHOICES)
     message = models.TextField()
     scrum = models.ForeignKey(Scrum, on_delete=models.CASCADE)
-    # objects = LogManager()
 
     def __str__(self):
         return self.message

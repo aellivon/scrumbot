@@ -19,6 +19,27 @@ export class FilterService {
       })
   }
 
+  filterScrumSearch(keyword, scrums){
+      return scrums.filter(scrum => {
+        var date = new Date(scrum.date_created)
+        date.setHours(0,0,0,0)
+        var done_logs = scrum.done_logs.filter(log=>{
+                          return log.message.includes(keyword)
+                        })
+        var wip_logs = scrum.wip_logs.filter(log=>{
+                          return log.message.includes(keyword)
+                        })
+        var issue_logs = scrum.issue_logs.filter(log=>{
+                          return log.issue.includes(keyword) ||
+                          log.status.includes(keyword)
+                        })
+        return scrum.user.includes(keyword) || 
+        scrum.project.includes(keyword) ||
+        done_logs.length!=0 || wip_logs.length!=0 ||
+        issue_logs.length!=0
+      })
+  }
+
   filterIssues(status, dateFilterForm, username, project, issues){
       if (status === 'ALL') {
         status = ''

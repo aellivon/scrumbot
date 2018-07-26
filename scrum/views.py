@@ -65,6 +65,7 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         try:
             hoursIndex = data['text'].index("4.")+2
             scrum_data['hours'] = data['text'][hoursIndex:]
+            int(scrum_data['hours']) + 2
         except:
             return Response(data="Invalid input format")
         scrum = self.create(scrum_data, Scrum, ScrumSerializer)
@@ -75,16 +76,15 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
                 log_data = QueryDict('', mutable=True)
                 startIndex = data['text'].index(str(x+1)+".")+2
                 messages = data['text'][startIndex:]
-                if x <= 2:
-                    lastIndex = messages.index(str(x+2)+".")
-                    messages = messages[:lastIndex]
+                lastIndex = messages.index(str(x+2)+".")
+                messages = messages[:lastIndex]
                 splitby_line = messages.split('\r\n')
                 log_data['log_type'] = str(x+1)
                 for y in range(len(splitby_line)):
                     log_data['scrum'] = scrum.id
                     log_data['message'] = splitby_line[y]
                     self.create(log_data, Log, LogSerializer)
-                    if (x == 2):
+                    if (x == 2 and splitby_line[y] != 'None'):
                         issue_data = QueryDict('', mutable=True)
                         issue_data['issue'] = splitby_line[y]
                         issue_data['scrum'] = scrum.id

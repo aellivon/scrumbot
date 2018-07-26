@@ -69,7 +69,7 @@ export class ScrumboardComponent implements OnInit {
                       this.today.getDate()-6);
   filter_to: Date = this.today;
 
-  filter_issue_detail: boolean = false;
+  // filter_issue_detail: boolean = false;
   filtered_scrum: any;
 
   ngOnInit() {
@@ -116,17 +116,29 @@ export class ScrumboardComponent implements OnInit {
           );
   }
 
-  setDateFilter(dateFilterForm){
-      this.filter_from = new Date(dateFilterForm.from.date.year,
-                                  dateFilterForm.from.date.month-1,
-                                  dateFilterForm.from.date.day);
-      this.filter_to = new Date(dateFilterForm.to.date.year,
-                                dateFilterForm.to.date.month-1,
-                                dateFilterForm.to.date.day);
+  // setDateFilter(dateFilterForm){
+  //     this.filter_from = new Date(dateFilterForm.from.date.year,
+  //                                 dateFilterForm.from.date.month-1,
+  //                                 dateFilterForm.from.date.day);
+  //     this.filter_to = new Date(dateFilterForm.to.date.year,
+  //                               dateFilterForm.to.date.month-1,
+  //                               dateFilterForm.to.date.day);
+  // }
+
+  setDateFromFilter(from){
+      this.filter_from = new Date(from.date.year,
+                                  from.date.month-1,
+                                  from.date.day);
+  }
+
+  setDateToFilter(to){
+      this.filter_to = new Date(to.date.year,
+                                  to.date.month-1,
+                                  to.date.day);
   }
 
   getIssue(id){
-      this.filter_issue_detail = true;
+      // this.filter_issue_detail = true;
       this.filtered_scrum = [this.scrum_data.find(scrum => {
           return scrum.issue_logs.find(issue => {
                      return issue.id == id
@@ -139,8 +151,14 @@ export class ScrumboardComponent implements OnInit {
       .subscribe(
           (data) => {
             this.fetchScrums()
+            this.fetchIssues()
           }
       );
+  }
+
+  isWithinDate(scrum_date, filter_from, filter_to){
+    return (new Date(scrum_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
+            new Date(scrum_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
   }
 
   getTotalHours(user, project, from, to){
@@ -148,11 +166,39 @@ export class ScrumboardComponent implements OnInit {
     return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
   }
 
-  // hasPending(){
-  //   if(!this.filtered_issues){
-  //       return false
-  //   }
-  //   return this.filterService.filterPending(this.filtered_issues)
-  // }
+  getScrum(keyword){
+    console.log(keyword)
+    this.filtered_scrum = this.filterService.filterScrumSearch(keyword, this.scrum_data)
+  }
+
+  hasIssues(scrum){
+    var pending = scrum.issue_logs.filter(issue =>{
+                       return issue.status == 'Pending'
+                  })
+    var resolved = scrum.issue_logs.filter(issue =>{
+                       return issue.status == 'Resolved'
+                  })
+    var closed = scrum.issue_logs.filter(issue =>{
+                       return issue.status == 'Closed'
+                  })
+    return (this.filter_pending && pending.length!=0) ||
+            (this.filter_resolved && resolved.length!=0) ||
+            (this.filter_closed && closed.length!=0)
+  }
+
+  hasPending(scrum){
+    var pending = scrum.issue_logs.filter(issue =>{
+                       return issue.status == 'Pending'
+                  })
+    var resolved = scrum.issue_logs.filter(issue =>{
+                       return issue.status == 'Resolved'
+                  })
+    var closed = scrum.issue_logs.filter(issue =>{
+                       return issue.status == 'Closed'
+                  })
+    return (pending.length!=0) ||
+            (this.filter_resolved && resolved.length!=0) ||
+            (this.filter_closed && closed.length!=0)
+  }
 
 }
