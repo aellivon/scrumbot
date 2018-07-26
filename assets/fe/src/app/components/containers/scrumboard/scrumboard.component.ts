@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { StateService } from '@uirouter/angular'
 import { HttpClient } from '@angular/common/http';
-import { IMyDpOptions } from 'mydatepicker';
+import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { NgForm } from '@angular/forms';
 
 import { FilterService } from '../../../services/filter.service';
@@ -17,36 +16,37 @@ import { GET_LOGS, GET_ISSUES,
 })
 export class ScrumboardComponent implements OnInit {
 
-    myDatePickerOptions: IMyDpOptions = {
-        dateFormat: 'dd.mm.yyyy',
-        width: '150'
+    myOptions: INgxMyDpOptions = {
+        dateFormat: 'mm.dd.yyyy',
     };
+
+    today = new Date()
 
     from_model: any = {
       date: {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-        day: new Date().getDate()
+        year: this.today.getFullYear(),
+        month: this.today.getMonth() + 1,
+        day: new Date(this.today.getFullYear(),
+                      this.today.getMonth(),
+                      this.today.getDate()-6).getDate()
       }
     };
+
     to_model: any = {
       date: {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
-        day: new Date().getDate() + 6
+        year: this.today.getFullYear(),
+        month: this.today.getMonth() + 1,
+        day: this.today.getDate()
       }
     };
 
   constructor(
-      private stateService: StateService,
       private http: HttpClient,
       private filterService: FilterService,
   ) { }
 
-  scrums
-  issues
-  filtered_scrum: {}
-  filtered_issues: {}
+  scrum_data: any
+  issues_data: any
   users: {}
   projects: {}
   post_status: {
@@ -64,27 +64,27 @@ export class ScrumboardComponent implements OnInit {
   filter_resolved: boolean = false;
   filter_closed: boolean = false;
 
+  filter_from: Date = new Date(this.today.getFullYear(),
+                      this.today.getMonth(),
+                      this.today.getDate()-6);
+  filter_to: Date = this.today;
+
+  filter_issue_detail: boolean = false;
+  filtered_scrum: any;
+
   ngOnInit() {
       this.fetchIssues()
-      this.fetchLogs()
+      this.fetchScrums()
       this.fetchUsers()
       this.fetchProjects()
   }
 
-  fetchLogs(){
+  fetchScrums(){
       this.http.get(GET_LOGS())
           .subscribe(
               data => {
+                  this.scrum_data = data
                   this.filtered_scrum = data
-                  // this.scrums = data
-                  // this.setFilter(
-                  //   'ALL',
-                  //   'ALL',{
-                  //       from: this.from_model,
-                  //       to: this.to_model
-                  //    },
-                  //   'ALL',
-                  //   'ALL')
               }
           );
   }
@@ -93,15 +93,7 @@ export class ScrumboardComponent implements OnInit {
       this.http.get(GET_ISSUES())
           .subscribe(
               data => {
-                  this.filtered_issues = data
-                  // this.setFilter(
-                  //   'ALL',
-                  //   'ALL',{
-                  //       from: this.from_model,
-                  //       to: this.to_model
-                  //    },
-                  //   'ALL',
-                  //   'ALL')
+                  this.issues_data = data
               }
           );
   }
@@ -124,24 +116,36 @@ export class ScrumboardComponent implements OnInit {
           );
   }
 
-  setFilter(type, status, dateFilterForm, username, project){
-      if(!this.scrums || !this.issues){
-          return
-      }
-      this.filtered_scrum = this.filterService.filterScrum(type, dateFilterForm, username, project, this.scrums)
-      this.filtered_issues = this.filterService.filterIssues(status, dateFilterForm, username, project, this.issues)
+  setDateFilter(dateFilterForm){
+      this.filter_from = new Date(dateFilterForm.from.date.year,
+                                  dateFilterForm.from.date.month-1,
+                                  dateFilterForm.from.date.day);
+      this.filter_to = new Date(dateFilterForm.to.date.year,
+                                dateFilterForm.to.date.month-1,
+                                dateFilterForm.to.date.day);
+  }
+
+  getIssue(id){
+      this.filter_issue_detail = true;
+      this.filtered_scrum = [this.scrum_data.find(scrum => {
+          return scrum.issue_logs.find(issue => {
+                     return issue.id == id
+                  })
+      })]
   }
 
   updateStatus(id, status){
       this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
       .subscribe(
           (data) => {
-            // var index = this.filterService.filterById(id, this.filtered_issues)
-            // this.filtered_issues[index].status = data['status']
-            // console.log(this.filtered_issues[index].status)
-            this.fetchLogs()
+            this.fetchScrums()
           }
       );
+  }
+
+  getTotalHours(user, project, from, to){
+    var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrum_data)
+    return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
   }
 
   // hasPending(){

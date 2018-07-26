@@ -8,8 +8,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 // INSTALLED MODULES
 import {DataTableModule} from 'angular-6-datatable';
 import { UIRouterModule } from '@uirouter/angular';
-import { MyDatePickerModule } from 'mydatepicker';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // IMPORTED FROM PROJECT
 import { APP_STATES } from './app.states';
@@ -55,7 +55,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     UIRouterModule.forRoot(APP_STATES),
     FormsModule,
     DataTableModule,
-    MyDatePickerModule,
+    NgxMyDatePickerModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

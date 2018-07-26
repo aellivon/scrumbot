@@ -28,6 +28,7 @@
     "core-js": "^2.5.4",
     "mydatepicker": "^2.6.4",
     "ng2-material-dropdown": "^0.10.0",
+    "ngx-mydatepicker": "^2.4.7",
     "node-sass": "^4.9.2",
     "rxjs": "^6.0.0",
     "sass": "^1.10.0",

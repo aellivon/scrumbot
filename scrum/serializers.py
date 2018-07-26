@@ -53,7 +53,7 @@ class ScrumReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Scrum
-        fields = ('user', 'project', 'hours', 'date_created',
+        fields = ('id', 'user', 'project', 'hours', 'date_created',
                     'done_logs', 'wip_logs', 'issue_logs')
 
 

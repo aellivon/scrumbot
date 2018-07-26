@@ -9,27 +9,11 @@ export class FilterService {
 
   log_type = ''
 
-  filterScrum(type, dateFilterForm, username, project, scrums){
-      if (type === 'ALL') {
-        type = ''
-      }
-
-      if (username === 'ALL') {
-        username = ''
-      }
-
-      if (project === 'ALL') {
-        project = ''
-      }
-
-      var from = new Date(dateFilterForm.from.date.month + "/" + dateFilterForm.from.date.day + "/" + dateFilterForm.from.date.year)
-      var to = new Date(dateFilterForm.to.date.month + "/" + dateFilterForm.to.date.day + "/" + dateFilterForm.to.date.year)
-
+  filterScrum(username, project, from, to, scrums){
       return scrums.filter(scrum => {
         var date = new Date(scrum.date_created)
         date.setHours(0,0,0,0)
-        return scrum.log_type.includes(type) &&
-        scrum.user.includes(username) && 
+        return scrum.user.includes(username) && 
         scrum.project.includes(project) && 
         (date >= from && date <= to)
       })

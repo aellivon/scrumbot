@@ -1,7 +1,25 @@
-.list{
+.hoverable:hover{
+    background-color: gainsboro;
+}
+
+.filters{
+    width: 350px;
+}
+
+.scrumlist{
     overflow-y: auto;
     overflow-x: hidden;
     height: 800px;
+}
+
+.issuelist{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 1350px;
+}
+
+.datepicker{
+    width: 130px;
 }
 
 .statusbtn{

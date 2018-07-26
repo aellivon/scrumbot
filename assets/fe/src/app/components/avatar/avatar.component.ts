@@ -10,6 +10,7 @@ export class AvatarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+      
   }
 
 }

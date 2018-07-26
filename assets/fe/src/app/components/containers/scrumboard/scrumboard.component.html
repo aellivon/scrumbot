@@ -14,10 +14,10 @@
                 <h1>Welcome back, Chibi!</h1>
             </div>
             <div class="row">
-                <p>There are {{ filtered_issues?.length }} issues and {{ filtered_scrum?.length }} urgent tickets</p>
+                <p>There are {{ issues_data?.length }} issues and {{ scrum_data?.length }} urgent tickets</p>
             </div>
                 <hr>
-            <div class="row pt-4 pb-5">
+            <div class="row pt-4 pb-4">
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25">Select Project</span>
@@ -27,7 +27,7 @@
                             <option *ngFor="let project of projects">{{ project.name }}</option>
                           </select>
                           <div class="input-group-append">
-                            <button (click)="filter_project=select_project.value" class="btn btn-outline-secondary" type="button">Filter</button>
+                            <button (click)="filter_project=select_project.value; filtered_scrum=scrum_data" class="btn btn-outline-secondary" type="button">Filter</button>
                           </div>
                         </div>
                     </div>
@@ -40,29 +40,54 @@
                             <option *ngFor="let user of users">{{ user.username }}</option>
                           </select>
                           <div class="input-group-append">
-                            <button (click)="filter_user=select_user.value" class="btn btn-outline-secondary" type="button">Filter</button>
+                            <button (click)="filter_user=select_user.value; filtered_scrum=scrum_data" class="btn btn-outline-secondary" type="button">Filter</button>
                           </div>
                         </div>
                     </div>
                 </div>
-                <div class="col d-flex flex-row-reverse">
-                    <div>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="p-2 d-flex align-items-center border rounded-left">
-                                    <i class="far fa-calendar"></i>
+                <div class="col d-flex flex-column">
+                    <div class="d-flex flex-row-reverse">
+                        <div>
+                            <form #dateFilterForm="ngForm" novalidate (ngSubmit)="setDateFilter(dateFilterForm.value); filtered_scrum=scrum_data" class="d-flex">
+                                <div class="input-group">
+                                    <input class="form-control datepicker" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="myOptions" #from_dp="ngx-mydatepicker"/>
+                                    <button type="button" class="btn btn-light border border-secondary rounded-0" (click)="from_dp.toggleCalendar()">
+                                        <i class="far fa-calendar"></i>
+                                    </button>
+                                    <h3 class="m-0 mr-2 ml-2">-</h3>
+                                    <input class="form-control datepicker" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="myOptions" #to_dp="ngx-mydatepicker"/>
+
+                                    <span class="input-group-append">
+                                        <button type="button" class="btn btn-light border border-secondary" (click)="to_dp.toggleCalendar()">
+                                            <i class="far fa-calendar"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" type="submit">
+                                        Filter
+                                        </button>
+                                    </span>
                                 </div>
-                            </div>
-                            <input type="text" ngbDatepicker class="border border-left-0 form-control" #d="ngbDatepicker"/>
-                            <div class="input-group-append">
-                                <button class="btn btn-light border border-left-0" (click)="d.toggle()"><i class="fas fa-chevron-down"></i></button>
-                            </div>
+                            </form>
+                            <!-- <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="p-2 d-flex align-items-center border rounded-left">
+                                        <i class="far fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input type="text" ngbDatepicker class="border border-left-0 form-control" #d="ngbDatepicker"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-light border border-left-0" (click)="d.toggle()"><i class="fas fa-chevron-down"></i></button>
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
+            <div class="row" *ngIf="filter_user">
+                <div>
+                    <h2 class="p-3 m-0">{{ filter_user }} has logged a total of {{ getTotalHours(filter_user, filter_project, filter_from, filter_to) }} hours <span *ngIf="filter_project">in project {{ filter_project }}</span> from {{ filter_from | date:'longDate' }} to {{ filter_to | date:'longDate' }}</h2>
+                </div>
+            </div>
+            <div class="row pt-4">
                 <div class="col-sm-3">
                     <h4><b>Stand up updates</b></h4>
                 </div>
@@ -99,16 +124,16 @@
                 </div>
             </div>
             <div class="row mt-4 mb-3">
-                <div class="col-sm-2">
-                    <p>date</p>
+                <div class="col-sm-2 d-flex">
+                    <span class="align-self-center">{{ today | date:'longDate'}}</span>
                 </div>
                 <div class="col-sm-10">
                     <hr>
                 </div>
             </div>
-            <div class="d-flex flex-column m-1 list">
+            <div class="d-flex flex-column m-1 scrumlist">
                 <div *ngFor="let scrum of filtered_scrum">
-                    <div class="d-flex flex-fill" *ngIf="(filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project)">
+                    <div class="d-flex flex-fill" *ngIf="(filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project) && (((scrum.date_created | date:'longDate') >= (filter_from | date:'longDate')) && ((scrum.date_created | date:'longDate') <= (filter_to | date:'longDate')))">
                         <div class="col-sm-6">
                             <div class="row d-flex flex-column shadow p-3 ml-3 mr-3 mb-5">
                                 <div class="row d-flex justify-content-between">
@@ -170,140 +195,28 @@
                 </div>
             </div>
         </div>
-        <div class="col-3 border-left">
-            <div class="row m-3">
+        <div class="col-3 border-left issuelist p-0">
+            <div class="row m-4">
                 <b>Issues stream</b>
             </div>
-            <div class="row d-flex flex-column">
-                <div class="d-flex pl-4 pt-3 ml-2 mb-3" *ngFor="let issue of filtered_issues">
-                    <div class="reduce d-flex">
-                        <app-avatar></app-avatar>
-                    </div>
-                    <div class="d-flex flex-fill flex-column ml-3 mr-5">
-                        <div class="d-flex flex-fill justify-content-between mb-1">
-                            <div class="d-flex">
-                                <span><b>{{ issue.scrum_data.user_username }}</b></span>
+            <div class="d-flex flex-column">
+                <div *ngFor="let issue of issues_data">
+                    <div class="d-flex pl-4 pt-3 pb-3 hoverable" (click)="getIssue(issue.id)">
+                        <div class="reduce d-flex">
+                            <app-avatar></app-avatar>
+                        </div>
+                        <div class="d-flex flex-fill flex-column ml-3 mr-5">
+                            <div class="d-flex justify-content-between mb-1">
+                                    <p class="m-0"><b>{{ issue.scrum_data.user_username }}</b></p>
+                                    <p class="m-0">{{ issue.scrum_data.date_created | date:'shortTime'}}</p>
                             </div>
-                            <div class="d-flex">
-                                <span>{{ issue.scrum_data.date_created | date:'shortTime'}}</span>
+                            <div class="d-flex flex-fill justify-content-between mb-1">
+                                <span>{{ issue.issue }}</span>
                             </div>
                         </div>
-                        <span>{{ issue.issue }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- <select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)" #type>
-    <option>ALL</option>
-    <option>DONE</option>
-    <option>WIP</option>
-    <option>ISSUES</option>
-    <option>HOURS</option>
-</select>
-<br>
-<form #dateFilterForm="ngForm" novalidate (ngSubmit)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)">
-    <span>DATE:</span>
-    <br>
-    <span> From </span>
-    <my-date-picker name="from" [options]="myDatePickerOptions"
-                    [(ngModel)]="from_model" required></my-date-picker>
-    <span> To </span>
-    <my-date-picker name="to" [options]="myDatePickerOptions"
-                    [(ngModel)]="to_model" required></my-date-picker>
-    <button type="submit">
-        DONE
-    </button>
-</form>
-<br>
-<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)" #username>
-    <option>ALL</option>
-    <option *ngFor="let user of users">{{ user.username }}</option>
-</select>
-<br>
-<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)" #project>
-    <option>ALL</option>
-    <option *ngFor="let project of projects">{{ project.name }}</option>
-</select>
-<br>
-<br>
-<h1>Stand up updates</h1>
-<table class="table table-striped" [mfData]="filtered_scrum" mfSortBy="date_created" mfSortOrder="desc" #scrumTable="mfDataTable" [mfRowsOnPage]="5">
-    <thead>
-        <tr>
-            <th style="width: 20%">
-                <mfDefaultSorter by="log_type">Type</mfDefaultSorter>
-            </th>
-            <th style="width: 50%">
-                <mfDefaultSorter by="message">Message</mfDefaultSorter>
-            </th>
-            <th style="width: 10%">
-                <mfDefaultSorter by="user">Username</mfDefaultSorter>
-            </th>
-            <th style="width: 20%">
-                <mfDefaultSorter by="date_created">Date</mfDefaultSorter>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let log of scrumTable.data">
-            <td>{{ log.log_type }}</td>
-            <td>{{ log.message }}</td>
-            <td>{{ log.user }}</td>
-            <td>{{ log.date_created | date }}</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4">
-                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-            </td>
-        </tr>
-    </tfoot>
-</table>
-<br>
-<br>
-<select (click)="setFilter(type.value, status.value, dateFilterForm.value, username.value, project.value)" #status>
-    <option>ALL</option>
-    <option>Pending</option>
-    <option>Resolved</option>
-    <option>Closed</option>
-</select>
-<h1>Issues list</h1>
-<table class="table table-striped" [mfData]="filtered_issues" mfSortBy="date_created" mfSortOrder="desc" #issuesTable="mfDataTable" [mfRowsOnPage]="5">
-    <thead>
-        <tr>
-            <th style="width: 20%">
-                <mfDefaultSorter by="status">Status</mfDefaultSorter>
-            </th>
-            <th style="width: 50%">
-                <mfDefaultSorter by="issue">Issue</mfDefaultSorter>
-            </th>
-            <th style="width: 10%">
-                <mfDefaultSorter by="user">Username</mfDefaultSorter>
-            </th>
-            <th style="width: 20%">
-                <mfDefaultSorter by="date_created">Date</mfDefaultSorter>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let issue of issuesTable.data">
-            <td>{{ issue.status }}
-                <button #rButton (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'Pending'" value="R">Mark as Solved</button>
-                <button #cButton (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'Pending'" value="C">Closed</button>
-            </td>
-            <td>{{ issue.issue }}</td>
-            <td>{{ issue.user }}</td>
-            <td>{{ issue.date_created | date }}</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4">
-                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-            </td>
-        </tr>
-    </tfoot>
-</table> -->
