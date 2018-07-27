@@ -18,6 +18,7 @@ from .serializers import (
                         )
 from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
+from django.conf import settings
 
 class ScrumAPI(APIView, CRUDMixin, ParseMixin):
     """
@@ -65,26 +66,27 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
         try:
             hoursIndex = data['text'].index("4.")+2
             scrum_data['hours'] = data['text'][hoursIndex:]
-            int(scrum_data['hours']) + 2
+            1 / int(scrum_data['hours'])
         except:
             return Response(data="Invalid input format")
         scrum = self.create(scrum_data, Scrum, ScrumSerializer)
-        # import pdb; pdb.set_trace()
 
+        none_strings = ['None', 'none', 'N/A', 'n/a']
         try:
-            for x in range(3):
+            for idx, log_type in (settings.LOG_TYPES).items():
                 log_data = QueryDict('', mutable=True)
-                startIndex = data['text'].index(str(x+1)+".")+2
-                messages = data['text'][startIndex:]
-                lastIndex = messages.index(str(x+2)+".")
-                messages = messages[:lastIndex]
+                start_index = data['text'].index(str(log_type)+".")+2
+                messages = data['text'][start_index:]
+                last_index = messages.index(str(log_type+1)+".")
+                messages = messages[:last_index]
                 splitby_line = messages.split('\r\n')
-                log_data['log_type'] = str(x+1)
+                log_data['log_type'] = str(log_type)
                 for y in range(len(splitby_line)):
                     log_data['scrum'] = scrum.id
                     log_data['message'] = splitby_line[y]
-                    self.create(log_data, Log, LogSerializer)
-                    if (x == 2 and splitby_line[y] != 'None'):
+                    if log_data['message'] not in none_strings:
+                        self.create(log_data, Log, LogSerializer)
+                    if (idx == 'ISSUE' and splitby_line[y] not in none_strings):
                         issue_data = QueryDict('', mutable=True)
                         issue_data['issue'] = splitby_line[y]
                         issue_data['scrum'] = scrum.id

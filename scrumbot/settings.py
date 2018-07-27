@@ -132,6 +132,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'assets/'),
 ]
 
+# Constant variables
+
+LOG_TYPES = {
+    'DONE': 1,
+    'WIP': 2,
+    'ISSUE': 3
+}
+
 # SLACK_CLIENT_ID = "398793025732.399175532373"
 # SLACK_CLIENT_SECRET = "892a51e39586b8bbd37965b01b2489dd"
 # SLACK_VERIFICATION_TOKEN = "AI9gDtSXXwZmbGdOZeGCz8Tl"

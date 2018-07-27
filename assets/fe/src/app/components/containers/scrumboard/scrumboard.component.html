@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="row border-bottom d-flex justify-content-between">
-        <div class="m-3 ml-5 d-flex align-items-center">
-            <i class="fas fa-search border-0 m-1 mr-3"></i>
-            <input type="text" placeholder="Search" class="border-0" (input)="getScrum(search.value)" #search>
+        <div class="m-3 ml-5 d-flex align-items-center w-50">
+            <i class="less-emphasis fas fa-search border-0 m-1 mr-3"></i>
+            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
         </div>
         <div class="m-3 mr-5 reduce">
             <app-avatar></app-avatar>
@@ -14,15 +14,15 @@
                 <h1>Welcome back, Chibi!</h1>
             </div>
             <div class="row">
-                <p>There are {{ issues_data?.length }} issues and {{ scrum_data?.length }} urgent tickets</p>
+                <p class="less-emphasis">There are {{ issues_data?.length }} issues and {{ scrumDataService.getScrums()?.length }} urgent tickets</p>
             </div>
                 <hr>
             <div class="row pt-4 pb-4">
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row align-items-center">
-                        <span class="w-25">Select Project</span>
+                        <span class="w-25 less-emphasis">Select Project</span>
                         <div class="input-group">
-                          <select class="custom-select" (change)="filter_project=select_project.value; filtered_scrum=scrum_data" #select_project>
+                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrumDataService.getScrums()" #select_project>
                             <option selected value="">All Projects</option>
                             <option *ngFor="let project of projects">{{ project.name }}</option>
                           </select>
@@ -30,9 +30,9 @@
                     </div>
                     <br>
                     <div class="d-flex flex-row align-items-center">
-                        <span class="w-25">Members</span>
+                        <span class="w-25 less-emphasis">Members</span>
                         <div class="input-group">
-                          <select class="custom-select" (change)="filter_user=select_user.value; filtered_scrum=scrum_data" #select_user>
+                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrumDataService.getScrums()" #select_user>
                             <option selected value="">All Members</option>
                             <option *ngFor="let user of users">{{ user.username }}</option>
                           </select>
@@ -42,18 +42,18 @@
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row-reverse">
                             <div class="input-group date_filters">
-                                <input class="form-control datepicker" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="myOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrum_data"/>
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrumDataService.getScrums()"/>
                                 <span class="input-group-append">
-                                    <button type="button" class="btn btn-light border border-secondary" (click)="to_dp.toggleCalendar()">
+                                    <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
                                     </button>
                                 </span>
                             </div>
                             <h3 class="m-0 mr-2 ml-2">-</h3>
                             <div class="input-group date_filters">
-                                <input class="form-control datepicker" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="myOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrum_data"/>
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrumDataService.getScrums()"/>
                                 <span class="input-group-append">
-                                    <button type="button" class="btn btn-light border border-secondary" (click)="from_dp.toggleCalendar()">
+                                    <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
                                     </button>
                                 </span>
@@ -115,7 +115,7 @@
             </div>
             <div class="row mt-4 mb-3">
                 <div class="col-sm-2 d-flex">
-                    <span class="align-self-center">{{ today | date:'longDate'}}</span>
+                    <span class="align-self-center grey-border less-emphasis">Today - {{ today | date:'longDate'}}</span>
                 </div>
                 <div class="col-sm-10">
                     <hr>
@@ -129,31 +129,31 @@
                             <div class="row d-flex flex-column shadow p-3 ml-3 mr-3 mb-5">
                                 <div class="row d-flex justify-content-between">
                                     <div class="normal col d-flex">
-                                        <app-avatar></app-avatar>
+                                        <app-avatar [username]="scrum.user" [id]="scrum.user"></app-avatar>
                                         <div class="m-1 ml-3">
                                             <span><b>{{ scrum.user }}</b></span>
                                             <br>
-                                            <span>{{ scrum.date_created | date:'shortTime'}}</span>
+                                            <span class="less-emphasis">{{ scrum.date_created | date:'shortTime'}}</span>
                                         </div>
                                     </div>
                                     <div class="col d-flex justify-content-end">
                                         <div class="m-1" *ngIf="filter_hours">
-                                            <span><b>Total Hours:</b> {{ scrum.hours }}</span>
+                                            <span><b>Total Hours: </b> <span class="less-emphasis">{{ scrum.hours }}</span></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column flex-wrap pt-5 pr-5 pl-5 pb-2 ml-2 mr-2">
-                                    <div *ngIf="filter_done">
+                                    <div class="mb-3" *ngIf="filter_done">
                                         <p><b>Done</b></p>
                                         <div *ngFor="let done_log of scrum.done_logs" class="wraplongtext">
-                                        <p >
+                                        <p class="less-emphasis">
                                             {{ done_log.message }}
                                         </p>
                                         </div>
                                     </div>
                                     <div *ngIf="filter_wip">
                                         <p><b>In progress</b></p>
-                                        <div class="wraplongtext" *ngFor="let wip_log of scrum.wip_logs">
+                                        <div class="wraplongtext less-emphasis" *ngFor="let wip_log of scrum.wip_logs">
                                         <p >
                                             {{ wip_log.message }}
                                         </p>
@@ -173,7 +173,7 @@
                                 <div class="row d-flex flex-column shadow p-3 ml-3 mr-3 mb-5" *ngIf="(filter_pending && issue_log.status=='Pending') || (filter_closed && issue_log.status=='Closed') || (filter_resolved && issue_log.status=='Resolved')">
                                     <div class="row d-flex flex-column pt-3 pl-5 pr-5 pb-0 ml-2 mr-2">
                                         <p><b>{{ issue_log.status }}</b></p>
-                                        <p>{{ issue_log.issue }}</p>
+                                        <p class="less-emphasis">{{ issue_log.issue }}</p>
                                     </div>
                                     <div class="row d-flex justify-content-center ml-2 mr-2">
                                         <button #rButton type="button" class="statusbtn btn btn-outline-success m-4" (click)="updateStatus(issue_log.id, rButton.value)" *ngIf="issue_log.status == 'Pending'" value="R">Mark as Solved</button>
@@ -194,14 +194,14 @@
                 <div *ngFor="let issue of issues_data">
                     <div class="d-flex pl-4 pt-3 pb-3 hoverable" (click)="getIssue(issue.id)" *ngIf="issue.status=='Pending'">
                         <div class="reduce d-flex">
-                            <app-avatar></app-avatar>
+                            <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
                         </div>
                         <div class="d-flex flex-fill flex-column ml-3 mr-5">
                             <div class="d-flex justify-content-between mb-1">
                                     <p class="m-0"><b>{{ issue.scrum_data.user_username }}</b></p>
-                                    <p class="m-0">{{ issue.scrum_data.date_created | date:'shortTime'}}</p>
+                                    <p class="m-0 less-emphasis">{{ issue.scrum_data.date_created | date:'shortTime'}}</p>
                             </div>
-                            <div class="d-flex flex-fill justify-content-between mb-1">
+                            <div class="d-flex flex-fill justify-content-between mb-1 less-emphasis">
                                 <span>{{ issue.issue }}</span>
                             </div>
                         </div>

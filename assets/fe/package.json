@@ -32,6 +32,7 @@
     "node-sass": "^4.9.2",
     "rxjs": "^6.0.0",
     "sass": "^1.10.0",
+    "string-to-color": "^2.0.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

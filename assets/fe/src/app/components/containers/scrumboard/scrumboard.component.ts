@@ -4,6 +4,7 @@ import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { NgForm } from '@angular/forms';
 
 import { FilterService } from '../../../services/filter.service';
+import { ScrumDataService } from '../../../services/scrum-data.service';
 import { GET_LOGS, GET_ISSUES,
           GET_TEAM_MEMBERS,
           GET_TEAM_PROJECTS,
@@ -16,9 +17,6 @@ import { GET_LOGS, GET_ISSUES,
 })
 export class ScrumboardComponent implements OnInit {
 
-    myOptions: INgxMyDpOptions = {
-        dateFormat: 'mm.dd.yyyy',
-    };
 
     today = new Date()
 
@@ -40,12 +38,14 @@ export class ScrumboardComponent implements OnInit {
       }
     };
 
+
   constructor(
       private http: HttpClient,
       private filterService: FilterService,
+      private scrumDataService: ScrumDataService,
   ) { }
 
-  scrum_data: any
+  // scrum_data: any
   issues_data: any
   users: {}
   projects: {}
@@ -72,6 +72,31 @@ export class ScrumboardComponent implements OnInit {
   // filter_issue_detail: boolean = false;
   filtered_scrum: any;
 
+  disabled_from = {
+        year: this.today.getFullYear(),
+        month: this.today.getMonth() + 1,
+        day: new Date(this.today.getFullYear(),
+                      this.today.getMonth(),
+                      this.today.getDate()-6).getDate()
+      }
+
+  disabled_to = {
+        year: this.today.getFullYear(),
+        month: this.today.getMonth() + 1,
+        day: new Date(this.today.getFullYear(),
+                      this.today.getMonth(),
+                      this.today.getDate()-6).getDate()
+      }
+
+    fromOptions: INgxMyDpOptions = {
+        dateFormat: 'mmm dd yyyy',
+    };
+
+    toOptions: INgxMyDpOptions = {
+        dateFormat: 'mmm dd yyyy',
+        disableUntil: this.disabled_from
+    };
+
   ngOnInit() {
       this.fetchIssues()
       this.fetchScrums()
@@ -83,7 +108,7 @@ export class ScrumboardComponent implements OnInit {
       this.http.get(GET_LOGS())
           .subscribe(
               data => {
-                  this.scrum_data = data
+                  this.scrumDataService.setScrums(data);
                   this.filtered_scrum = data
               }
           );
@@ -126,6 +151,10 @@ export class ScrumboardComponent implements OnInit {
   // }
 
   setDateFromFilter(from){
+      this.disabled_from.year=from.date.year
+      this.disabled_from.month=from.date.month
+      this.disabled_from.day=from.date.day
+
       this.filter_from = new Date(from.date.year,
                                   from.date.month-1,
                                   from.date.day);
@@ -139,7 +168,7 @@ export class ScrumboardComponent implements OnInit {
 
   getIssue(id){
       // this.filter_issue_detail = true;
-      this.filtered_scrum = [this.scrum_data.find(scrum => {
+      this.filtered_scrum = [this.scrumDataService.getScrums().find(scrum => {
           return scrum.issue_logs.find(issue => {
                      return issue.id == id
                   })
@@ -162,13 +191,12 @@ export class ScrumboardComponent implements OnInit {
   }
 
   getTotalHours(user, project, from, to){
-    var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrum_data)
+    var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrumDataService.getScrums())
     return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
   }
 
   getScrum(keyword){
-    console.log(keyword)
-    this.filtered_scrum = this.filterService.filterScrumSearch(keyword, this.scrum_data)
+    this.filtered_scrum = this.filterService.filterScrumSearch(keyword, this.scrumDataService.getScrums())
   }
 
   hasIssues(scrum){
