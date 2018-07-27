@@ -2,6 +2,12 @@
     width: 600px;
 }
 
+.urgent{
+    background-color: crimson;
+    color: white;
+    font-size: 12px;
+}
+
 .hoverable:hover{
     background-color: gainsboro;
 }

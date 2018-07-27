@@ -31,7 +31,7 @@ class IssueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Issue
-        fields = ('id', 'status', 'issue', 'scrum', 'scrum_data')
+        fields = ('id', 'status', 'issue', 'is_urgent', 'scrum', 'scrum_data')
         
 
 class ScrumReportSerializer(serializers.ModelSerializer):

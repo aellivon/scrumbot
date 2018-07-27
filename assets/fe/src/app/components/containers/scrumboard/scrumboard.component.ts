@@ -83,13 +83,12 @@ export class ScrumboardComponent implements OnInit {
   disabled_to = {
         year: this.today.getFullYear(),
         month: this.today.getMonth() + 1,
-        day: new Date(this.today.getFullYear(),
-                      this.today.getMonth(),
-                      this.today.getDate()-6).getDate()
+        day: this.today.getDate() + 1
       }
 
     fromOptions: INgxMyDpOptions = {
         dateFormat: 'mmm dd yyyy',
+        disableSince: this.disabled_to
     };
 
     toOptions: INgxMyDpOptions = {
@@ -153,7 +152,7 @@ export class ScrumboardComponent implements OnInit {
   setDateFromFilter(from){
       this.disabled_from.year=from.date.year
       this.disabled_from.month=from.date.month
-      this.disabled_from.day=from.date.day
+      this.disabled_from.day=from.date.day - 1
 
       this.filter_from = new Date(from.date.year,
                                   from.date.month-1,
@@ -161,6 +160,10 @@ export class ScrumboardComponent implements OnInit {
   }
 
   setDateToFilter(to){
+      this.disabled_to.year=to.date.year
+      this.disabled_to.month=to.date.month
+      this.disabled_to.day=to.date.day + 1
+
       this.filter_to = new Date(to.date.year,
                                   to.date.month-1,
                                   to.date.day);

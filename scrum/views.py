@@ -82,15 +82,19 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
                 splitby_line = messages.split('\r\n')
                 log_data['log_type'] = str(log_type)
                 for y in range(len(splitby_line)):
-                    log_data['scrum'] = scrum.id
-                    log_data['message'] = splitby_line[y]
-                    if log_data['message'] not in none_strings:
+                    # import pdb; pdb.set_trace()
+                    if splitby_line[y] not in none_strings:
+                        log_data['scrum'] = scrum.id
+                        log_data['message'] = splitby_line[y]
                         self.create(log_data, Log, LogSerializer)
-                    if (idx == 'ISSUE' and splitby_line[y] not in none_strings):
-                        issue_data = QueryDict('', mutable=True)
-                        issue_data['issue'] = splitby_line[y]
-                        issue_data['scrum'] = scrum.id
-                        self.create(issue_data, Issue, IssueSerializer)
+                        if (idx == 'ISSUE'):
+                            issue_data = QueryDict('', mutable=True)
+                            if(splitby_line[y][:3] == '-u '):
+                                issue_data['is_urgent'] = 'true'
+                                splitby_line[y] = splitby_line[y][3:]
+                            issue_data['issue'] = splitby_line[y]
+                            issue_data['scrum'] = scrum.id
+                            self.create(issue_data, Issue, IssueSerializer)
         except:
             return Response(data="Invalid input format")
 

@@ -143,6 +143,14 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column flex-wrap pt-5 pr-5 pl-5 pb-2 ml-2 mr-2">
+                                    <div class="mb-3">
+                                        <p><b>Project</b></p>
+                                        <div>
+                                        <p class="less-emphasis">
+                                            {{ scrum.project }}
+                                        </p>
+                                        </div>
+                                    </div>
                                     <div class="mb-3" *ngIf="filter_done">
                                         <p><b>Done</b></p>
                                         <div *ngFor="let done_log of scrum.done_logs" class="wraplongtext">
@@ -172,7 +180,10 @@
                             <div *ngFor="let issue_log of scrum.issue_logs">
                                 <div class="row d-flex flex-column shadow p-3 ml-3 mr-3 mb-5" *ngIf="(filter_pending && issue_log.status=='Pending') || (filter_closed && issue_log.status=='Closed') || (filter_resolved && issue_log.status=='Resolved')">
                                     <div class="row d-flex flex-column pt-3 pl-5 pr-5 pb-0 ml-2 mr-2">
-                                        <p><b>{{ issue_log.status }}</b></p>
+                                        <div class="d-flex justify-content-between">
+                                            <p><b>{{ issue_log.status }}</b></p>
+                                            <p *ngIf="issue_log.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right">Urgent</p>
+                                        </div>
                                         <p class="less-emphasis">{{ issue_log.issue }}</p>
                                     </div>
                                     <div class="row d-flex justify-content-center ml-2 mr-2">
@@ -203,6 +214,7 @@
                             </div>
                             <div class="d-flex flex-fill justify-content-between mb-1 less-emphasis">
                                 <span>{{ issue.issue }}</span>
+                                <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right">Urgent</p>
                             </div>
                         </div>
                     </div>

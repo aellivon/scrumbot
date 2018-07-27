@@ -16,17 +16,6 @@ class Scrum(models.Model):
         return str(self.id)
 
 
-# class LogManager(models.Manager):
-#     """
-#     custom Log manager
-#     """
-    
-#     def getDoneLogs(self):
-#         return self.filter(log_type='1')
-
-#     def getWIPLogs(self):
-#         return self.filter(log_type='2')
-
 
 class Log(models.Model):
     """
@@ -58,6 +47,7 @@ class Issue(models.Model):
     status = models.CharField(max_length=20,
                 choices=STATUS_CHOICES, default='P')
     issue = models.TextField()
+    is_urgent = models.BooleanField(default=False)
     scrum = models.ForeignKey(Scrum, on_delete=models.CASCADE)
 
     def __str__(self):
