@@ -5,13 +5,17 @@ from .models import Log, Issue, Scrum
 class ScrumSerializer(serializers.ModelSerializer):
     """Serializer of a scrum model"""
     user_username = serializers.SerializerMethodField()
+    project_name = serializers.SerializerMethodField()
 
     def get_user_username(self, obj):
         return obj.user.username
 
+    def get_project_name(self, obj):
+        return obj.project.name
+
     class Meta:
         model = Scrum
-        fields = ('user', 'project', 'hours', 'date_created', 'user_username')
+        fields = ('user', 'project', 'hours', 'date_created', 'user_username', 'project_name')
 
 class LogSerializer(serializers.ModelSerializer):
     """Serializer of a log model"""
@@ -55,14 +59,6 @@ class ScrumReportSerializer(serializers.ModelSerializer):
         model = Scrum
         fields = ('id', 'user', 'project', 'hours', 'date_created',
                     'done_logs', 'wip_logs', 'issue_logs')
-
-
-# class IssueReportSerializer(serializers.ModelSerializer):
-#     """Serializer of an issue report model"""
-
-#     class Meta:
-#         model = Issue
-#         fields = ('__all__')
 
 
 class IssueStatusSerializer(serializers.ModelSerializer):

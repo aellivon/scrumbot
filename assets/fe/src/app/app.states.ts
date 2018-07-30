@@ -3,6 +3,7 @@ import { CreateTeamComponent } from './components/forms/create-team/create-team.
 import { JoinTeamComponent } from './components/prompts/join-team/join-team.component'
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component'
 import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component'
+import { IssueboardComponent } from './components/containers/issueboard/issueboard.component'
 
 // let CREATE_TEAM_STATE: Object[] = [
 //     {
@@ -22,9 +23,17 @@ import { ScrumboardComponent } from './components/containers/scrumboard/scrumboa
 
 let HOME_STATE: Object[] = [
     {
-        name: 'home',
+        name: 'scrumboard',
         url: '/',
         views: ContentOnly(ScrumboardComponent),
+    }
+]
+
+let ISSUES_STATE: Object[] = [
+    {
+        name: 'issuesboard',
+        url: '/issues',
+        views: ContentOnly(IssueboardComponent),
     }
 ]
 
@@ -42,6 +51,7 @@ export const APP_STATES = {
 		// CREATE_TEAM_STATE,
   //       JOIN_TEAM_STATE,
         // SLACK_LOGIN_STATE,
-        HOME_STATE
+        HOME_STATE,
+        ISSUES_STATE
 	)
 }

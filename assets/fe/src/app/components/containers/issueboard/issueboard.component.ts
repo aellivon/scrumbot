@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from 'app/services/data.service';
+import { SearchService } from 'app/services/search.service';
+import { GET_ISSUES } from 'app/constants/endpoints';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
 
-import { DataService } from 'app/services/data.service';
-import { ScrumDataService } from 'app/services/scrum-data.service';
-import { FilterService } from 'app/services/filter.service';
-import { SearchService } from 'app/services/search.service';
-import { GET_ISSUES,
-          UPDATE_ISSUE_STATUS,  } from '../../../constants/endpoints';
-
 @Component({
-  selector: 'app-scrumboard',
-  templateUrl: './scrumboard.component.html',
-  styleUrls: ['./scrumboard.component.css']
+  selector: 'app-issueboard',
+  templateUrl: './issueboard.component.html',
+  styleUrls: ['./issueboard.component.scss']
 })
-export class ScrumboardComponent implements OnInit {
+export class IssueboardComponent implements OnInit {
 
   filter_to: Date = new Date();
   filter_from: Date = new Date(this.filter_to.getFullYear(),
@@ -37,33 +33,25 @@ export class ScrumboardComponent implements OnInit {
       }
     };
 
-
   constructor(
       private http: HttpClient,
-      private filterService: FilterService,
       private searchService: SearchService,
       private dataService: DataService,
   ) { }
 
-  scrums: any
   issues: any
   users: {}
   projects: {}
 
+  filtered_issues: any
+
   filter_user = ''
   filter_project = ''
-
-  filter_done: boolean = true;
-  filter_wip: boolean = true;
-  filter_hours: boolean = true;
 
   filter_pending: boolean = true;
   filter_resolved: boolean = false;
   filter_closed: boolean = false;
-
-
-  filtered_scrum: any;
-
+  
   from_yesterday = new Date(this.filter_from.getFullYear(),
                       this.filter_from.getMonth(),
                       this.filter_from.getDate()-1)
@@ -96,19 +84,8 @@ export class ScrumboardComponent implements OnInit {
 
   ngOnInit() {
       this.fetchIssues()
-      this.fetchScrums()
-      this.fetchUsers()
       this.fetchProjects()
-  }
-
-  fetchScrums(){
-      this.dataService.fetchScrums()
-          .subscribe(
-              data => {
-                  this.scrums = data
-                  this.filtered_scrum = data
-              }
-          );
+      this.fetchUsers()
   }
 
   fetchIssues(){
@@ -116,6 +93,7 @@ export class ScrumboardComponent implements OnInit {
           .subscribe(
               data => {
                   this.issues = data
+                  console.log(this.issues)
               }
           );
   }
@@ -136,6 +114,10 @@ export class ScrumboardComponent implements OnInit {
                   this.projects = data
               }
           );
+  }
+
+  getIssues(keyword){
+    this.filtered_issues = this.searchService.searchIssues(keyword, this.issues)
   }
 
   setDateFromFilter(from){
@@ -166,74 +148,9 @@ export class ScrumboardComponent implements OnInit {
       this.disabled_to.day = tomorrow.getDate()
   }
 
-  getIssue(id){
-      this.filtered_scrum = [this.scrums.find(scrum => {
-          return scrum.issue_logs.find(issue => {
-                     return issue.id == id
-                  })
-      })]
-  }
-
-  updateStatus(id, status){
-      this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
-      .subscribe();
-      var index = this.issues.findIndex(issue => {
-         return issue.id == id
-      })
-      this.issues[index].status = status=="R"? "Resolved": "Closed"
-      var scrum_index = this.scrums.findIndex(scrum => {
-         return scrum.issue_logs.find(issue => {
-             return issue.id == id
-          })
-      })
-      var issue_index = this.scrums[scrum_index].issue_logs.findIndex(issue => {
-         return issue.id == id
-      })
-      this.scrums[scrum_index].issue_logs[issue_index].status = status=="R"? "Resolved": "Closed"
-  }
-
   isWithinDate(scrum_date, filter_from, filter_to){
     return (new Date(scrum_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
             new Date(scrum_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
-  }
-
-  getTotalHours(user, project, from, to){
-    var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrums)
-    return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
-  }
-
-  getScrum(keyword){
-    this.filtered_scrum = this.searchService.searchScrums(keyword, this.scrums)
-  }
-
-  hasIssues(scrum){
-    var pending = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Pending'
-                  })
-    var resolved = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Resolved'
-                  })
-    var closed = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Closed'
-                  })
-    return (this.filter_pending && pending.length!=0) ||
-            (this.filter_resolved && resolved.length!=0) ||
-            (this.filter_closed && closed.length!=0)
-  }
-
-  hasPending(scrum){
-    var pending = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Pending'
-                  })
-    var resolved = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Resolved'
-                  })
-    var closed = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Closed'
-                  })
-    return (pending.length!=0) ||
-            (this.filter_resolved && resolved.length!=0) ||
-            (this.filter_closed && closed.length!=0)
   }
 
 }

@@ -19,6 +19,7 @@ import { JoinTeamComponent } from './components/prompts/join-team/join-team.comp
 import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component';
 import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
+import { IssueboardComponent } from './components/containers/issueboard/issueboard.component';
 // import { FilterboxComponent } from './components/containers/filterbox/filterbox.component';
 // import { UserFilterComponent } from './components/forms/filters/user-filter/user-filter.component';
 // import { DateFilterComponent } from './components/forms/filters/date-filter/date-filter.component';
@@ -36,6 +37,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     SlackLoginComponent,
     ScrumboardComponent,
     AvatarComponent,
+    IssueboardComponent,
     // FilterboxComponent,
     // UserFilterComponent,
     // DateFilterComponent,

@@ -20,12 +20,12 @@ from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
 from django.conf import settings
 
-class ScrumAPI(APIView, CRUDMixin, ParseMixin):
+class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
     """
     Scrum API
     """
     
-    def post(self, request, *args, **kwargs):
+    def create_scrum(self, request, *args, **kwargs):
         """
         adds scrum reports to db
         """
@@ -82,7 +82,6 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
                 splitby_line = messages.split('\r\n')
                 log_data['log_type'] = str(log_type)
                 for y in range(len(splitby_line)):
-                    # import pdb; pdb.set_trace()
                     if splitby_line[y] not in none_strings:
                         log_data['scrum'] = scrum.id
                         log_data['message'] = splitby_line[y]
@@ -96,15 +95,67 @@ class ScrumAPI(APIView, CRUDMixin, ParseMixin):
                             issue_data['scrum'] = scrum.id
                             self.create(issue_data, Issue, IssueSerializer)
         except:
+            scrum.delete()
             return Response(data="Invalid input format")
 
         return Response(data=data, status=201)
 
-    def get(self, request, *args, **kwargs):
+    def update_scrum(self, request, *args, **kwargs):
+        """
+        updates the most recent scrum report
+        of a specific user and project
+        """
+        data = self.parseData(request.POST)
+        scrum = Scrum.objects.filter(user__username=data['user_name'],
+                                    project__name=data['channel_name'])[0]
+
+        logs = scrum.log_set.all()
+        issues = scrum.issue_set.all()
+        logs.delete()
+        issues.delete()
+
+        try:
+            hoursIndex = data['text'].index("4.")+2
+            hours = data['text'][hoursIndex:]
+            1 / int(hours)
+        except:
+            return Response(data="Invalid input format")
+        scrum.hours = hours
+        none_strings = ['None', 'none', 'N/A', 'n/a']
+        try:
+            for idx, log_type in (settings.LOG_TYPES).items():
+                log_data = QueryDict('', mutable=True)
+                start_index = data['text'].index(str(log_type)+".")+2
+                messages = data['text'][start_index:]
+                last_index = messages.index(str(log_type+1)+".")
+                messages = messages[:last_index]
+                splitby_line = messages.split('\r\n')
+                log_data['log_type'] = str(log_type)
+                for y in range(len(splitby_line)):
+                    if splitby_line[y] not in none_strings:
+                        log_data['scrum'] = scrum.id
+                        log_data['message'] = splitby_line[y]
+                        self.create(log_data, Log, LogSerializer)
+                        if (idx == 'ISSUE'):
+                            issue_data = QueryDict('', mutable=True)
+                            if(splitby_line[y][:3] == '-u '):
+                                issue_data['is_urgent'] = 'true'
+                                splitby_line[y] = splitby_line[y][3:]
+                            issue_data['issue'] = splitby_line[y]
+                            issue_data['scrum'] = scrum.id
+                            self.create(issue_data, Issue, IssueSerializer)
+            scrum.save()
+        except:
+            return Response(data="Invalid input format")
+
+        return Response(data=data, status=201)
+
+    def list(self, request, *args, **kwargs):
         """
         lists scrum reports
         """
         return self.list_all(Scrum, ScrumReportSerializer, 'date_created')
+
 
 class IssuesAPI(ViewSet, CRUDMixin):
     """
