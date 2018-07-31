@@ -2,6 +2,18 @@
     background-color: gainsboro;
 }
 
+.project_label{
+    color: #4361ff;
+}
+
+.label{
+    font-size: 14px;
+}
+
+.category_label{
+    font-size: 12px;
+}
+
 .date_filters{
     width: 170px;
 }

@@ -57,9 +57,6 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             project_data['team'] = data['team_id']
             project = self.create(project_data, Project, ProjectSerializer)
 
-        # user = User.objects.get(slack_id=data['user_id'])
-        # project = Project.objects.get(id=data['channel_id'])
-
         scrum_data = QueryDict('', mutable=True)
         scrum_data['user'] = user.id
         scrum_data['project'] = project.id
@@ -68,35 +65,40 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             scrum_data['hours'] = data['text'][hoursIndex:]
             1 / int(scrum_data['hours'])
         except:
-            return Response(data="Invalid input format")
+            return Response(data="Invalid input format on HOURS log")
         scrum = self.create(scrum_data, Scrum, ScrumSerializer)
 
-        none_strings = ['None', 'none', 'N/A', 'n/a']
-        try:
-            for idx, log_type in (settings.LOG_TYPES).items():
-                log_data = QueryDict('', mutable=True)
-                start_index = data['text'].index(str(log_type)+".")+2
-                messages = data['text'][start_index:]
-                last_index = messages.index(str(log_type+1)+".")
-                messages = messages[:last_index]
-                splitby_line = messages.split('\r\n')
-                log_data['log_type'] = str(log_type)
-                for y in range(len(splitby_line)):
-                    if splitby_line[y] not in none_strings:
-                        log_data['scrum'] = scrum.id
-                        log_data['message'] = splitby_line[y]
-                        self.create(log_data, Log, LogSerializer)
-                        if (idx == 'ISSUE'):
-                            issue_data = QueryDict('', mutable=True)
-                            if(splitby_line[y][:3] == '-u '):
-                                issue_data['is_urgent'] = 'true'
-                                splitby_line[y] = splitby_line[y][3:]
-                            issue_data['issue'] = splitby_line[y]
-                            issue_data['scrum'] = scrum.id
-                            self.create(issue_data, Issue, IssueSerializer)
-        except:
+        isNotValid = self.validateData(data)
+        if (isNotValid):
             scrum.delete()
-            return Response(data="Invalid input format")
+            return isNotValid
+
+        none_strings = ['None', 'none', 'N/A', 'n/a', '']
+        for idx, log_type in (settings.LOG_TYPES).items():
+            start_index = data['text'].index(str(log_type)+".")+2
+            messages = data['text'][start_index:]
+            last_index = messages.index(str(log_type+1)+".")
+            messages = messages[:last_index]
+            splitby_line = messages.split('\r\n')
+            for y in range(len(splitby_line)):
+                if splitby_line[y] in none_strings:
+                    continue
+                if (idx == 'ISSUE'):
+                    issue_data = QueryDict('', mutable=True)
+                    if(splitby_line[y][:3] == '-u '):
+                        issue_data['is_urgent'] = 'true'
+                        splitby_line[y] = splitby_line[y][3:]
+                    if splitby_line[y] in none_strings:
+                        continue
+                    issue_data['issue'] = splitby_line[y]
+                    issue_data['scrum'] = scrum.id
+                    self.create(issue_data, Issue, IssueSerializer)
+                    continue
+                log_data = QueryDict('', mutable=True)
+                log_data['log_type'] = str(log_type)
+                log_data['scrum'] = scrum.id
+                log_data['message'] = splitby_line[y]
+                self.create(log_data, Log, LogSerializer)
 
         return Response(data=data, status=201)
 
@@ -106,49 +108,58 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         of a specific user and project
         """
         data = self.parseData(request.POST)
-        scrum = Scrum.objects.filter(user__username=data['user_name'],
-                                    project__name=data['channel_name'])[0]
+        scrum_list = Scrum.objects.filter(user__username=data['user_name'],
+                                    project__name=data['channel_name'])
+        scrum = scrum_list.order_by('date_created').reverse()[0]
 
         logs = scrum.log_set.all()
         issues = scrum.issue_set.all()
-        logs.delete()
-        issues.delete()
 
         try:
             hoursIndex = data['text'].index("4.")+2
             hours = data['text'][hoursIndex:]
             1 / int(hours)
         except:
-            return Response(data="Invalid input format")
+            return Response(data="Invalid input format on HOURS log")
         scrum.hours = hours
-        none_strings = ['None', 'none', 'N/A', 'n/a']
-        try:
-            for idx, log_type in (settings.LOG_TYPES).items():
-                log_data = QueryDict('', mutable=True)
-                start_index = data['text'].index(str(log_type)+".")+2
-                messages = data['text'][start_index:]
-                last_index = messages.index(str(log_type+1)+".")
-                messages = messages[:last_index]
-                splitby_line = messages.split('\r\n')
-                log_data['log_type'] = str(log_type)
-                for y in range(len(splitby_line)):
-                    if splitby_line[y] not in none_strings:
-                        log_data['scrum'] = scrum.id
-                        log_data['message'] = splitby_line[y]
-                        self.create(log_data, Log, LogSerializer)
-                        if (idx == 'ISSUE'):
-                            issue_data = QueryDict('', mutable=True)
-                            if(splitby_line[y][:3] == '-u '):
-                                issue_data['is_urgent'] = 'true'
-                                splitby_line[y] = splitby_line[y][3:]
-                            issue_data['issue'] = splitby_line[y]
-                            issue_data['scrum'] = scrum.id
-                            self.create(issue_data, Issue, IssueSerializer)
-            scrum.save()
-        except:
-            return Response(data="Invalid input format")
 
-        return Response(data=data, status=201)
+        isNotValid = self.validateData(data)
+        if (isNotValid):
+            return isNotValid
+
+        logs.delete()
+        issues.delete()
+        
+        none_strings = ['None', 'none', 'N/A', 'n/a', '']
+        for idx, log_type in (settings.LOG_TYPES).items():
+            start_index = data['text'].index(str(log_type)+".")+2
+            messages = data['text'][start_index:]
+            last_index = messages.index(str(log_type+1)+".")
+            messages = messages[:last_index]
+            splitby_line = messages.split('\r\n')
+            for y in range(len(splitby_line)):
+                if splitby_line[y] in none_strings:
+                    continue
+                if (idx == 'ISSUE'):
+                    issue_data = QueryDict('', mutable=True)
+                    if(splitby_line[y][:3] == '-u '):
+                        issue_data['is_urgent'] = 'true'
+                        splitby_line[y] = splitby_line[y][3:]
+                    if splitby_line[y] in none_strings:
+                        continue
+                    issue_data['issue'] = splitby_line[y]
+                    issue_data['scrum'] = scrum.id
+                    self.create(issue_data, Issue, IssueSerializer)
+                    continue
+                log_data = QueryDict('', mutable=True)
+                log_data['log_type'] = str(log_type)
+                log_data['scrum'] = scrum.id
+                log_data['message'] = splitby_line[y]
+                self.create(log_data, Log, LogSerializer)
+        scrum.save()
+
+
+        return Response(data=data, status=200)
 
     def list(self, request, *args, **kwargs):
         """

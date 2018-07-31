@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from accounts.models import User, Team
-from scrum.models import Log
 from django.http import QueryDict
+from django.conf import settings
 import json
 
 class CRUDMixin(object):
@@ -55,3 +55,37 @@ class ParseMixin(object):
     def parseStringData(self, data):
         message = data['text']
         return message.split('.')
+
+    def validateData(self, data):
+        for idx, log_type in (settings.LOG_TYPES).items():
+            try:
+                start_index = data['text'].index(str(log_type)+".")+2
+            except:
+                return Response(data="Invalid input format on "+idx+" log")
+
+    # def createParsedLogs(self, data, scrum_id):
+    #     none_strings = ['None', 'none', 'N/A', 'n/a', '']
+    #     for idx, log_type in (settings.LOG_TYPES).items():
+    #         log_data = QueryDict('', mutable=True)
+    #         issue_data = QueryDict('', mutable=True)
+    #         start_index = data['text'].index(str(log_type)+".")+2
+    #         messages = data['text'][start_index:]
+    #         last_index = messages.index(str(log_type+1)+".")
+    #         messages = messages[:last_index]
+    #         splitby_line = messages.split('\r\n')
+    #         for y in range(len(splitby_line)):
+    #             if (splitby_line[y] in none_strings or
+    #                 splitby_line[y][3:] in none_strings):
+    #                 continue
+    #             if (idx == 'ISSUE'):
+    #                 if(splitby_line[y][:3] == '-u '):
+    #                     issue_data['is_urgent'] = 'true'
+    #                     splitby_line[y] = splitby_line[y][3:]
+    #                 issue_data['issue'] = splitby_line[y]
+    #                 issue_data['scrum'] = scrum_id
+    #                 self.create(issue_data, Issue, IssueSerializer)
+    #                 continue
+    #             log_data['log_type'] = str(log_type)
+    #             log_data['scrum'] = scrum_id
+    #             log_data['message'] = splitby_line[y]
+    #             self.create(log_data, Log, LogSerializer)

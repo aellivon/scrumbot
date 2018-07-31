@@ -50,6 +50,8 @@ export class ScrumboardComponent implements OnInit {
   users: {}
   projects: {}
 
+  show_item = true
+
   filter_user = ''
   filter_project = ''
 
@@ -92,6 +94,11 @@ export class ScrumboardComponent implements OnInit {
   toOptions: INgxMyDpOptions = {
       dateFormat: 'mmm dd yyyy',
       disableUntil: this.disabled_from
+  };
+
+  show_object = {
+    id: '',
+    show: true,
   };
 
   ngOnInit() {
@@ -225,15 +232,7 @@ export class ScrumboardComponent implements OnInit {
     var pending = scrum.issue_logs.filter(issue =>{
                        return issue.status == 'Pending'
                   })
-    var resolved = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Resolved'
-                  })
-    var closed = scrum.issue_logs.filter(issue =>{
-                       return issue.status == 'Closed'
-                  })
-    return (pending.length!=0) ||
-            (this.filter_resolved && resolved.length!=0) ||
-            (this.filter_closed && closed.length!=0)
+    return (pending.length!=0)
   }
 
 }

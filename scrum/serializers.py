@@ -53,7 +53,8 @@ class ScrumReportSerializer(serializers.ModelSerializer):
         return LogSerializer(obj.log_set.filter(log_type='2'), many=True).data
     
     def get_issue_logs(self, obj):
-        return IssueSerializer(obj.issue_set.all(), many=True).data
+        issues = obj.issue_set.all().order_by('is_urgent').reverse()
+        return IssueSerializer(issues, many=True).data
 
     class Meta:
         model = Scrum
