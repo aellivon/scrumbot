@@ -101,6 +101,8 @@ export class ScrumboardComponent implements OnInit {
     show: true,
   };
 
+  deadline: Date;
+
   ngOnInit() {
       this.fetchIssues()
       this.fetchScrums()
@@ -108,11 +110,20 @@ export class ScrumboardComponent implements OnInit {
       this.fetchProjects()
   }
 
+
   fetchScrums(){
       this.dataService.fetchScrums()
           .subscribe(
               data => {
                   this.scrums = data
+                  this.scrums.map(scrum => {
+                    scrum.open = false
+                    scrum.issue_logs.map(issue => {
+                                    issue.open = false
+                                    issue.deadline = ''
+                                })
+                    return scrum
+                  })
                   this.filtered_scrum = data
               }
           );
@@ -196,7 +207,7 @@ export class ScrumboardComponent implements OnInit {
       var issue_index = this.scrums[scrum_index].issue_logs.findIndex(issue => {
          return issue.id == id
       })
-      this.scrums[scrum_index].issue_logs[issue_index].status = status=="R"? "Resolved": "Closed"
+      this.scrums[scrum_index].issue_logs.splice(issue_index,1)
   }
 
   isWithinDate(scrum_date, filter_from, filter_to){

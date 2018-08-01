@@ -2,6 +2,27 @@
     background-color: gainsboro;
 }
 
+.deadline_picker{
+    width: 164px;
+}
+
+.check{
+    color: #2be5ac;
+}
+
+.wip{
+    color: #ffc455;
+}
+
+.scrumitem{
+    box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);
+    border: solid 1px #f7f7fa;
+}
+
+.issueitem{
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+}
+
 .project_label{
     color: #4361ff;
 }
@@ -16,6 +37,12 @@
 
 .date_filters{
     width: 170px;
+}
+
+.redmarker{
+  width: 2px;
+  height: 37px;
+  background-color: #dd2556;
 }
 
 .scrumlist{
@@ -35,7 +62,7 @@
 }
 
 .statusbtn{
-    width: 150px;
+    width: 185px;
     height: 45px
 }
 
