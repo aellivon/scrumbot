@@ -63,7 +63,11 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         try:
             hoursIndex = data['text'].index("4.")+2
             scrum_data['hours'] = data['text'][hoursIndex:]
-            1 / int(scrum_data['hours'])
+            if('-' in scrum_data['hours']):
+                scrum_data['hours'] = scrum_data['hours'].replace('-','')
+            if(not scrum_data['hours']):
+                return Response(data="HOURS log is required")
+            1 / float(scrum_data['hours'].strip())
         except:
             return Response(data="Invalid input format on HOURS log")
         scrum = self.create(scrum_data, Scrum, ScrumSerializer)
@@ -79,7 +83,7 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             messages = data['text'][start_index:]
             last_index = messages.index(str(log_type+1)+".")
             messages = messages[:last_index]
-            splitby_line = messages.split('\r\n')
+            splitby_line = messages.strip().split('\r\n')
             for y in range(len(splitby_line)):
                 if splitby_line[y] in none_strings:
                     continue
@@ -88,16 +92,20 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
                     if(splitby_line[y][:3] == '-u '):
                         issue_data['is_urgent'] = 'true'
                         splitby_line[y] = splitby_line[y][3:]
-                    if splitby_line[y] in none_strings:
+                    elif(splitby_line[y][0] == '-'):
+                        splitby_line[y] = splitby_line[y][1:]
+                    if splitby_line[y].strip() in none_strings:
                         continue
-                    issue_data['issue'] = splitby_line[y]
+                    issue_data['issue'] = splitby_line[y].strip()
                     issue_data['scrum'] = scrum.id
                     self.create(issue_data, Issue, IssueSerializer)
                     continue
                 log_data = QueryDict('', mutable=True)
                 log_data['log_type'] = str(log_type)
                 log_data['scrum'] = scrum.id
-                log_data['message'] = splitby_line[y]
+                if(splitby_line[y][0] == '-'):
+                    splitby_line[y] = splitby_line[y][1:]
+                log_data['message'] = splitby_line[y].strip()
                 self.create(log_data, Log, LogSerializer)
 
         return Response(data=data, status=201)
@@ -118,7 +126,11 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         try:
             hoursIndex = data['text'].index("4.")+2
             hours = data['text'][hoursIndex:]
-            1 / int(hours)
+            if('-' in hours):
+                hours = hours.replace('-','')
+            if(not hours):
+                return Response(data="HOURS log is required")
+            1 / float(hours.strip())
         except:
             return Response(data="Invalid input format on HOURS log")
         scrum.hours = hours
@@ -136,7 +148,7 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             messages = data['text'][start_index:]
             last_index = messages.index(str(log_type+1)+".")
             messages = messages[:last_index]
-            splitby_line = messages.split('\r\n')
+            splitby_line = messages.strip().split('\r\n')
             for y in range(len(splitby_line)):
                 if splitby_line[y] in none_strings:
                     continue
@@ -145,16 +157,20 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
                     if(splitby_line[y][:3] == '-u '):
                         issue_data['is_urgent'] = 'true'
                         splitby_line[y] = splitby_line[y][3:]
+                    elif(splitby_line[y][0] == '-'):
+                        splitby_line[y] = splitby_line[y][1:]
                     if splitby_line[y] in none_strings:
                         continue
-                    issue_data['issue'] = splitby_line[y]
+                    issue_data['issue'] = splitby_line[y].strip()
                     issue_data['scrum'] = scrum.id
                     self.create(issue_data, Issue, IssueSerializer)
                     continue
                 log_data = QueryDict('', mutable=True)
                 log_data['log_type'] = str(log_type)
                 log_data['scrum'] = scrum.id
-                log_data['message'] = splitby_line[y]
+                if(splitby_line[y][0] == '-'):
+                    splitby_line[y] = splitby_line[y][1:]
+                log_data['message'] = splitby_line[y].strip()
                 self.create(log_data, Log, LogSerializer)
         scrum.save()
 

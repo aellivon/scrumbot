@@ -60,6 +60,7 @@ class ParseMixin(object):
         for idx, log_type in (settings.LOG_TYPES).items():
             try:
                 start_index = data['text'].index(str(log_type)+".")+2
+                
             except:
                 return Response(data="Invalid input format on "+idx+" log")
 

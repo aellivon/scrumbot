@@ -1,28 +1,22 @@
 <div class="container-fluid">
-    <div class="row border-bottom d-flex justify-content-between">
-        <div class="m-3 ml-5 d-flex align-items-center w-50">
-            <i class="less-emphasis fas fa-search border-0 m-1 mr-3"></i>
-            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getIssues(search.value)" #search>
-        </div>
-        <div class="m-3 mr-5 reduce">
-            <app-avatar></app-avatar>
-        </div>
-    </div>
-    <div class="row">
+    <app-header></app-header>
+    <div class="row issues_container">
         <div class="col p-5 mt-2 ml-5">
-            <div class="row mt-3">
-                <h1>Welcome back, Chibi!</h1>
-            </div>
             <div class="row">
-                <p class="less-emphasis">There are {{ issues?.length }} issues</p>
+                <div class="d-flex align-items-center summary_box flex-fill">
+                    <div class="marker_static">
+                    </div>
+                    <div>
+                        <p class="less-emphasis mb-0 ml-2 title">You have 13 unresolve issues</p>
+                    </div>
+                </div>
             </div>
-                <hr>
-            <div class="row pt-4 pb-4">
+            <div class="row pt-4 pb-4 justify-content-between">
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25 less-emphasis">Select Project</span>
-                        <div class="input-group">
-                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value" #select_project>
+                        <div class="input-group w-50">
+                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrums" #select_project>
                             <option selected value="">All Projects</option>
                             <option *ngFor="let project of projects">{{ project.name }}</option>
                           </select>
@@ -31,8 +25,8 @@
                     <br>
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25 less-emphasis">Members</span>
-                        <div class="input-group">
-                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value" #select_user>
+                        <div class="input-group w-50">
+                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums" #select_user>
                             <option selected value="">All Members</option>
                             <option *ngFor="let user of users">{{ user.username }}</option>
                           </select>
@@ -40,9 +34,9 @@
                     </div>
                 </div>
                 <div class="col d-flex flex-column">
-                    <div class="d-flex flex-row-reverse">
-                            <div class="input-group date_filters">
-                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrumDataService.getScrums()"/>
+                    <div class="d-flex flex-row-reverse align-items-center">
+                            <div class="w-25 input-group date_filters">
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
@@ -50,14 +44,15 @@
                                 </span>
                             </div>
                             <h3 class="m-0 mr-2 ml-2">-</h3>
-                            <div class="input-group date_filters">
-                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrumDataService.getScrums()"/>
+                            <div class="w-25 input-group date_filters">
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
                                     </button>
                                 </span>
                             </div>
+                        <span class="less-emphasis mr-4">Date</span>
                             <!-- <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="p-2 d-flex align-items-center border rounded-left">
@@ -70,50 +65,78 @@
                                 </div>
                             </div> -->
                     </div>
+                    <br>
+                    <div class="d-flex flex-row-reverse align-items-center">
+                        <div class="input-group w-50">
+                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums" #select_user>
+                            <option selected value="">All</option>
+                            <option value="P">Pending</option>
+                            <option value="R">Resolved</option>
+                            <option value="C">Closed</option>
+                          </select>
+                        </div>
+                        <span class="mr-5 less-emphasis">Status</span>
+                    </div>
                 </div>
             </div>
+            <!-- <div class="row" *ngIf="filter_user && filter_hours">
+                <div>
+                    <h2 class="p-3 m-0">{{ filter_user }} has logged a total of {{ getTotalHours(filter_user, filter_project, filter_from, filter_to) }} hours <span *ngIf="filter_project">in project {{ filter_project }}</span> from {{ filter_from | date:'longDate' }} to {{ filter_to | date:'longDate' }}</h2>
+                </div>
+            </div> -->
             <div class="row pt-4">
-                <div class="col-sm-2">
-                    <h4><b>Issues list</b></h4>
-                </div>
-                <div class="col-sm-4 d-flex justify-content-around">
-                    <div class="custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="status_filter1" [checked]="filter_pending" (change)="filter_pending = !filter_pending">
-                      <label class="custom-control-label" for="status_filter1">Pending</label>
-                    </div>
-                    <div class="custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="status_filter2" [checked]="filter_resolved" (change)="filter_resolved = !filter_resolved">
-                      <label class="custom-control-label" for="status_filter2">Resolved</label>
-                    </div>
-                    <div class="custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="status_filter3" [checked]="filter_closed" (change)="filter_closed = !filter_closed">
-                      <label class="custom-control-label" for="status_filter3">Closed</label>
-                    </div>
+                <div class="col-sm-3">
+                    <h4><b>Stand up updates</b></h4>
                 </div>
             </div>
-            <div class="row mt-4 mb-3">
+            <div class="row mt-3 ">
+                <div class="col-4 d-flex justify-content-end pr-5">
+                    <span class="category_label"><b>Project Channel</b></span>
+                </div>
+                <div class="col-2"></div>
+                <div class="col">
+                    <span class="category_label"><b>Issues</b></span>
+                </div>
+                <div class="col d-flex justify-content-end mr-5">
+                    <span class="category_label pr-5"><b>Due Date</b></span>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-sm-2 d-flex">
-                    <span class="align-self-center grey-border less-emphasis">Today - {{ filter_to | date:'longDate'}}</span>
+                    <span class="align-self-center grey-border less-emphasis">Today - {{ today | date:'longDate'}}</span>
                 </div>
                 <div class="col-sm-10">
                     <hr>
                 </div>
             </div>
             <div class="d-flex flex-column m-1 scrumlist">
-                <div *ngFor="let issue of issues">
-                    <div class="d-flex flex-fill" *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)">
-                        <div class="d-flex flex-column shadow p-3 ml-3 mr-3 mb-5" *ngIf="(filter_pending && issue.status=='Pending') || (filter_closed && issue.status=='Closed') || (filter_resolved && issue.status=='Resolved')">
-                            <div class="row d-flex flex-column pt-3 pl-5 pr-5 pb-0 ml-2 mr-2">
-                                <div class="d-flex justify-content-between">
-                                    <p><b>{{ issue.status }}</b></p>
-                                    <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right">Urgent</p>
+                <div class="mt-1 mb-1 scrumitem" *ngFor="let issue of issues">
+                    <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center">
+                        <app-marker [project]="issue.scrum_data.project_name"></app-marker>
+                        <div class="d-flex flex-fill" >
+                            <div class="col-2 d-flex mr-4">
+                                <div>
+                                    <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
                                 </div>
-                                <p class="less-emphasis">{{ issue.issue }}</p>
+                                <div class="ml-3">
+                                    <span><b>{{ issue.scrum_data.user_username }}</b></span>
+                                    <br>
+                                    <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}}</span>
+                                </div>
                             </div>
-                            <div class="row d-flex justify-content-center ml-2 mr-2">
-                                <button #rButton type="button" class="statusbtn btn btn-outline-success m-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'Pending'" value="R">Mark as Solved</button>
-                                <button #cButton type="button" class="statusbtn btn btn-outline-warning m-4" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'Pending'" value="C">Close</button>
+                            <div class="col-2 d-flex align-items-center mr-5">
+                                <span class="project_label">#{{ issue.scrum_data.project_name }}</span>
                             </div>
+                            <div class="col d-flex p-0 align-items-center">
+                                <div class="d-inline-block text-truncate issue_box">
+                                    <span class="less-emphasis">{{ issue.issue }}</span>
+                                </div>
+                            </div>
+                            <div class="col d-flex pr-4 align-items-center justify-content-end">
+                                <span class="deadline_label">{{ today | date:'mediumDate'}} - {{ today | date:'shortTime'}}</span>
+                            </div>
+                            <button type="button" class="btn btn-light"><i class="fas fa-ellipsis-v less-emphasis"></i>
+                            </button>
                         </div>
                     </div>
                 </div>

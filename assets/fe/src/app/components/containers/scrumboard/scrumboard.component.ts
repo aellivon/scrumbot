@@ -1,3 +1,4 @@
+import * as _ from 'underscore';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
@@ -15,6 +16,8 @@ import { GET_ISSUES,
   styleUrls: ['./scrumboard.component.css']
 })
 export class ScrumboardComponent implements OnInit {
+
+  today: Date = new Date();
 
   filter_to: Date = new Date();
   filter_from: Date = new Date(this.filter_to.getFullYear(),
@@ -109,7 +112,6 @@ export class ScrumboardComponent implements OnInit {
       this.fetchUsers()
       this.fetchProjects()
   }
-
 
   fetchScrums(){
       this.dataService.fetchScrums()

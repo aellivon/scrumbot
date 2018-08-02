@@ -2,9 +2,6 @@
     background-color: gainsboro;
 }
 
-.deadline_picker{
-    width: 164px;
-}
 
 .check{
     color: #2be5ac;
@@ -14,25 +11,12 @@
     color: #ffc455;
 }
 
-.scrumitem{
-    box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);
-    border: solid 1px #f7f7fa;
-}
-
 .issueitem{
     box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
 }
 
-.project_label{
-    color: #4361ff;
-}
-
 .label{
     font-size: 14px;
-}
-
-.category_label{
-    font-size: 12px;
 }
 
 .date_filters{

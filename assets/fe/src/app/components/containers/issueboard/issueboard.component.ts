@@ -12,6 +12,8 @@ import { INgxMyDpOptions } from 'ngx-mydatepicker';
 })
 export class IssueboardComponent implements OnInit {
 
+  today: Date = new Date();
+
   filter_to: Date = new Date();
   filter_from: Date = new Date(this.filter_to.getFullYear(),
                       this.filter_to.getMonth(),
@@ -93,7 +95,6 @@ export class IssueboardComponent implements OnInit {
           .subscribe(
               data => {
                   this.issues = data
-                  console.log(this.issues)
               }
           );
   }

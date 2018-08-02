@@ -13,6 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 // IMPORTED FROM PROJECT
 import { APP_STATES } from 'app/app.states';
@@ -23,6 +24,8 @@ import { SlackLoginComponent } from 'app/components/prompts/slack-login/slack-lo
 import { ScrumboardComponent } from 'app/components/containers/scrumboard/scrumboard.component';
 import { AvatarComponent } from 'app/components/avatar/avatar.component';
 import { IssueboardComponent } from 'app/components/containers/issueboard/issueboard.component';
+import { HeaderComponent } from 'app/components/header/header.component';
+import { MarkerComponent } from './components/marker/marker.component';
 
 
 @NgModule({
@@ -34,11 +37,14 @@ import { IssueboardComponent } from 'app/components/containers/issueboard/issueb
     ScrumboardComponent,
     AvatarComponent,
     IssueboardComponent,
+    HeaderComponent,
+    MarkerComponent,
   ],
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
     HttpClientModule,
+    PopoverModule.forRoot(),
     CollapseModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
