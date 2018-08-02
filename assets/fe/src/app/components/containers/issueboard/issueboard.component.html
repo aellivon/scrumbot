@@ -1,5 +1,13 @@
 <div class="container-fluid">
-    <app-header></app-header>
+    <div class="row border-bottom d-flex justify-content-between">
+        <div class="m-3 ml-5 d-flex align-items-center w-50">
+            <i class="less-emphasis fas fa-search border-0 m-1 mr-3"></i>
+            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
+        </div>
+        <div class="m-3 mr-5">
+            <app-avatar></app-avatar>
+        </div>
+    </div>
     <div class="row issues_container">
         <div class="col p-5 mt-2 ml-5">
             <div class="row">
@@ -16,7 +24,7 @@
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25 less-emphasis">Select Project</span>
                         <div class="input-group w-50">
-                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrums" #select_project>
+                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value" #select_project>
                             <option selected value="">All Projects</option>
                             <option *ngFor="let project of projects">{{ project.name }}</option>
                           </select>
@@ -26,7 +34,7 @@
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25 less-emphasis">Members</span>
                         <div class="input-group w-50">
-                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums" #select_user>
+                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value" #select_user>
                             <option selected value="">All Members</option>
                             <option *ngFor="let user of users">{{ user.username }}</option>
                           </select>
@@ -36,7 +44,7 @@
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row-reverse align-items-center">
                             <div class="w-25 input-group date_filters">
-                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums"/>
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event)"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
@@ -45,7 +53,7 @@
                             </div>
                             <h3 class="m-0 mr-2 ml-2">-</h3>
                             <div class="w-25 input-group date_filters">
-                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums"/>
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event)"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
@@ -68,7 +76,7 @@
                     <br>
                     <div class="d-flex flex-row-reverse align-items-center">
                         <div class="input-group w-50">
-                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums" #select_user>
+                          <select class="custom-select less-emphasis" (change)="filter_status=select_status.value" #select_status>
                             <option selected value="">All</option>
                             <option value="P">Pending</option>
                             <option value="R">Resolved</option>
@@ -111,7 +119,7 @@
             </div>
             <div class="d-flex flex-column m-1 scrumlist">
                 <div class="mt-1 mb-1 scrumitem" *ngFor="let issue of issues">
-                    <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center">
+                    <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && (filter_status=='' || issue.status==filter_status) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center">
                         <app-marker [project]="issue.scrum_data.project_name"></app-marker>
                         <div class="d-flex flex-fill" >
                             <div class="col-2 d-flex mr-4">
@@ -133,7 +141,7 @@
                                 </div>
                             </div>
                             <div class="col d-flex pr-4 align-items-center justify-content-end">
-                                <span class="deadline_label">{{ today | date:'mediumDate'}} - {{ today | date:'shortTime'}}</span>
+                                <span class="deadline_label">{{ issue.deadline | date:'mediumDate'}} - {{ issue.deadline | date:'shortTime'}}</span>
                             </div>
                             <button type="button" class="btn btn-light"><i class="fas fa-ellipsis-v less-emphasis"></i>
                             </button>

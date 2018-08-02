@@ -1,5 +1,13 @@
 <div class="container-fluid">
-    <app-header></app-header>
+    <div class="row border-bottom d-flex justify-content-between">
+        <div class="m-3 ml-5 d-flex align-items-center w-50">
+            <i class="less-emphasis fas fa-search border-0 m-1 mr-3"></i>
+            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
+        </div>
+        <div class="m-3 mr-5">
+            <app-avatar></app-avatar>
+        </div>
+    </div>
     <div class="row">
         <div class="col p-5 mt-2 ml-5">
             <div class="row mt-3">
@@ -106,7 +114,7 @@
                                 <div class="ml-3">
                                     <span><b>{{ scrum.user }}</b></span>
                                     <br>
-                                    <span class="less-emphasis category_label">{{ scrum.date_created | date:'shortTime'}}</span>
+                                    <span class="less-emphasis category_label">{{ scrum.date_created | date:'shortTime'}} <span *ngIf="scrum.is_edited">(edited)</span></span>
                                 </div>
                             </div>
                             <div class="col-4 d-flex ml-3 align-items-center">
@@ -152,7 +160,7 @@
                                             <div *ngFor="let issue of scrum.issue_logs" class="issueitem mb-3 d-flex" >
                                                 <div class="redmarker align-self-center"></div>
                                                 <div class="d-flex flex-column flex-fill">
-                                                    <div class="row d-flex flex-column pt-3 pl-4 pr-3 pb-0 ml-2 mr-2 mb-2" (click)="issue.open = !issue.open">
+                                                    <div class="row d-flex flex-column pt-3 pl-4 pr-3 pb-0 ml-2 mr-2 mb-2" (click)="issue.open = !issue.open; updateDeadline(issue.id, issue.deadline)">
                                                         <div class="d-flex justify-content-between">
                                                             <p class="mb-1 ml-2">{{ issue.issue }}</p>
                                                             <div class="d-flex align-items-center">
@@ -166,7 +174,7 @@
                                                             <div class="mr-2">
                                                                 <img src="https://png.icons8.com/metro/15/dd2556/leave.png" class="ml-2">
                                                             </div>
-                                                            <p class="less-emphasis label">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
+                                                            <p class="less-emphasis category_labelel">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -175,7 +183,7 @@
                                                             <div class="d-flex flex-column mr-3">
                                                                 <span class="label less-emphasis pb-2">Date</span>
                                                                 <div class="input-group">
-                                                                <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline"/>
+                                                                <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" />
                                                                 <div class="input-group-append">
                                                                     <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
                                                                         <i class="fas fa-angle-down less-emphasis"></i>
@@ -185,12 +193,12 @@
                                                             </div>
                                                             <div class="d-flex flex-column">
                                                                 <span class="label less-emphasis pb-2">Time</span>
-                                                                <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" ></timepicker>
+                                                                <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' ></timepicker>
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'Pending'" value="R">Mark as Solved</button>
-                                                            <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'Pending'" value="C">Close</button>
+                                                            <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
+                                                            <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -282,7 +290,7 @@
             </div>
             <div class="d-flex flex-column">
                 <div *ngFor="let issue of issues">
-                    <div class="d-flex pl-4 pt-3 pb-3 hoverable" (click)="getIssue(issue.id)" *ngIf="issue.status=='Pending'">
+                    <div class="d-flex pl-4 pt-3 pb-3 hoverable" (click)="getIssue(issue.id)" *ngIf="issue.status=='P'">
                         <div class="d-flex">
                             <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
                         </div>

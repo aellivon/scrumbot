@@ -50,9 +50,7 @@ export class IssueboardComponent implements OnInit {
   filter_user = ''
   filter_project = ''
 
-  filter_pending: boolean = true;
-  filter_resolved: boolean = false;
-  filter_closed: boolean = false;
+  filter_status = ''
   
   from_yesterday = new Date(this.filter_from.getFullYear(),
                       this.filter_from.getMonth(),
@@ -115,10 +113,6 @@ export class IssueboardComponent implements OnInit {
                   this.projects = data
               }
           );
-  }
-
-  getIssues(keyword){
-    this.filtered_issues = this.searchService.searchIssues(keyword, this.issues)
   }
 
   setDateFromFilter(from){

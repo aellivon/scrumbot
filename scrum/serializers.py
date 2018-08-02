@@ -27,7 +27,7 @@ class LogSerializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     """Serializer of an issue model"""
-    status = serializers.CharField(source='get_status_display', read_only=True)
+    # status = serializers.CharField(source='get_status_display', read_only=True)
     scrum_data = serializers.SerializerMethodField()
 
     def get_scrum_data(self, obj):
@@ -35,7 +35,7 @@ class IssueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Issue
-        fields = ('id', 'status', 'issue', 'is_urgent', 'scrum', 'scrum_data')
+        fields = ('id', 'status', 'issue', 'is_urgent', 'scrum', 'scrum_data', 'deadline')
         
 
 class ScrumReportSerializer(serializers.ModelSerializer):
@@ -59,7 +59,7 @@ class ScrumReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scrum
         fields = ('id', 'user', 'project', 'hours', 'date_created',
-                    'done_logs', 'wip_logs', 'issue_logs')
+                    'done_logs', 'wip_logs', 'issue_logs', 'is_edited')
 
 
 class IssueStatusSerializer(serializers.ModelSerializer):
@@ -72,5 +72,19 @@ class IssueStatusSerializer(serializers.ModelSerializer):
     def update(self, id):
         issue = Issue.objects.get(id=id)
         issue.status = self.validated_data['status']
+
+        issue.save()
+
+
+class IssueDeadlineSerializer(serializers.ModelSerializer):
+    """Serializer of an issue's status"""
+
+    class Meta:
+        model = Issue
+        fields = ['deadline']
+
+    def update(self, id):
+        issue = Issue.objects.get(id=id)
+        issue.deadline = self.validated_data['deadline']
 
         issue.save()

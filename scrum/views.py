@@ -14,7 +14,8 @@ from .serializers import (
                         IssueSerializer,
                         ScrumSerializer,
                         ScrumReportSerializer,
-                        IssueStatusSerializer
+                        IssueStatusSerializer,
+                        IssueDeadlineSerializer
                         )
 from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
@@ -172,8 +173,8 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
                     splitby_line[y] = splitby_line[y][1:]
                 log_data['message'] = splitby_line[y].strip()
                 self.create(log_data, Log, LogSerializer)
+        scrum.is_edited = True
         scrum.save()
-
 
         return Response(data=data, status=200)
 
@@ -209,3 +210,16 @@ class IssuesAPI(ViewSet, CRUDMixin):
             return Response(serializer.data,status=200)
         return Response(status=400)
         
+    def update_deadline(self, request, *args, **kwargs):
+        """
+        updates an issue's deadline
+        """
+        issue_id = self.kwargs.get('issue_id', None)
+        issue = get_object_or_404(Issue, id=issue_id)
+        serializer = IssueDeadlineSerializer(data=self.request.data)
+        if serializer.is_valid():
+            serializer.update(issue.id)
+            issue = get_object_or_404(Issue, id=issue_id)
+            serializer = IssueSerializer(issue)
+            return Response(serializer.data,status=200)
+        return Response(status=400)
