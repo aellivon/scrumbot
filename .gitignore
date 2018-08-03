@@ -7,4 +7,3 @@ scrumbot/local_settings.py
 static/
 media/
 assets/fe/node_modules/
-assets/fe/dist/
