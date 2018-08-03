@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from 'app/services/data.service';
 import { SearchService } from 'app/services/search.service';
-import { GET_ISSUES } from 'app/constants/endpoints';
+import { GET_ISSUES,
+          UPDATE_ISSUE_STATUS,
+          UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
+import { StateService } from '@uirouter/angular';
 
 @Component({
   selector: 'app-issueboard',
@@ -39,6 +42,7 @@ export class IssueboardComponent implements OnInit {
       private http: HttpClient,
       private searchService: SearchService,
       private dataService: DataService,
+      private stateService: StateService,
   ) { }
 
   issues: any
@@ -143,9 +147,29 @@ export class IssueboardComponent implements OnInit {
       this.disabled_to.day = tomorrow.getDate()
   }
 
+  updateStatus(id, status){
+      this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
+      .subscribe();
+      var index = this.issues.findIndex(issue => {
+         return issue.id == id
+      })
+      this.issues[index].status = status
+  }
+
+  updateDeadline(id, deadline){
+      if (deadline){
+        this.http.post(UPDATE_ISSUE_DEADLINE(id), {"deadline":deadline})
+        .subscribe();
+      }
+  }
+
   isWithinDate(scrum_date, filter_from, filter_to){
     return (new Date(scrum_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
             new Date(scrum_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
+  }
+
+  goToDashboard(){
+    this.stateService.go('scrumboard');
   }
 
 }

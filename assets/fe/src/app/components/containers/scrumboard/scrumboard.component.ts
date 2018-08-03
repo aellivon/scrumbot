@@ -7,6 +7,7 @@ import { DataService } from 'app/services/data.service';
 import { ScrumDataService } from 'app/services/scrum-data.service';
 import { FilterService } from 'app/services/filter.service';
 import { SearchService } from 'app/services/search.service';
+import { StateService } from '@uirouter/angular';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
@@ -47,6 +48,7 @@ export class ScrumboardComponent implements OnInit {
       private filterService: FilterService,
       private searchService: SearchService,
       private dataService: DataService,
+      private stateService: StateService,
   ) { }
 
   scrums: any
@@ -118,19 +120,15 @@ export class ScrumboardComponent implements OnInit {
       this.dataService.fetchScrums()
           .subscribe(
               data => {
-                  console.log(_.groupBy(data, scrum => {
-                                    var date = new Date(scrum.date_created)
-                                    date.setHours(0,0,0,0)
-                                    return date
-                                    }))
                   this.scrums = data
-                  this.scrums.map(scrum => {
-                    scrum.open = false
-                    scrum.issue_logs.map(issue => {
-                                    issue.open = false
-                                })
-                    return scrum
-                  })
+                  // this.scrums.map(date_group => {
+                  //   date_group.scrums.map(scrum => {
+                  //     scrum.issue_logs.map(issue => {
+                  //                     issue.open = false
+                  //                 })
+                  //     return scrum
+                  //   })
+                  // })
                   this.filtered_scrum = data
               }
           );
@@ -206,15 +204,22 @@ export class ScrumboardComponent implements OnInit {
          return issue.id == id
       })
       this.issues[index].status = status
-      var scrum_index = this.scrums.findIndex(scrum => {
+      var group_index = this.scrums.findIndex(scrum => {
+        return scrum.scrums.find(scrum =>{
+           return scrum.issue_logs.find(issue => {
+               return issue.id == id
+            })
+        })
+      })
+      var scrum_index = this.scrums[group_index].scrums.findIndex(scrum => {
          return scrum.issue_logs.find(issue => {
              return issue.id == id
           })
       })
-      var issue_index = this.scrums[scrum_index].issue_logs.findIndex(issue => {
+      var issue_index = this.scrums[group_index].scrums[scrum_index].issue_logs.findIndex(issue => {
          return issue.id == id
       })
-      this.scrums[scrum_index].issue_logs.splice(issue_index,1)
+      this.scrums[group_index].scrums[scrum_index].issue_logs.splice(issue_index,1)
   }
 
   updateDeadline(id, deadline){
@@ -258,6 +263,10 @@ export class ScrumboardComponent implements OnInit {
                        return issue.status == 'P'
                   })
     return (pending.length!=0)
+  }
+
+  goToIssues(){
+    this.stateService.go('issuesboard');
   }
 
 }

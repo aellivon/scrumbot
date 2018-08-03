@@ -1,14 +1,5 @@
 from django.db import models
 from accounts.models import User, Project
-
-class Evaluation(object):
-    """
-    A scrum evaluation model
-    """
-    id = models.DateField(auto_now=True)
-
-    def __str__(self):
-        return self.id
         
 
 class Scrum(models.Model):

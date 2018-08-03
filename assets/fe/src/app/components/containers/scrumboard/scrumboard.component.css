@@ -32,7 +32,6 @@
 .scrumlist{
     overflow-y: auto;
     overflow-x: hidden;
-    height: 800px;
 }
 
 .issuelist{
@@ -45,10 +44,6 @@
     width: 130px;
 }
 
-.statusbtn{
-    width: 185px;
-    height: 45px
-}
 
 .wraplongtext{
     word-wrap: break-word;

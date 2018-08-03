@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
+    "@angular/cdk": "^6.4.2",
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
     "@angular/core": "^6.0.3",
@@ -20,6 +21,7 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
+    "@ncstate/sat-popover": "^2.1.1",
     "@ng-bootstrap/ng-bootstrap": "^2.2.0",
     "@ng-select/ng-select": "^2.3.3",
     "@uirouter/angular": "^2.0.0",

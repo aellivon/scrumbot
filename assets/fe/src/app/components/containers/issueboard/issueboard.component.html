@@ -1,7 +1,13 @@
 <div class="container-fluid">
     <div class="row border-bottom d-flex justify-content-between">
-        <div class="m-3 ml-5 d-flex align-items-center w-50">
-            <i class="less-emphasis fas fa-search border-0 m-1 mr-3"></i>
+        <div class="m-3 ml-5 pl-5 d-flex align-items-center w-50">
+            <div class="tabs">
+                <span class="less-emphasis" (click)="goToDashboard()"><b>Dashboard</b></span>
+            </div>
+            <div class="tabs">
+                <span class="less-emphasis"><b>All Issues</b></span>
+            </div>
+            <i class="less-emphasis fas fa-search border-0 m-1 mr-3 ml-5 pl-5"></i>
             <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
         </div>
         <div class="m-3 mr-5">
@@ -94,7 +100,7 @@
             </div> -->
             <div class="row pt-4">
                 <div class="col-sm-3">
-                    <h4><b>Stand up updates</b></h4>
+                    <h4><b>Issues list</b></h4>
                 </div>
             </div>
             <div class="row mt-3 ">
@@ -129,7 +135,7 @@
                                 <div class="ml-3">
                                     <span><b>{{ issue.scrum_data.user_username }}</b></span>
                                     <br>
-                                    <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}}</span>
+                                    <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
                                 </div>
                             </div>
                             <div class="col-2 d-flex align-items-center mr-5">
@@ -143,7 +149,46 @@
                             <div class="col d-flex pr-4 align-items-center justify-content-end">
                                 <span class="deadline_label">{{ issue.deadline | date:'mediumDate'}} - {{ issue.deadline | date:'shortTime'}}</span>
                             </div>
-                            <button type="button" class="btn btn-light"><i class="fas fa-ellipsis-v less-emphasis"></i>
+                            <sat-popover #issueDetail verticalAlign="below" horizontalAlign="end" forceAlignment>
+                                <div class="issue_details">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex">
+                                            <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
+                                            <div class="ml-3">
+                                                <span><b>{{ issue.scrum_data.user_username }}</b></span>
+                                                <br>
+                                                <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
+                                            </div>
+                                        </div>
+                                        <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right">Urgent</p>
+                                    </div>
+                                    <div class="pt-4 pb-4">
+                                        <p>{{issue.issue}}</p>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="d-flex flex-column mr-3">
+                                            <span class="label less-emphasis pb-2">Date</span>
+                                            <div class="input-group">
+                                            <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today"/>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
+                                                    <i class="fas fa-angle-down less-emphasis"></i>
+                                                </button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="label less-emphasis pb-2">Time</span>
+                                            <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
+                                        <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
+                                    </div>
+                                </div>
+                            </sat-popover>
+                            <button type="button" class="btn btn-light" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()"><i class="fas fa-ellipsis-v less-emphasis"></i>
                             </button>
                         </div>
                     </div>

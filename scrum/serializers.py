@@ -15,7 +15,9 @@ class ScrumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Scrum
-        fields = ('user', 'project', 'hours', 'date_created', 'user_username', 'project_name')
+        fields = ('user', 'project', 'hours',
+                'date_created', 'user_username',
+                'project_name', 'is_edited')
 
 class LogSerializer(serializers.ModelSerializer):
     """Serializer of a log model"""

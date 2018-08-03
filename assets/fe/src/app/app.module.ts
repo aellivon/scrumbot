@@ -13,7 +13,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { PopoverModule } from 'ngx-bootstrap/popover';
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // IMPORTED FROM PROJECT
 import { APP_STATES } from 'app/app.states';
@@ -44,7 +45,8 @@ import { MarkerComponent } from './components/marker/marker.component';
     NgbModule.forRoot(),
     BrowserModule,
     HttpClientModule,
-    PopoverModule.forRoot(),
+    BrowserAnimationsModule,
+    SatPopoverModule,
     CollapseModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
