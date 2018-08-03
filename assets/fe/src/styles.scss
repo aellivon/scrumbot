@@ -26,7 +26,12 @@
     height: 45px
 }
 
-.tabs{    
+.tabs{
+    cursor: pointer;
     margin: 0px 30px;
     width: 150px;
+}
+
+.mydrp .selectiongroup {
+    height: 38px;
 }

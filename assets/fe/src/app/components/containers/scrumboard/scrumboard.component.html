@@ -47,7 +47,7 @@
                 </div>
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row-reverse align-items-center">
-                            <div class="input-group date_filters">
+                            <!-- <div class="input-group date_filters">
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
@@ -63,7 +63,8 @@
                                         <i class="far fa-calendar"></i>
                                     </button>
                                 </span>
-                            </div>
+                            </div> -->
+                            <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" [(ngModel)]="model" required></my-date-range-picker>
                         <span class="less-emphasis mr-4">Date</span>
                             <!-- <div class="input-group">
                                 <div class="input-group-prepend">

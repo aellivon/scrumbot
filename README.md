@@ -54,3 +54,11 @@ Run unittest:
 ```
 ./manage.py test
 ```
+
+Setting up slack slash commands:
+
+Command for creating scrum reports
+https://<domain_name>/api/scrum/
+
+Command for updating scrum reports
+https://<domain_name>/api/scrum/update/

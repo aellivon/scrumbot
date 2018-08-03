@@ -8,6 +8,7 @@ import { ScrumDataService } from 'app/services/scrum-data.service';
 import { FilterService } from 'app/services/filter.service';
 import { SearchService } from 'app/services/search.service';
 import { StateService } from '@uirouter/angular';
+import { IMyDrpOptions } from 'mydaterangepicker';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
@@ -101,6 +102,13 @@ export class ScrumboardComponent implements OnInit {
       dateFormat: 'mmm dd yyyy',
       disableUntil: this.disabled_from
   };
+
+  myDateRangePickerOptions: IMyDrpOptions = {
+          dateFormat: 'dd.mm.yyyy',
+      };
+
+  model: any = {beginDate: this.from_model.date,
+                        endDate: this.to_model.date};
 
   show_object = {
     id: '',
