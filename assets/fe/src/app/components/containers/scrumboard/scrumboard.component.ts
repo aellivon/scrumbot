@@ -8,7 +8,6 @@ import { ScrumDataService } from 'app/services/scrum-data.service';
 import { FilterService } from 'app/services/filter.service';
 import { SearchService } from 'app/services/search.service';
 import { StateService } from '@uirouter/angular';
-import { IMyDrpOptions } from 'mydaterangepicker';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
@@ -52,24 +51,13 @@ export class ScrumboardComponent implements OnInit {
       private stateService: StateService,
   ) { }
 
-  scrums: any
+  scrums_bydate: any
   issues: any
   users: {}
   projects: {}
 
-  show_item = true
-
   filter_user = ''
   filter_project = ''
-
-  filter_done: boolean = true;
-  filter_wip: boolean = true;
-  filter_hours: boolean = true;
-
-  filter_pending: boolean = true;
-  filter_resolved: boolean = false;
-  filter_closed: boolean = false;
-
 
   filtered_scrum: any;
 
@@ -103,10 +91,6 @@ export class ScrumboardComponent implements OnInit {
       disableUntil: this.disabled_from
   };
 
-  myDateRangePickerOptions: IMyDrpOptions = {
-          dateFormat: 'dd.mm.yyyy',
-      };
-
   model: any = {beginDate: this.from_model.date,
                         endDate: this.to_model.date};
 
@@ -128,7 +112,7 @@ export class ScrumboardComponent implements OnInit {
       this.dataService.fetchScrums()
           .subscribe(
               data => {
-                  this.scrums = data
+                  this.scrums_bydate = data
                   // this.scrums.map(date_group => {
                   //   date_group.scrums.map(scrum => {
                   //     scrum.issue_logs.map(issue => {
@@ -198,7 +182,7 @@ export class ScrumboardComponent implements OnInit {
   }
 
   getIssue(id){
-      this.filtered_scrum = [this.scrums.find(scrum => {
+      this.filtered_scrum = [this.scrums_bydate.find(scrum => {
           return scrum.issue_logs.find(issue => {
                      return issue.id == id
                   })
@@ -212,22 +196,22 @@ export class ScrumboardComponent implements OnInit {
          return issue.id == id
       })
       this.issues[index].status = status
-      var group_index = this.scrums.findIndex(scrum => {
+      var group_index = this.scrums_bydate.findIndex(scrum => {
         return scrum.scrums.find(scrum =>{
            return scrum.issue_logs.find(issue => {
                return issue.id == id
             })
         })
       })
-      var scrum_index = this.scrums[group_index].scrums.findIndex(scrum => {
+      var scrum_index = this.scrums_bydate[group_index].scrums.findIndex(scrum => {
          return scrum.issue_logs.find(issue => {
              return issue.id == id
           })
       })
-      var issue_index = this.scrums[group_index].scrums[scrum_index].issue_logs.findIndex(issue => {
+      var issue_index = this.scrums_bydate[group_index].scrums[scrum_index].issue_logs.findIndex(issue => {
          return issue.id == id
       })
-      this.scrums[group_index].scrums[scrum_index].issue_logs.splice(issue_index,1)
+      this.scrums_bydate[group_index].scrums[scrum_index].issue_logs.splice(issue_index,1)
   }
 
   updateDeadline(id, deadline){
@@ -243,12 +227,12 @@ export class ScrumboardComponent implements OnInit {
   }
 
   getTotalHours(user, project, from, to){
-    var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrums)
+    var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrums_bydate)
     return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
   }
 
   getScrum(keyword){
-    this.filtered_scrum = this.searchService.searchScrums(keyword, this.scrums)
+    this.filtered_scrum = this.searchService.searchScrums(keyword, this.scrums_bydate)
   }
 
   // hasIssues(scrum){

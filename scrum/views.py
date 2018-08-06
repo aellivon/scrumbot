@@ -194,6 +194,7 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         for d in dates]
         data_sorted = reversed(sorted(data, key=lambda item: item['date_created']))
         return Response(data_sorted, status=200)
+        # return self.list_all(Scrum, ScrumSerializer, 'date_created')
 
 
 class IssuesAPI(ViewSet, CRUDMixin):

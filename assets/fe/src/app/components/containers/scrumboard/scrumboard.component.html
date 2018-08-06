@@ -20,7 +20,7 @@
                 <h1>Welcome back, Chibi!</h1>
             </div>
             <div class="row">
-                <p class="less-emphasis">There are {{ issues?.length }} issues and {{ scrums?.length }} urgent tickets</p>
+                <p class="less-emphasis">There are {{ issues?.length }} issues and {{ scrums_bydate?.length }} urgent tickets</p>
             </div>
                 <hr>
             <div class="row pt-4 pb-4">
@@ -28,7 +28,7 @@
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25 less-emphasis">Select Project</span>
                         <div class="input-group">
-                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrums" #select_project>
+                          <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrums_bydate" #select_project>
                             <option selected value="">All Projects</option>
                             <option *ngFor="let project of projects">{{ project.name }}</option>
                           </select>
@@ -38,7 +38,7 @@
                     <div class="d-flex flex-row align-items-center">
                         <span class="w-25 less-emphasis">Members</span>
                         <div class="input-group">
-                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums" #select_user>
+                          <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums_bydate" #select_user>
                             <option selected value="">All Members</option>
                             <option *ngFor="let user of users">{{ user.username }}</option>
                           </select>
@@ -47,8 +47,8 @@
                 </div>
                 <div class="col d-flex flex-column">
                     <div class="d-flex flex-row-reverse align-items-center">
-                            <!-- <div class="input-group date_filters">
-                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums"/>
+                            <div class="input-group date_filters">
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums_bydate"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
@@ -57,14 +57,13 @@
                             </div>
                             <h3 class="m-0 mr-2 ml-2">-</h3>
                             <div class="input-group date_filters">
-                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums"/>
+                                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums_bydate"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
                                         <i class="far fa-calendar"></i>
                                     </button>
                                 </span>
-                            </div> -->
-                            <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" [(ngModel)]="model" required></my-date-range-picker>
+                            </div>
                         <span class="less-emphasis mr-4">Date</span>
                             <!-- <div class="input-group">
                                 <div class="input-group-prepend">

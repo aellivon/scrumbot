@@ -15,7 +15,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MyDateRangePickerModule } from 'mydaterangepicker';
 
 // IMPORTED FROM PROJECT
 import { APP_STATES } from 'app/app.states';
@@ -47,7 +46,6 @@ import { MarkerComponent } from 'app/components/marker/marker.component';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MyDateRangePickerModule,
     SatPopoverModule,
     CollapseModule.forRoot(),
     BsDatepickerModule.forRoot(),
