@@ -28,6 +28,7 @@ import { IssueboardComponent } from 'app/components/containers/issueboard/issueb
 import { HeaderComponent } from 'app/components/header/header.component';
 import { MarkerComponent } from 'app/components/marker/marker.component';
 import { GroupbyDatePipe } from './pipes/groupby-date.pipe';
+import { LoginComponent } from './components/forms/login/login.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { GroupbyDatePipe } from './pipes/groupby-date.pipe';
     HeaderComponent,
     MarkerComponent,
     GroupbyDatePipe,
+    LoginComponent,
   ],
   imports: [
     NgbModule.forRoot(),

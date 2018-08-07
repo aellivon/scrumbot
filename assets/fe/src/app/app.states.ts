@@ -1,9 +1,10 @@
-import { ContentOnly } from './utils/layouts.utils'
-import { CreateTeamComponent } from './components/forms/create-team/create-team.component'
-import { JoinTeamComponent } from './components/prompts/join-team/join-team.component'
-import { SlackLoginComponent } from './components/prompts/slack-login/slack-login.component'
-import { ScrumboardComponent } from './components/containers/scrumboard/scrumboard.component'
-import { IssueboardComponent } from './components/containers/issueboard/issueboard.component'
+import { ContentOnly } from 'app/utils/layouts.utils'
+import { CreateTeamComponent } from 'app/components/forms/create-team/create-team.component'
+import { JoinTeamComponent } from 'app/components/prompts/join-team/join-team.component'
+import { SlackLoginComponent } from 'app/components/prompts/slack-login/slack-login.component'
+import { ScrumboardComponent } from 'app/components/containers/scrumboard/scrumboard.component'
+import { IssueboardComponent } from 'app/components/containers/issueboard/issueboard.component'
+import { LoginComponent } from 'app/components/forms/login/login.component'
 
 // let CREATE_TEAM_STATE: Object[] = [
 //     {
@@ -37,21 +38,21 @@ let ISSUES_STATE: Object[] = [
     }
 ]
 
-// let SLACK_LOGIN_STATE: Object[] = [
-//     {
-//         name: 'slack-login',
-//         url: '/login',
-//         views: ContentOnly(SlackLoginComponent),
-//     }
-// ]
+let LOGIN_STATE: Object[] = [
+    {
+        name: 'login',
+        url: '/login',
+        views: ContentOnly(LoginComponent),
+    }
+]
 
 export const APP_STATES = {
 	otherwise: '/',
 	states: [].concat(
 		// CREATE_TEAM_STATE,
   //       JOIN_TEAM_STATE,
-        // SLACK_LOGIN_STATE,
         HOME_STATE,
-        ISSUES_STATE
+        ISSUES_STATE,
+        LOGIN_STATE
 	)
 }

@@ -7,6 +7,7 @@ import { DataService } from 'app/services/data.service';
 import { ScrumDataService } from 'app/services/scrum-data.service';
 import { FilterService } from 'app/services/filter.service';
 import { SearchService } from 'app/services/search.service';
+import { AuthenticationService } from 'app/services/authentication.service';
 import { StateService } from '@uirouter/angular';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
@@ -49,6 +50,7 @@ export class ScrumboardComponent implements OnInit {
       private searchService: SearchService,
       private dataService: DataService,
       private stateService: StateService,
+      private authService: AuthenticationService,
   ) { }
 
   scrums_bydate: any
@@ -101,7 +103,11 @@ export class ScrumboardComponent implements OnInit {
 
   deadline: Date;
 
+  logged_user;
+
   ngOnInit() {
+      this.authService.authenticate()
+      this.logged_user = localStorage.getItem('user')
       this.fetchIssues()
       this.fetchScrums()
       this.fetchUsers()

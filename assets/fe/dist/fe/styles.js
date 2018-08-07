@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".less-emphasis {\n  color: #9093a3; }\n\n.category_label {\n  font-size: 12px; }\n\n.project_label {\n  color: #4361ff; }\n\n.grey-border {\n  border-color: lightgray; }\n\n.searchbar {\n  width: 600px; }\n\n.urgent {\n  background-color: #dd2556;\n  color: white;\n  font-size: 12px; }\n\n.scrumitem {\n  box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);\n  border: solid 1px #f7f7fa; }\n\n.deadline_picker {\n  width: 164px; }\n\n.statusbtn {\n  width: 185px;\n  height: 45px; }\n\n.tabs {\n  cursor: pointer;\n  margin: 0px 30px;\n  width: 150px; }\n\n.mydrp .selectiongroup {\n  height: 38px; }\n"
+module.exports = ".less-emphasis {\n  color: #9093a3; }\n\n.category_label {\n  font-size: 12px; }\n\n.project_label {\n  color: #4361ff; }\n\n.grey-border {\n  border-color: lightgray; }\n\n.searchbar {\n  width: 600px; }\n\n.urgent {\n  background-color: #dd2556;\n  color: white;\n  font-size: 12px; }\n\n.scrumitem {\n  box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);\n  border: solid 1px #f7f7fa; }\n\n.deadline_picker {\n  width: 164px; }\n\n.statusbtn {\n  width: 185px;\n  height: 45px; }\n\n.tabs {\n  margin: 0px 30px;\n  width: 150px; }\n\n.clickable {\n  cursor: pointer; }\n\n.mydrp .selectiongroup {\n  height: 38px; }\n"
 
 /***/ }),
 

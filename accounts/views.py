@@ -1,9 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import render
+from django.contrib.auth import login
 from .serializers import (TeamSerializer,
                         UserSerializer,
-                        ProjectSerializer)
+                        ProjectSerializer,
+                        LoginSerializer)
 from .models import User, Team, Project
 from scrumbot.mixins import CRUDMixin
 
@@ -34,6 +36,15 @@ class UserAPI(ViewSet, CRUDMixin):
         users = User.objects.filter(team__id=team_id)
         return self.list_by(users, self.serializer_class)
 
+    def login(self, *args, **kwargs):
+        """
+        a user's login endpoint
+        """
+        serializer = LoginSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.user
+        login(self.request, user)
+        return Response(status=200)
 
 class ProjectAPI(ViewSet, CRUDMixin):
     """

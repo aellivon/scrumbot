@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <div class="row border-bottom d-flex justify-content-between">
         <div class="m-3 ml-5 pl-5 d-flex align-items-center w-50">
-            <div class="tabs">
+            <div class="tabs clickable">
                 <span class="less-emphasis"><b>Dashboard</b></span>
             </div>
-            <div class="tabs" (click)="goToIssues()">
+            <div class="tabs clickable" (click)="goToIssues()">
                 <span class="less-emphasis"><b>All Issues</b></span>
             </div>
             <i class="less-emphasis fas fa-search border-0 m-1 mr-3 ml-5 pl-5"></i>
@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col p-5 mt-2 ml-5">
             <div class="row mt-3">
-                <h1>Welcome back, Chibi!</h1>
+                <h1>Welcome back, {{logged_user}}!</h1>
             </div>
             <div class="row">
                 <p class="less-emphasis">There are {{ issues?.length }} issues and {{ scrums_bydate?.length }} urgent tickets</p>
@@ -114,7 +114,7 @@
                     <div class="d-flex flex-column m-1 scrumlist">
                         <div class="mt-1 mb-1 scrumitem" *ngFor="let scrum of date_group.scrums">
                             <div *ngIf="((filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project))">
-                                <div class="d-flex pt-4 pb-4" (click)="scrum.open = !scrum.open">
+                                <div class="d-flex pt-4 pb-4 clickable" (click)="scrum.open = !scrum.open">
                                     <div class="col-2 d-flex">
                                         <div>
                                             <app-avatar [username]="scrum.user" [id]="scrum.user"></app-avatar>

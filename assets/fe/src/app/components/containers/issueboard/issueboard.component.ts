@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from 'app/services/data.service';
 import { SearchService } from 'app/services/search.service';
+import { AuthenticationService } from 'app/services/authentication.service';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
@@ -43,6 +44,7 @@ export class IssueboardComponent implements OnInit {
       private searchService: SearchService,
       private dataService: DataService,
       private stateService: StateService,
+      private authService: AuthenticationService,
   ) { }
 
   issues: any
@@ -87,6 +89,7 @@ export class IssueboardComponent implements OnInit {
   };
 
   ngOnInit() {
+      this.authService.authenticate()
       this.fetchIssues()
       this.fetchProjects()
       this.fetchUsers()
