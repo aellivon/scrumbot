@@ -62,3 +62,10 @@ https://<domain_name>/api/scrum/
 
 Command for updating scrum reports
 https://<domain_name>/api/scrum/update/
+
+Setup bot to gain access to private channels:
+
+Generate a legacy token for your slack app here
+https://api.slack.com/custom-integrations/legacy-tokens
+
+Set the "SLACK_API_TOKEN" variable on your settings.py as the token generated

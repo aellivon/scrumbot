@@ -20,6 +20,7 @@ from .serializers import (
 from scrumbot.mixins import CRUDMixin, ParseMixin
 from django.http import QueryDict
 from django.conf import settings
+import requests
 
 class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
     """
@@ -31,6 +32,13 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         adds scrum reports to db
         """
         data = self.parseData(request.POST)
+
+        if(data['channel_name']=='privategroup'):
+            slack_url = 'https://slack.com/api/groups.info?token='
+            slack_params = settings.SLACK_API_TOKEN+'&channel='+data['channel_id']
+            slack_data = requests.get(slack_url+slack_params)
+            slack_json = slack_data.json()
+            data['channel_name'] = slack_json['group']['name_normalized']
 
         try:
             Team.objects.get(id=data['team_id'])

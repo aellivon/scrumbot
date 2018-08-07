@@ -3,6 +3,8 @@
 scrumbot/local_settings.py
 *.DS_Store
 
+dist/
+
 *__pycache__
 static/
 media/

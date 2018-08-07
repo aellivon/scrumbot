@@ -152,7 +152,7 @@ LOG_TYPES = {
 # SLACK_CLIENT_SECRET = "892a51e39586b8bbd37965b01b2489dd"
 # SLACK_VERIFICATION_TOKEN = "AI9gDtSXXwZmbGdOZeGCz8Tl"
 # SLACK_BOT_USER_TOKEN = "xoxb-398793025732-398488161553-8Brhm4zTVEyZU0C4EOjl2IEc"
-
+SLACK_API_TOKEN = "xoxp-398793025732-399037488514-412994256199-deaa2295cafc85f15782c7282e4c3f8b"
 
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
