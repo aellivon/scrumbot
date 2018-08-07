@@ -119,6 +119,8 @@ export class ScrumboardComponent implements OnInit {
           .subscribe(
               data => {
                   this.scrums_bydate = data
+                  var scrums = _.map(this.scrums_bydate, scrum => {return scrum.scrums})
+                  console.log(_.uniq(scrums, true, 'date_created'))
                   // this.scrums.map(date_group => {
                   //   date_group.scrums.map(scrum => {
                   //     scrum.issue_logs.map(issue => {

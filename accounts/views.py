@@ -27,6 +27,7 @@ class UserAPI(ViewSet, CRUDMixin):
     Slack user API
     """
     serializer_class = UserSerializer
+    authentication_classes = []
     
     def list_by_team(self, *args, **kwargs):
         """

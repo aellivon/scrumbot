@@ -56,7 +56,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:8000',
-    '127.0.0.1:8000'
+    '127.0.0.1:8000',
+    'scrum.swiftkind.com'
 )
 
 ROOT_URLCONF = 'scrumbot.urls'
@@ -152,7 +153,7 @@ LOG_TYPES = {
 # SLACK_CLIENT_SECRET = "892a51e39586b8bbd37965b01b2489dd"
 # SLACK_VERIFICATION_TOKEN = "AI9gDtSXXwZmbGdOZeGCz8Tl"
 # SLACK_BOT_USER_TOKEN = "xoxb-398793025732-398488161553-8Brhm4zTVEyZU0C4EOjl2IEc"
-SLACK_API_TOKEN = "xoxp-398793025732-399037488514-412994256199-deaa2295cafc85f15782c7282e4c3f8b"
+SLACK_API_TOKEN = "xoxp-25093591382-25455659988-411829021636-fef4e7db33487ae101cbc4e332201bec"
 
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
