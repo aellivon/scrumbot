@@ -94,7 +94,7 @@ export class ScrumboardComponent implements OnInit {
   };
 
   model: any = {beginDate: this.from_model.date,
-                        endDate: this.to_model.date};
+                endDate: this.to_model.date};
 
   show_object = {
     id: '',
@@ -195,6 +195,15 @@ export class ScrumboardComponent implements OnInit {
                      return issue.id == id
                   })
       })]
+  }
+
+  getUrgent(){
+      if(!this.issues){
+        return null
+      }
+      return this.issues.filter(issue => {
+                       return issue.is_urgent == true
+                  })
   }
 
   updateStatus(id, status){

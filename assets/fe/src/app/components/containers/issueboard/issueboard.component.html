@@ -142,6 +142,7 @@
                                 <span class="project_label">#{{ issue.scrum_data.project_name }}</span>
                             </div>
                             <div class="col d-flex p-0 align-items-center">
+                                <p *ngIf="issue.is_urgent" class="urgent m-0 p-1 pl-2 pr-2 mr-4 rounded-left rounded-right">Urgent</p>
                                 <div class="d-inline-block text-truncate issue_box">
                                     <span class="less-emphasis">{{ issue.issue }}</span>
                                 </div>
