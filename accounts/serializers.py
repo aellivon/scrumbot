@@ -34,8 +34,8 @@ class LoginSerializer(serializers.Serializer):
         username = data.get('username')
         password = data.get('password')
 
-        user = User.objects.get(username=username, password=password)
-        if not user:
+        user = User.objects.get(username=username)
+        if not user or not user.check_password(password):
             raise serializers.ValidationError("Username/Password is incorrect. Please try again.")
 
         self.user = user
