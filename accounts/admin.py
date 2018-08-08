@@ -4,7 +4,8 @@ from .models import User, Team, Project
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'slack_id', 'team')}),
+        (None, {'fields': ('username', 'password', 'slack_id',
+            'team', 'is_staff', 'is_superuser', 'is_active')}),
     )
         
 

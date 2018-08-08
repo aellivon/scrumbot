@@ -120,7 +120,7 @@ export class ScrumboardComponent implements OnInit {
               data => {
                   this.scrums_bydate = data
                   var scrums = _.map(this.scrums_bydate, scrum => {return scrum.scrums})
-                  console.log(_.uniq(scrums, true, 'date_created'))
+                  // console.log(_.uniq(scrums, true, 'date_created'))
                   // this.scrums.map(date_group => {
                   //   date_group.scrums.map(scrum => {
                   //     scrum.issue_logs.map(issue => {
@@ -251,21 +251,6 @@ export class ScrumboardComponent implements OnInit {
   getScrum(keyword){
     this.filtered_scrum = this.searchService.searchScrums(keyword, this.scrums_bydate)
   }
-
-  // hasIssues(scrum){
-  //   var pending = scrum.issue_logs.filter(issue =>{
-  //                      return issue.status == 'Pending'
-  //                 })
-  //   var resolved = scrum.issue_logs.filter(issue =>{
-  //                      return issue.status == 'Resolved'
-  //                 })
-  //   var closed = scrum.issue_logs.filter(issue =>{
-  //                      return issue.status == 'Closed'
-  //                 })
-  //   return (this.filter_pending && pending.length!=0) ||
-  //           (this.filter_resolved && resolved.length!=0) ||
-  //           (this.filter_closed && closed.length!=0)
-  // }
 
   hasPending(scrum){
     var pending = scrum.issue_logs.filter(issue => {
