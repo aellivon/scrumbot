@@ -31,7 +31,6 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         """
         adds scrum reports to db
         """
-        return Response(data="hmmmmm")
         data = self.parseData(request.POST)
 
         if(data['channel_name']=='privategroup'):

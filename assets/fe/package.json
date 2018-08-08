@@ -27,6 +27,7 @@
     "@uirouter/angular": "^2.0.0",
     "angular-6-datatable": "^0.8.0",
     "angular4-datepicker": "^1.0.1",
+    "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "mydatepicker": "^2.6.4",
     "ng2-material-dropdown": "^0.10.0",
