@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'z09$8lrum!s6pg^@ek^m_)oh2a%2%@*24(#4gmbi7o1lzj3ow^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ()
 
 
 # Application definition
@@ -54,11 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8000',
-    '127.0.0.1:8000',
-    'scrum.swiftkind.com'
-)
+CORS_ORIGIN_WHITELIST = ()
 
 ROOT_URLCONF = 'scrumbot.urls'
 
@@ -86,9 +82,8 @@ WSGI_APPLICATION = 'scrumbot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'scrumbotdb',
-        'USER': 'shem',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -149,11 +144,7 @@ LOG_TYPES = {
     'ISSUE': 3
 }
 
-# SLACK_CLIENT_ID = "398793025732.399175532373"
-# SLACK_CLIENT_SECRET = "892a51e39586b8bbd37965b01b2489dd"
-# SLACK_VERIFICATION_TOKEN = "AI9gDtSXXwZmbGdOZeGCz8Tl"
-# SLACK_BOT_USER_TOKEN = "xoxb-398793025732-398488161553-8Brhm4zTVEyZU0C4EOjl2IEc"
-SLACK_API_TOKEN = "xoxp-25093591382-25455659988-411829021636-fef4e7db33487ae101cbc4e332201bec"
+SLACK_API_TOKEN = ""
 
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
