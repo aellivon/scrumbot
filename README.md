@@ -68,4 +68,19 @@ Setup bot to gain access to private channels:
 Generate a legacy token for your slack app here
 https://api.slack.com/custom-integrations/legacy-tokens
 
-Set the "SLACK_API_TOKEN" variable on your settings.py as the token generated
+
+Setup local_settings.py:
+
+DEBUG = True
+
+ALLOWED_HOSTS = ('*')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': <database name>,
+        'USERNAME': <postgres username>
+    }
+}
+
+SLACK_API_TOKEN = <your workspace app's token>
