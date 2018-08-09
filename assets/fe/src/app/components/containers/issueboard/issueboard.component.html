@@ -7,11 +7,11 @@
             <div class="tabs clickable">
                 <span class="less-emphasis"><b>All Issues</b></span>
             </div>
-            <i class="less-emphasis fas fa-search border-0 m-1 mr-3 ml-5 pl-5"></i>
+            <fa-icon [icon]="icons.search" class="less-emphasis border-0 m-1 mr-3 ml-5 pl-5"></fa-icon>
             <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getIssues(search.value)" #search>
         </div>
         <div class="m-3 mr-5">
-            <app-avatar></app-avatar>
+            <app-avatar [username]="logged_user" [id]="logged_user"></app-avatar>
         </div>
     </div>
     <div class="row issues_container">
@@ -53,7 +53,7 @@
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event)"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
-                                        <i class="far fa-calendar"></i>
+                                        <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
                             </div>
@@ -62,7 +62,7 @@
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event)"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
-                                        <i class="far fa-calendar"></i>
+                                        <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
                             </div>
@@ -173,7 +173,7 @@
                                             <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today"/>
                                             <div class="input-group-append">
                                                 <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
-                                                    <i class="fas fa-angle-down less-emphasis"></i>
+                                                    <fa-icon [icon]="icons.angle_down" class="less-emphasis"></fa-icon>
                                                 </button>
                                             </div>
                                             </div>
@@ -189,7 +189,8 @@
                                     </div>
                                 </div>
                             </sat-popover>
-                            <button type="button" class="btn btn-light" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()"><i class="fas fa-ellipsis-v less-emphasis"></i>
+                            <button type="button" class="btn btn-light" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()">
+                                <fa-icon [icon]="icons.ellipsis" class="less-emphasis"></fa-icon>
                             </button>
                         </div>
                     </div>

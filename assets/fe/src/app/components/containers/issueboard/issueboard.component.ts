@@ -8,6 +8,8 @@ import { GET_ISSUES,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { StateService } from '@uirouter/angular';
+import { faSearch, faAngleDown, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-issueboard',
@@ -15,6 +17,13 @@ import { StateService } from '@uirouter/angular';
   styleUrls: ['./issueboard.component.scss']
 })
 export class IssueboardComponent implements OnInit {
+
+  icons = {
+    search: faSearch,
+    calendar: faCalendar,
+    ellipsis: faEllipsisV,
+    angle_down: faAngleDown
+  }
 
   today: Date = new Date();
 
@@ -88,8 +97,11 @@ export class IssueboardComponent implements OnInit {
       disableUntil: this.disabled_from
   };
 
+  logged_user;
+
   ngOnInit() {
       this.authService.authenticate()
+      this.logged_user = localStorage.getItem('user')
       this.fetchIssues()
       this.fetchProjects()
       this.fetchUsers()

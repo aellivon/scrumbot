@@ -6,22 +6,6 @@ import { ScrumboardComponent } from 'app/components/containers/scrumboard/scrumb
 import { IssueboardComponent } from 'app/components/containers/issueboard/issueboard.component'
 import { LoginComponent } from 'app/components/forms/login/login.component'
 
-// let CREATE_TEAM_STATE: Object[] = [
-//     {
-//         name: 'create-team',
-//         url: '/create',
-//         views: ContentOnly(CreateTeamComponent),
-//     }
-// ]
-
-// let JOIN_TEAM_STATE: Object[] = [
-//     {
-//         name: 'join-team',
-//         url: '/join',
-//         views: ContentOnly(JoinTeamComponent),
-//     }
-// ]
-
 let HOME_STATE: Object[] = [
     {
         name: 'scrumboard',
@@ -47,10 +31,7 @@ let LOGIN_STATE: Object[] = [
 ]
 
 export const APP_STATES = {
-	otherwise: '/',
 	states: [].concat(
-		// CREATE_TEAM_STATE,
-  //       JOIN_TEAM_STATE,
         HOME_STATE,
         ISSUES_STATE,
         LOGIN_STATE

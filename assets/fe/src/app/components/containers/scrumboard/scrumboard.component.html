@@ -11,7 +11,7 @@
             <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
         </div>
         <div class="m-3 mr-5">
-            <app-avatar></app-avatar>
+            <app-avatar [username]="logged_user" [id]="logged_user"></app-avatar>
         </div>
     </div>
     <div class="row">
@@ -126,7 +126,7 @@
                                     </div>
                                     <div class="col d-flex p-0 align-items-center">
                                         <div *ngIf="!scrum.open">
-                                            <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="https://png.icons8.com/color/30/000000/confetti.png"></span>
+                                            <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
                                             <span class="less-emphasis" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</span>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@
                                             <div class="col">
                                                 <div class="row flex-column mb-5">
                                                     <p class="category_label"><b>Pending</b></p>
-                                                    <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="https://png.icons8.com/color/30/000000/confetti.png"></span>
+                                                    <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
                                                     <div *ngFor="let issue of scrum.issue_logs" class="issueitem mb-3 d-flex" >
                                                         <div class="redmarker align-self-center"></div>
                                                         <div class="d-flex flex-column flex-fill">
@@ -176,7 +176,7 @@
                                                                 <div *ngIf="!issue.open">
                                                                     <div class="d-flex" *ngIf="issue.deadline">
                                                                     <div class="mr-2">
-                                                                        <img src="https://png.icons8.com/metro/15/dd2556/leave.png" class="ml-2">
+                                                                        <img src="assets/img/leave.png" class="ml-2">
                                                                     </div>
                                                                     <p class="less-emphasis category_labelel">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
                                                                     </div>
