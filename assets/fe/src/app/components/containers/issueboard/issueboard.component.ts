@@ -100,6 +100,7 @@ export class IssueboardComponent implements OnInit {
           .subscribe(
               data => {
                   this.issues = data
+                  this.filtered_issues = data
               }
           );
   }
@@ -164,6 +165,10 @@ export class IssueboardComponent implements OnInit {
         this.http.post(UPDATE_ISSUE_DEADLINE(id), {"deadline":deadline})
         .subscribe();
       }
+  }
+
+  getIssues(keyword){
+    this.filtered_issues = this.searchService.searchIssues(keyword, this.issues)
   }
 
   isWithinDate(scrum_date, filter_from, filter_to){

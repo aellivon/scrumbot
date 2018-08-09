@@ -15,6 +15,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // IMPORTED FROM PROJECT
 import { APP_STATES } from 'app/app.states';
@@ -27,8 +28,8 @@ import { AvatarComponent } from 'app/components/avatar/avatar.component';
 import { IssueboardComponent } from 'app/components/containers/issueboard/issueboard.component';
 import { HeaderComponent } from 'app/components/header/header.component';
 import { MarkerComponent } from 'app/components/marker/marker.component';
-import { GroupbyDatePipe } from './pipes/groupby-date.pipe';
-import { LoginComponent } from './components/forms/login/login.component';
+import { LoginComponent } from 'app/components/forms/login/login.component';
+import { GroupbyDatePipe } from 'app/pipes/groupby-date.pipe';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { LoginComponent } from './components/forms/login/login.component';
     NgbModule.forRoot(),
     BrowserModule,
     HttpClientModule,
+    FontAwesomeModule,
     BrowserAnimationsModule,
     SatPopoverModule,
     CollapseModule.forRoot(),

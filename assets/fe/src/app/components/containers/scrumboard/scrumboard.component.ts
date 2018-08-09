@@ -12,6 +12,9 @@ import { StateService } from '@uirouter/angular';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
+import { faCircleNotch, faCheck, faSearch,
+          faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-scrumboard',
@@ -19,6 +22,15 @@ import { GET_ISSUES,
   styleUrls: ['./scrumboard.component.css']
 })
 export class ScrumboardComponent implements OnInit {
+
+  icons = {
+    circle_notch: faCircleNotch,
+    check: faCheck,
+    search: faSearch,
+    calendar: faCalendar,
+    angle_up: faAngleUp,
+    angle_down: faAngleDown
+  }
 
   today: Date = new Date();
 
@@ -120,15 +132,6 @@ export class ScrumboardComponent implements OnInit {
               data => {
                   this.scrums_bydate = data
                   var scrums = _.map(this.scrums_bydate, scrum => {return scrum.scrums})
-                  // console.log(_.uniq(scrums, true, 'date_created'))
-                  // this.scrums.map(date_group => {
-                  //   date_group.scrums.map(scrum => {
-                  //     scrum.issue_logs.map(issue => {
-                  //                     issue.open = false
-                  //                 })
-                  //     return scrum
-                  //   })
-                  // })
                   this.filtered_scrum = data
               }
           );

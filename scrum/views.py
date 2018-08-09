@@ -190,19 +190,19 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         """
         lists scrum reports
         """
-        scrums = Scrum.objects.all()
-        dates = {
-            x.date() for x in scrums.values_list('date_created',
-                                                    flat=True)}
-        data = [{
-        'date_created': d,
-        'scrums': ScrumReportSerializer(scrums.filter(date_created__date=d).
-                                        order_by('date_created').reverse(),
-                                        many=True).data}
-        for d in dates]
-        data_sorted = reversed(sorted(data, key=lambda item: item['date_created']))
-        return Response(data_sorted, status=200)
-        # return self.list_all(Scrum, ScrumSerializer, 'date_created')
+        # scrums = Scrum.objects.all()
+        # dates = {
+        #     x.date() for x in scrums.values_list('date_created',
+        #                                             flat=True)}
+        # data = [{
+        # 'date_created': d,
+        # 'scrums': ScrumReportSerializer(scrums.filter(date_created__date=d).
+        #                                 order_by('date_created').reverse(),
+        #                                 many=True).data}
+        # for d in dates]
+        # data_sorted = reversed(sorted(data, key=lambda item: item['date_created']))
+        # return Response(data_sorted, status=200)
+        return self.list_all(Scrum, ScrumReportSerializer, 'date_created')
 
 
 class IssuesAPI(ViewSet, CRUDMixin):
