@@ -208,6 +208,15 @@ export class ScrumboardComponent implements OnInit {
                                issue.status == 'P'
                   })
   }
+  
+  getPending(){
+    if(!this.issues){
+      return null
+    }
+    return this.issues.filter(issue => {
+                       return issue.status == 'P'
+                  })
+  }
 
   updateStatus(id, status){
       this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})

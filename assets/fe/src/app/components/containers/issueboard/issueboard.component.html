@@ -129,7 +129,7 @@
                         <div class="mt-1 mb-1 scrumitem" *ngFor="let issue of date_group.issues">
                             <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && (filter_status=='' || issue.status==filter_status) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center">
                                 <app-marker [project]="issue.scrum_data.project_name"></app-marker>
-                                <div class="d-flex flex-fill" >
+                                <div class="d-flex flex-fill align-items-center" >
                                     <div class="col-2 d-flex mr-4">
                                         <div>
                                             <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
@@ -191,9 +191,7 @@
                                             </div>
                                         </div>
                                     </sat-popover>
-                                    <button type="button" class="btn btn-light" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()">
-                                        <fa-icon [icon]="icons.ellipsis" class="less-emphasis"></fa-icon>
-                                    </button>
+                                    <fa-icon [icon]="icons.ellipsis" class="less-emphasis clickable" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()"></fa-icon>
                                 </div>
                             </div>
                         </div>

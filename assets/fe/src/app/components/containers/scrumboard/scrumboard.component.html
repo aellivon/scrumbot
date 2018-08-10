@@ -20,7 +20,7 @@
                 <h1>Welcome back, {{logged_user}}!</h1>
             </div>
             <div class="row">
-                <p class="less-emphasis">There are {{ issues?.length }} issues and {{ getUrgent()?.length }} urgent tickets</p>
+                <p class="less-emphasis">There are {{ getPending()?.length }} issues and {{ getUrgent()?.length }} urgent tickets</p>
             </div>
                 <hr>
             <div class="row pt-4 pb-4">
