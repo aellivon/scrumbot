@@ -118,8 +118,7 @@ export class ScrumboardComponent implements OnInit {
   logged_user;
 
   ngOnInit() {
-      this.authService.authenticate()
-      this.logged_user = localStorage.getItem('user')
+      this.logged_user = this.authService.authenticate()
       this.fetchIssues()
       this.fetchScrums()
       this.fetchUsers()
@@ -205,7 +204,8 @@ export class ScrumboardComponent implements OnInit {
         return null
       }
       return this.issues.filter(issue => {
-                       return issue.is_urgent == true
+                       return issue.is_urgent == true &&
+                               issue.status == 'P'
                   })
   }
 

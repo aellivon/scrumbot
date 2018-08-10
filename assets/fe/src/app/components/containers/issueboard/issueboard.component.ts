@@ -100,8 +100,7 @@ export class IssueboardComponent implements OnInit {
   logged_user;
 
   ngOnInit() {
-      this.authService.authenticate()
-      this.logged_user = localStorage.getItem('user')
+      this.logged_user = this.authService.authenticate()
       this.fetchIssues()
       this.fetchProjects()
       this.fetchUsers()
@@ -111,8 +110,8 @@ export class IssueboardComponent implements OnInit {
       this.dataService.fetchIssues()
           .subscribe(
               data => {
-                  this.issues = data
-                  this.filtered_issues = data
+                this.issues = data
+                this.filtered_issues = data
               }
           );
   }
@@ -183,9 +182,18 @@ export class IssueboardComponent implements OnInit {
     this.filtered_issues = this.searchService.searchIssues(keyword, this.issues)
   }
 
-  isWithinDate(scrum_date, filter_from, filter_to){
-    return (new Date(scrum_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
-            new Date(scrum_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
+  getPending(){
+    if(!this.issues){
+      return null
+    }
+    return this.issues.filter(issue => {
+                       return issue.status == 'P'
+                  })
+  }
+
+  isWithinDate(issue_date, filter_from, filter_to){
+    return (new Date(issue_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
+            new Date(issue_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
   }
 
   goToDashboard(){

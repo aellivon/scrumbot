@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'groupbyDate'
+  name: 'groupScrums'
 })
-export class GroupbyDatePipe implements PipeTransform {
+export class GroupScrumsPipe implements PipeTransform {
 
   transform(scrum: Object[], date: string): any {
       if(!scrum){

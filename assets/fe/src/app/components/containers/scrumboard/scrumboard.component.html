@@ -96,7 +96,7 @@
                     <span class="category_label"><b>Total Hours</b></span>
                 </div>
             </div>
-            <div class="mb-4" *ngFor="let date_group of filtered_scrum | groupbyDate:'date_created' ">
+            <div class="mb-4" *ngFor="let date_group of filtered_scrum | groupScrums:'date_created' ">
                 <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to)">
                     <div class="row mb-3">
                         <div class="col-sm-2 d-flex">
