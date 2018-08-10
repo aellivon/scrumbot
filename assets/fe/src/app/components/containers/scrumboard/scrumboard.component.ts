@@ -216,22 +216,15 @@ export class ScrumboardComponent implements OnInit {
          return issue.id == id
       })
       this.issues[index].status = status
-      var group_index = this.scrums_bydate.findIndex(scrum => {
-        return scrum.scrums.find(scrum =>{
-           return scrum.issue_logs.find(issue => {
-               return issue.id == id
-            })
-        })
-      })
-      var scrum_index = this.scrums_bydate[group_index].scrums.findIndex(scrum => {
+      var scrum_index = this.scrums_bydate.findIndex(scrum => {
          return scrum.issue_logs.find(issue => {
              return issue.id == id
           })
       })
-      var issue_index = this.scrums_bydate[group_index].scrums[scrum_index].issue_logs.findIndex(issue => {
+      var issue_index = this.scrums_bydate[scrum_index].issue_logs.findIndex(issue => {
          return issue.id == id
       })
-      this.scrums_bydate[group_index].scrums[scrum_index].issue_logs.splice(issue_index,1)
+      this.scrums_bydate[scrum_index].issue_logs.splice(issue_index,1)
   }
 
   updateDeadline(id, deadline){
