@@ -20,9 +20,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // IMPORTED FROM PROJECT
 import { APP_STATES } from 'app/app.states';
 import { AppComponent } from 'app/app.component';
-import { CreateTeamComponent } from 'app/components/forms/create-team/create-team.component';
-import { JoinTeamComponent } from 'app/components/prompts/join-team/join-team.component';
-import { SlackLoginComponent } from 'app/components/prompts/slack-login/slack-login.component';
 import { ScrumboardComponent } from 'app/components/containers/scrumboard/scrumboard.component';
 import { AvatarComponent } from 'app/components/avatar/avatar.component';
 import { IssueboardComponent } from 'app/components/containers/issueboard/issueboard.component';
@@ -35,9 +32,6 @@ import { GroupbyDatePipe } from 'app/pipes/groupby-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    JoinTeamComponent,
-    CreateTeamComponent,
-    SlackLoginComponent,
     ScrumboardComponent,
     AvatarComponent,
     IssueboardComponent,
