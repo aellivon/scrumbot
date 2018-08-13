@@ -23,16 +23,17 @@ class OverAllReviewReport(View, ProduceReportMixin):
         filter_user = self.kwargs.get('member')
         filter_from_date = datetime.strptime(self.kwargs.get('from_date'), '%Y-%m-%d')
         filter_until_date = datetime.strptime(self.kwargs.get('to_date'), '%Y-%m-%d')
+
         
         # fetching an setting up necessary data
         data = self.fetch_data(filter_project, filter_user, filter_from_date, filter_until_date)
 
-        data = self.format_data(data, True)
+        data = self.format_data(data, True, '*')
 
         # For the title of the report
 
         if filter_project == '*':
-            filter_project = "All Projects"
+            filter_project = "All projects"
 
         if filter_user == '*':
             filter_user = "everyone"
@@ -45,7 +46,7 @@ class OverAllReviewReport(View, ProduceReportMixin):
             'until_date': naturalday(filter_until_date)
         }
 
-        context = {'data': data, 'filters': filters}
+        context = {'data': data, 'filters': filters, 'display_type': 'overall'}
         template = get_template('pdf_format.html')
 
         # rendering of template
@@ -80,16 +81,17 @@ class IssueReport(View, ProduceReportMixin):
         filter_user = self.kwargs.get('member')
         filter_from_date = datetime.strptime(self.kwargs.get('from_date'), '%Y-%m-%d')
         filter_until_date = datetime.strptime(self.kwargs.get('to_date'), '%Y-%m-%d')
-        
+        filter_status = self.kwargs.get('ticket_status')
+
         # fetching an setting up necessary data
         data = self.fetch_data(filter_project, filter_user, filter_from_date, filter_until_date)
 
-        data = self.format_data(data, True)
+        data = self.format_data(data, True, filter_status)
 
         # For the title of the report
 
         if filter_project == '*':
-            filter_project = "All Projects"
+            filter_project = "All issues"
 
         if filter_user == '*':
             filter_user = "everyone"
@@ -101,8 +103,8 @@ class IssueReport(View, ProduceReportMixin):
             'from_date': naturalday(filter_from_date),
             'until_date': naturalday(filter_until_date)
         }
-
-        context = {'data': data, 'filters': filters}
+        print ("hi")
+        context = {'data': data, 'filters': filters, 'display_type': 'issues'}
         template = get_template('pdf_format.html')
 
         # rendering of template

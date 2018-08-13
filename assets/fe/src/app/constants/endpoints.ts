@@ -11,3 +11,7 @@ export const LOGIN_USER = () => '/api/accounts/login/';
 export const OVERALL_RESULTS = (project, members, from, to) => {
     return '/api/reports/overall_report/' + project +'/'+  members  +'/'+ from  +'/'+ to + '/';
 }
+
+export const ISSUE_RESULTS = (project, members, from, to, ticket_status) => {
+    return '/api/reports/issues_report/' + project +'/'+  members  +'/'+ from  +'/'+ to + '/' + ticket_status + '/';
+}

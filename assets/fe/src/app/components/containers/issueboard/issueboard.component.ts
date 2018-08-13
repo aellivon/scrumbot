@@ -5,7 +5,7 @@ import { SearchService } from 'app/services/search.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
-          UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
+          UPDATE_ISSUE_DEADLINE, ISSUE_RESULTS } from 'app/constants/endpoints';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { StateService } from '@uirouter/angular';
 
@@ -175,4 +175,38 @@ export class IssueboardComponent implements OnInit {
     this.stateService.go('scrumboard');
   }
 
+   formatDateToPython(to_format_date: Date){
+    // replacing all '/' occurence with '-' occurence which is acceptable in a url
+    const year: number = to_format_date.getFullYear();
+    const month: number = to_format_date.getMonth() + 1;
+    const day: number = to_format_date.getDate();
+    return year + '-' + month + '-' + day
+  }
+
+
+    producePDFReport(){
+    // Producing pdf report
+
+    // * means that all users will be filtered
+    let filter_user = "*";
+    if(this.filter_user){
+      filter_user = this.filter_user;
+    }
+    let filter_project = "*";
+    if(this.filter_project){
+      filter_project = this.filter_project
+    }
+
+    const filter_from = this.formatDateToPython(this.filter_from);
+    const filter_to = this.formatDateToPython(this.filter_to);
+
+    // Vanilla javascript so I can access the django template outside
+    //   the angular scope
+    let filter_status = '*';
+    if (this.filter_status){
+      filter_status = this.filter_status;
+    }
+    window.location.href = ISSUE_RESULTS(
+      filter_project, filter_user, filter_from, filter_to, filter_status);
+  }
 }
