@@ -1,5 +1,6 @@
 import { TEAM_ID } from 'app/constants/config';
 
+
 export const GET_LOGS = () => '/api/scrum/';
 export const GET_ISSUES = () => '/api/scrum/issues/';
 export const GET_TEAM_MEMBERS = () => '/api/accounts/users/'+TEAM_ID+'/';
