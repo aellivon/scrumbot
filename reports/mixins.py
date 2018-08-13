@@ -1,6 +1,7 @@
 
 from scrum.models import Scrum, Issue, Log
 
+from .constants import STATUS_CHOICES
 
 class UsefulFuncitons():
     # This class is for functions that could be used in the future
@@ -15,7 +16,7 @@ class UsefulFuncitons():
 class ProduceReportMixin(UsefulFuncitons):
     # This mix in is for reusable codes for producing reports
 
-    def  format_data(self, scrums, include_logs):
+    def  format_data(self, scrums, include_logs, filter_status):
         # formatting data so the front end can gracefully place the data
 
         formatted_data = []
@@ -28,6 +29,8 @@ class ProduceReportMixin(UsefulFuncitons):
             to_push_date = scrum.date_created
 
             issues = Issue.objects.filter(scrum__id=scrum.id)
+            if filter_status != '*':
+                issues = issues.filter(status=filter_status)
 
             if include_logs:
                 done_logs = Log.objects.filter(scrum__id=scrum.id, log_type='1')

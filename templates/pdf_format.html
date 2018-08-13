@@ -59,8 +59,11 @@
     <th>Name</th>
     <th>Project</th> 
     <th>Date</th>
-    <th>Tasks Done</th>
-    <th>Working On</th>
+    {% if display_type == 'overall'  %}
+    {{ display_type }}
+      <th>Tasks Done</th>
+      <th>Working On</th>
+    {% endif %}
     <th>Issues</th>
   </tr>
   {% for row in data %}
@@ -68,8 +71,10 @@
       <td>{{ row.user }} </td>
       <td>{{ row.project }} </td>
       <td>{{ row.date | naturalday }}</td>
-      <td> {{ row.task_done }}</td>
-      <td>{{ row.wip_done }}</td>
+      {% if display_type == 'overall'  %}
+        <td> {{ row.task_done }}</td>
+        <td>{{ row.wip_done }}</td>
+      {% endif %}
       <td> {{ row.issue }} </td>
     </tr>
   {% endfor %}
