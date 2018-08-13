@@ -64,8 +64,8 @@ class OverAllReviewReport(View, ProduceReportMixin):
         response = HttpResponse(pdf, content_type='application/pdf')
 
         # #   this is the headers that will let the response know that this file must
-        # #   must be downloaded once the linked is accessed
-        # response['Content-Disposition'] = 'attachment; filename="overall_results.pdf"'
+        #   must be downloaded once the linked is accessed
+        response['Content-Disposition'] = 'attachment; filename="overall_results.pdf"'
 
         return response
 
@@ -102,6 +102,7 @@ class IssueReport(View, ProduceReportMixin):
             'from_date': naturalday(filter_from_date),
             'until_date': naturalday(filter_until_date)
         }
+        
         context = {'data': data, 'filters': filters, 'display_type': 'issues'}
         template = get_template('pdf_format.html')
 
@@ -120,8 +121,8 @@ class IssueReport(View, ProduceReportMixin):
         response = HttpResponse(pdf, content_type='application/pdf')
 
         # #   this is the headers that will let the response know that this file must
-        # #   must be downloaded once the linked is accessed
-        # response['Content-Disposition'] = 'attachment; filename="issues.pdf"'
+        #   must be downloaded once the linked is accessed
+        response['Content-Disposition'] = 'attachment; filename="issues.pdf"'
 
         return response
 
