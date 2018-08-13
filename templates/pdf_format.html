@@ -1,0 +1,76 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+        font-size: 15px;
+        text-align: center;
+        padding-top: 10px;
+    }
+    
+    @page {
+        size: letter landscape;
+        margin: 1cm;
+    }
+    .w-100{
+      width: 100%;
+    }
+
+    .title_info{
+      text-align: center;
+      display: flex;
+    }
+
+    .title_content{
+      padding-top: 10 px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .pb-0{
+      padding-bottom:0px;
+    }
+
+    .mb-0{
+      margin-bottom: 0px;
+    }
+
+    .pt-0{
+      padding-top:0px;
+    }
+
+    .mt-0{
+      margin-top: 0px;
+    }
+
+    .mt-n-10{
+      margin-top: -50px;
+    }
+
+</style>
+
+{%  load humanize  %}
+
+<div class="w-100 title_info pb-0 mb-0">
+  <p class="title_content pb-0 mb-0"> {{ filters.project }} by {{ filters.user }} from {{ filters.from_date }} until {{ filters.until_date }} </p>
+</div>
+
+
+<table class="w-100 mt-0 pt-0" >
+  <tr>
+    <th>Name</th>
+    <th>Project</th> 
+    <th>Date</th>
+    <th>Tasks Done</th>
+    <th>Working On</th>
+    <th>Issues</th>
+  </tr>
+  {% for row in data %}
+    <tr>
+      <td>{{ row.user }} </td>
+      <td>{{ row.project }} </td>
+      <td>{{ row.date | naturalday }}</td>
+      <td> {{ row.task_done }}</td>
+      <td>{{ row.wip_done }}</td>
+      <td> {{ row.issue }} </td>
+    </tr>
+  {% endfor %}
+</table>

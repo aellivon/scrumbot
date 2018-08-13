@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/scrum/', include('scrum.urls')),
     path('api/accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
+    path('api/reports/', include('reports.urls'))
 ]
 
 urlpatterns += [
