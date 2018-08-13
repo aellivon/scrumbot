@@ -11,7 +11,7 @@ import { AuthenticationService } from 'app/services/authentication.service';
 import { StateService } from '@uirouter/angular';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
-          UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
+          UPDATE_ISSUE_DEADLINE, OVERALL_RESULTS } from 'app/constants/endpoints';
 
 @Component({
   selector: 'app-scrumboard',
@@ -112,6 +112,7 @@ export class ScrumboardComponent implements OnInit {
       this.fetchScrums()
       this.fetchUsers()
       this.fetchProjects()
+
   }
 
   fetchScrums(){
@@ -269,4 +270,35 @@ export class ScrumboardComponent implements OnInit {
     this.stateService.go('issuesboard');
   }
 
+
+  formatDateToPython(to_format_date: Date){
+    // replacing all '/' occurence with '-' occurence which is acceptable in a url
+    const year: number = to_format_date.getFullYear();
+    const month: number = to_format_date.getMonth() + 1;
+    const day: number = to_format_date.getDate();
+    return year + '-' + month + '-' + day
+  }
+
+  producePDFReport(){
+    // Producing pdf report
+
+    // * means that all users will be filtered
+    let filter_user = "*";
+    if(this.filter_user){
+      filter_user = this.filter_user;
+    }
+    let filter_project = "*";
+    if(this.filter_project){
+      filter_project = this.filter_project
+    }
+
+    const filter_from = this.formatDateToPython(this.filter_from);
+    const filter_to = this.formatDateToPython(this.filter_to);
+
+
+    // Vanilla javascript so I can access the django template outside
+    //   the angular scope
+    window.location.href = OVERALL_RESULTS(
+      filter_project, filter_user, filter_from, filter_to);
+  }
 }

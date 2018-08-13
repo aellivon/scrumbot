@@ -46,11 +46,11 @@ let LOGIN_STATE: Object[] = [
     }
 ]
 
+
+
 export const APP_STATES = {
 	otherwise: '/',
 	states: [].concat(
-		// CREATE_TEAM_STATE,
-  //       JOIN_TEAM_STATE,
         HOME_STATE,
         ISSUES_STATE,
         LOGIN_STATE
