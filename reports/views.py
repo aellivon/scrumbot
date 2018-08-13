@@ -63,9 +63,8 @@ class OverAllReviewReport(View, ProduceReportMixin):
         file.close()
         response = HttpResponse(pdf, content_type='application/pdf')
 
-        # DO NOT DELETE. Uncomment this before final push
-        #   this is the headers that will let the response know that this file must
-        #   must be downloaded once the linked is accessed
+        # #   this is the headers that will let the response know that this file must
+        # #   must be downloaded once the linked is accessed
         # response['Content-Disposition'] = 'attachment; filename="overall_results.pdf"'
 
         return response
@@ -86,7 +85,7 @@ class IssueReport(View, ProduceReportMixin):
         # fetching an setting up necessary data
         data = self.fetch_data(filter_project, filter_user, filter_from_date, filter_until_date)
 
-        data = self.format_data(data, True, filter_status)
+        data = self.format_data(data, False, filter_status)
 
         # For the title of the report
 
@@ -103,7 +102,6 @@ class IssueReport(View, ProduceReportMixin):
             'from_date': naturalday(filter_from_date),
             'until_date': naturalday(filter_until_date)
         }
-        print ("hi")
         context = {'data': data, 'filters': filters, 'display_type': 'issues'}
         template = get_template('pdf_format.html')
 
@@ -121,10 +119,9 @@ class IssueReport(View, ProduceReportMixin):
         file.close()
         response = HttpResponse(pdf, content_type='application/pdf')
 
-        # DO NOT DELETE. Uncomment this before final push
-        #   this is the headers that will let the response know that this file must
-        #   must be downloaded once the linked is accessed
-        # response['Content-Disposition'] = 'attachment; filename="overall_results.pdf"'
+        # #   this is the headers that will let the response know that this file must
+        # #   must be downloaded once the linked is accessed
+        # response['Content-Disposition'] = 'attachment; filename="issues.pdf"'
 
         return response
 

@@ -48,18 +48,23 @@ class ProduceReportMixin(UsefulFuncitons):
 
             index = 0
             while index < higher_length:
-                done_log_to_push = self.get_query_set_data_or_empty_string(done_logs, index)
-                wip_log_to_push = self.get_query_set_data_or_empty_string(wip_logs, index)
+
+                done_log_to_push = ''
+                wip_log_to_push = ''
+
+                if include_logs:
+                    done_log_to_push = self.get_query_set_data_or_empty_string(done_logs, index)
+                    wip_log_to_push = self.get_query_set_data_or_empty_string(wip_logs, index)
+                
                 issue_to_push = self.get_query_set_data_or_empty_string(issues, index)
-
-                object_to_insert =  {'user': to_push_user, 'project': to_push_project, 
-                    'date': to_push_date, 'task_done': done_log_to_push,
-                    'wip_done': wip_log_to_push, 'issue': issue_to_push}
-
-                # erases the recurring data so at a glance the user can know that 
-                #   it is recurring data
-
-                formatted_data.append(object_to_insert)
+                
+                # ensures that at least one has a value
+                if done_log_to_push or wip_log_to_push or issue_to_push:
+                    object_to_insert =  {'user': to_push_user, 'project': to_push_project, 
+                        'date': to_push_date, 'task_done': done_log_to_push,
+                        'wip_done': wip_log_to_push, 'issue': issue_to_push}
+                    formatted_data.append(object_to_insert)
+                
                 index += 1
 
         return formatted_data
