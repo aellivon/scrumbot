@@ -1,4 +1,4 @@
-var team_id = 'TC42QKAUQ'
+var team_id = 'TBQPB0RMJ'
 
 export const GET_LOGS = () => '/api/scrum/';
 export const GET_ISSUES = () => '/api/scrum/issues/';
