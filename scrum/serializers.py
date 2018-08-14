@@ -29,7 +29,6 @@ class LogSerializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     """Serializer of an issue model"""
-    # status = serializers.CharField(source='get_status_display', read_only=True)
     scrum_data = serializers.SerializerMethodField()
 
     def get_scrum_data(self, obj):

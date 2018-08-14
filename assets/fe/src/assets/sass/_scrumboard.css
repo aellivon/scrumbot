@@ -1,0 +1,50 @@
+.hoverable:hover{
+    background-color: gainsboro;
+}
+
+
+.check{
+    color: #2be5ac;
+}
+
+.wip{
+    color: #ffc455;
+}
+
+.issueitem{
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+}
+
+.label{
+    font-size: 14px;
+}
+
+.date_filters{
+    width: 170px;
+}
+
+.redmarker{
+  width: 2px;
+  height: 37px;
+  background-color: #dd2556;
+}
+
+.scrumlist{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.issuelist{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 1350px;
+}
+
+.datepicker{
+    width: 130px;
+}
+
+
+.wraplongtext{
+    word-wrap: break-word;
+}

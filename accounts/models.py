@@ -17,7 +17,7 @@ class User(AbstractUser):
     """
     User model
     """
-    slack_id = models.CharField(max_length=200, unique=True, default='')
+    slack_id = models.CharField(max_length=200, unique=True)
     team = models.ManyToManyField('Team')
 
     def __str__(self):

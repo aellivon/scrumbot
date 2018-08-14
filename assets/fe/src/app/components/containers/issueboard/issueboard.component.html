@@ -7,11 +7,11 @@
             <div class="tabs clickable">
                 <span class="less-emphasis"><b>All Issues</b></span>
             </div>
-            <i class="less-emphasis fas fa-search border-0 m-1 mr-3 ml-5 pl-5"></i>
-            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
+            <fa-icon [icon]="icons.search" class="less-emphasis border-0 m-1 mr-3 ml-5 pl-5"></fa-icon>
+            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getIssues(search.value)" #search>
         </div>
         <div class="m-3 mr-5">
-            <app-avatar></app-avatar>
+            <app-avatar [username]="logged_user" [id]="logged_user"></app-avatar>
         </div>
     </div>
     <div class="row issues_container">
@@ -21,7 +21,7 @@
                     <div class="marker_static">
                     </div>
                     <div>
-                        <p class="less-emphasis mb-0 ml-2 title">You have 13 unresolve issues</p>
+                        <p class="mb-0 ml-2 title">You have {{ getPending()?.length }} unresolved issues</p>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event)"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
-                                        <i class="far fa-calendar"></i>
+                                        <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
                             </div>
@@ -62,22 +62,11 @@
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event)"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
-                                        <i class="far fa-calendar"></i>
+                                        <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
                             </div>
                         <span class="less-emphasis mr-4">Date</span>
-                            <!-- <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="p-2 d-flex align-items-center border rounded-left">
-                                        <i class="far fa-calendar"></i>
-                                    </div>
-                                </div>
-                                <input type="text" ngbDatepicker class="border border-left-0 form-control" #d="ngbDatepicker"/>
-                                <div class="input-group-append">
-                                    <button class="btn btn-light border border-left-0" (click)="d.toggle()"><i class="fas fa-chevron-down"></i></button>
-                                </div>
-                            </div> -->
                     </div>
                     <br>
                     <div class="d-flex flex-row-reverse align-items-center">
@@ -93,11 +82,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row" *ngIf="filter_user && filter_hours">
-                <div>
-                    <h2 class="p-3 m-0">{{ filter_user }} has logged a total of {{ getTotalHours(filter_user, filter_project, filter_from, filter_to) }} hours <span *ngIf="filter_project">in project {{ filter_project }}</span> from {{ filter_from | date:'longDate' }} to {{ filter_to | date:'longDate' }}</h2>
-                </div>
-            </div> -->
             <div class="row pt-4">
                 <div class="col-sm-3">
                     <h4><b>Issues list</b></h4>
@@ -115,81 +99,85 @@
                     <span class="category_label pr-5"><b>Due Date</b></span>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-sm-2 d-flex">
-                    <span class="align-self-center grey-border less-emphasis">Today - {{ today | date:'longDate'}}</span>
-                </div>
-                <div class="col-sm-10">
-                    <hr>
-                </div>
-            </div>
-            <div class="d-flex flex-column m-1 scrumlist">
-                <div class="mt-1 mb-1 scrumitem" *ngFor="let issue of issues">
-                    <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && (filter_status=='' || issue.status==filter_status) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center">
-                        <app-marker [project]="issue.scrum_data.project_name"></app-marker>
-                        <div class="d-flex flex-fill" >
-                            <div class="col-2 d-flex mr-4">
-                                <div>
-                                    <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
-                                </div>
-                                <div class="ml-3">
-                                    <span><b>{{ issue.scrum_data.user_username }}</b></span>
-                                    <br>
-                                    <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
-                                </div>
-                            </div>
-                            <div class="col-2 d-flex align-items-center mr-5">
-                                <span class="project_label">#{{ issue.scrum_data.project_name }}</span>
-                            </div>
-                            <div class="col d-flex p-0 align-items-center">
-                                <div class="d-inline-block text-truncate issue_box">
-                                    <span class="less-emphasis">{{ issue.issue }}</span>
-                                </div>
-                            </div>
-                            <div class="col d-flex pr-4 align-items-center justify-content-end">
-                                <span class="deadline_label">{{ issue.deadline | date:'mediumDate'}} - {{ issue.deadline | date:'shortTime'}}</span>
-                            </div>
-                            <sat-popover #issueDetail verticalAlign="below" horizontalAlign="end" forceAlignment>
-                                <div class="issue_details">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex">
+            <div class="mb-4" *ngFor="let date_group of filtered_issues | groupIssues:'date_created' ">
+                <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to)">
+                    <div class="row mb-3">
+                        <div class="col-sm-2 d-flex">
+                            <span class="align-self-center grey-border less-emphasis">{{ date_group.date | date:'longDate'}}</span>
+                        </div>
+                        <div class="col-sm-10">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column m-1 scrumlist">
+                        <div class="mt-1 mb-1 scrumitem" *ngFor="let issue of date_group.issues">
+                            <div *ngIf="(filter_user=='' || issue.scrum_data.user_username==filter_user) && (filter_project=='' || issue.scrum_data.project_name==filter_project) && (filter_status=='' || issue.status==filter_status) && isWithinDate(issue.scrum_data.date_created, filter_from, filter_to)" class="d-flex align-items-center">
+                                <app-marker [project]="issue.scrum_data.project_name"></app-marker>
+                                <div class="d-flex flex-fill align-items-center" >
+                                    <div class="col-2 d-flex mr-4">
+                                        <div>
                                             <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
-                                            <div class="ml-3">
-                                                <span><b>{{ issue.scrum_data.user_username }}</b></span>
-                                                <br>
-                                                <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
-                                            </div>
                                         </div>
-                                        <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right">Urgent</p>
-                                    </div>
-                                    <div class="pt-4 pb-4">
-                                        <p>{{issue.issue}}</p>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="d-flex flex-column mr-3">
-                                            <span class="label less-emphasis pb-2">Date</span>
-                                            <div class="input-group">
-                                            <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today"/>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
-                                                    <i class="fas fa-angle-down less-emphasis"></i>
-                                                </button>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                            <span class="label less-emphasis pb-2">Time</span>
-                                            <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
+                                        <div class="ml-3">
+                                            <span><b>{{ issue.scrum_data.user_username }}</b></span>
+                                            <br>
+                                            <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
                                         </div>
                                     </div>
-                                    <div>
-                                        <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
-                                        <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
+                                    <div class="col-2 d-flex align-items-center mr-5">
+                                        <span class="project_label">#{{ issue.scrum_data.project_name }}</span>
                                     </div>
+                                    <div class="col d-flex p-0 align-items-center">
+                                        <p *ngIf="issue.is_urgent" class="urgent m-0 p-1 pl-2 pr-2 mr-4 rounded-left rounded-right">Urgent</p>
+                                        <div class="d-inline-block text-truncate issue_box">
+                                            <span class="less-emphasis">{{ issue.issue }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex pr-4 align-items-center justify-content-end">
+                                        <span class="deadline_label">{{ issue.deadline | date:'mediumDate'}} - {{ issue.deadline | date:'shortTime'}}</span>
+                                    </div>
+                                    <sat-popover #issueDetail verticalAlign="center" horizontalAlign="before" forceAlignment>
+                                        <div class="issue_details">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex">
+                                                    <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
+                                                    <div class="ml-3">
+                                                        <span><b>{{ issue.scrum_data.user_username }}</b></span>
+                                                        <br>
+                                                        <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
+                                                    </div>
+                                                </div>
+                                                <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right">Urgent</p>
+                                            </div>
+                                            <div class="pt-4 pb-4">
+                                                <p>{{issue.issue}}</p>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="d-flex flex-column mr-3">
+                                                    <span class="label less-emphasis pb-2">Date</span>
+                                                    <div class="input-group">
+                                                    <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today"/>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
+                                                            <fa-icon [icon]="icons.angle_down" class="less-emphasis"></fa-icon>
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <span class="label less-emphasis pb-2">Time</span>
+                                                    <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
+                                                <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
+                                            </div>
+                                        </div>
+                                    </sat-popover>
+                                    <fa-icon [icon]="icons.ellipsis" class="less-emphasis clickable" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()"></fa-icon>
                                 </div>
-                            </sat-popover>
-                            <button type="button" class="btn btn-light" [satPopoverAnchorFor]="issueDetail" (click)="issueDetail.toggle()"><i class="fas fa-ellipsis-v less-emphasis"></i>
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>

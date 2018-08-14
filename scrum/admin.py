@@ -3,4 +3,7 @@ from .models import Log, Issue, Scrum
 
 admin.site.register(Log)
 admin.site.register(Issue)
-admin.site.register(Scrum)
+
+@admin.register(Scrum)
+class ScrumAdmin(admin.ModelAdmin):
+    readonly_fields = ('date_created',)

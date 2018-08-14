@@ -8,6 +8,8 @@ import { GET_ISSUES,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { StateService } from '@uirouter/angular';
+import { faSearch, faAngleDown, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-issueboard',
@@ -15,6 +17,13 @@ import { StateService } from '@uirouter/angular';
   styleUrls: ['./issueboard.component.scss']
 })
 export class IssueboardComponent implements OnInit {
+
+  icons = {
+    search: faSearch,
+    calendar: faCalendar,
+    ellipsis: faEllipsisV,
+    angle_down: faAngleDown
+  }
 
   today: Date = new Date();
 
@@ -88,8 +97,10 @@ export class IssueboardComponent implements OnInit {
       disableUntil: this.disabled_from
   };
 
+  logged_user;
+
   ngOnInit() {
-      this.authService.authenticate()
+      this.logged_user = this.authService.authenticate()
       this.fetchIssues()
       this.fetchProjects()
       this.fetchUsers()
@@ -99,7 +110,8 @@ export class IssueboardComponent implements OnInit {
       this.dataService.fetchIssues()
           .subscribe(
               data => {
-                  this.issues = data
+                this.issues = data
+                this.filtered_issues = data
               }
           );
   }
@@ -166,9 +178,22 @@ export class IssueboardComponent implements OnInit {
       }
   }
 
-  isWithinDate(scrum_date, filter_from, filter_to){
-    return (new Date(scrum_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
-            new Date(scrum_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
+  getIssues(keyword){
+    this.filtered_issues = this.searchService.searchIssues(keyword, this.issues)
+  }
+
+  getPending(){
+    if(!this.issues){
+      return null
+    }
+    return this.issues.filter(issue => {
+                       return issue.status == 'P'
+                  })
+  }
+
+  isWithinDate(issue_date, filter_from, filter_to){
+    return (new Date(issue_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
+            new Date(issue_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
   }
 
   goToDashboard(){

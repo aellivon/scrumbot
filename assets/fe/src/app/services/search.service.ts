@@ -28,13 +28,9 @@ export class SearchService {
 
   searchIssues(keyword, issues){
       return issues.filter(issue => {
-        var scrums = issue.scrum_data.filter(scrum=>{
-                          return scrum.user_username.search(new RegExp(keyword, 'i')) >= 0 ||
-                                  scrum.project_name.search(new RegExp(keyword, 'i')) >= 0 
-                        })
-        return issue.status.search(new RegExp(keyword, 'i')) >= 0 || 
-        issue.issue.search(new RegExp(keyword, 'i')) >= 0  ||
-        scrums.length!=0
+        return issue.scrum_data.user_username.search(new RegExp(keyword, 'i')) >= 0 ||
+        issue.scrum_data.project_name.search(new RegExp(keyword, 'i')) >= 0 ||
+        issue.issue.search(new RegExp(keyword, 'i')) >= 0 
       })
   }
 

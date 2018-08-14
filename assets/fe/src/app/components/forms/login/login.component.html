@@ -1,14 +1,14 @@
 <div class="d-flex justify-content-center align-items-center login_container flex-column">
     <h1 class="pb-4">LOGIN TO SCRUMBOARD</h1>
-    <p *ngIf="invalid_message">{{invalid_message}}</p>
+    <p *ngIf="invalid_message" class="invalid_message">{{invalid_message}}</p>
     <form class="d-flex flex-column justify-content-center">
         <div class="form-group login_form">
             <label>Username</label>
-            <input type="text" class="form-control" placeholder="Username" #username>
+            <input (keypress)="invalid_message=''" type="text" class="form-control" placeholder="Username" #username>
         </div>
         <div class="form-group login_form">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" placeholder="Password" #password>
+            <input (keypress)="invalid_message=''" type="password" class="form-control" placeholder="Password" #password>
         </div>
         <button type="submit" class="btn btn-primary mt-4" (click)="login(username,password)">Login</button>
     </form>

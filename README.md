@@ -9,7 +9,7 @@ A slackbot for managing daily scrum
 
 ## Installation
 
-Install python 3.5
+Install python 3.6
 ```
 apt-get update
 apt-get install python3.6
@@ -55,6 +55,16 @@ Run unittest:
 ./manage.py test
 ```
 
+DEVELOPMENT:
+
+Creating your ngrok tunnel for testing your slack app:
+
+1. Download and install ngrok here https://ngrok.com/download
+2. After installing run ./ngrok http <port_number> on your terminal to start connecting to the ngrok tunnel.
+3. Copy the link given and use it as the <domain_name> for your app's slash commands.
+e.g. http://9b39ffec.ngrok.io
+
+
 Setting up slack slash commands:
 
 Command for creating scrum reports
@@ -68,4 +78,19 @@ Setup bot to gain access to private channels:
 Generate a legacy token for your slack app here
 https://api.slack.com/custom-integrations/legacy-tokens
 
-Set the "SLACK_API_TOKEN" variable on your settings.py as the token generated
+
+Setup local_settings.py:
+
+DEBUG = True
+
+ALLOWED_HOSTS = ('*')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': <database name>,
+        'USERNAME': <postgres username>
+    }
+}
+
+SLACK_API_TOKEN = <your workspace app's token>

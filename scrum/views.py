@@ -125,8 +125,8 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         of a specific user and project
         """
         data = self.parseData(request.POST)
-        scrum_list = Scrum.objects.filter(user__username=data['user_name'],
-                                    project__name=data['channel_name'])
+        scrum_list = Scrum.objects.filter(user__slack_id=data['user_id'],
+                                    project__id=data['channel_id'])
         scrum = scrum_list.order_by('date_created').reverse()[0]
 
         logs = scrum.log_set.all()
@@ -190,19 +190,7 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         """
         lists scrum reports
         """
-        scrums = Scrum.objects.all()
-        dates = {
-            x.date() for x in scrums.values_list('date_created',
-                                                    flat=True)}
-        data = [{
-        'date_created': d,
-        'scrums': ScrumReportSerializer(scrums.filter(date_created__date=d).
-                                        order_by('date_created').reverse(),
-                                        many=True).data}
-        for d in dates]
-        data_sorted = reversed(sorted(data, key=lambda item: item['date_created']))
-        return Response(data_sorted, status=200)
-        # return self.list_all(Scrum, ScrumSerializer, 'date_created')
+        return self.list_all(Scrum, ScrumReportSerializer, 'date_created')
 
 
 class IssuesAPI(ViewSet, CRUDMixin):

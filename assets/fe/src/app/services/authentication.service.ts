@@ -22,5 +22,6 @@ export class AuthenticationService {
       if(!localStorage.getItem('user')){
         this.stateService.go('login')
       }
+      return localStorage.getItem('user')
   }
 }

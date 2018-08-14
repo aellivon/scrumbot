@@ -7,11 +7,11 @@
             <div class="tabs clickable" (click)="goToIssues()">
                 <span class="less-emphasis"><b>All Issues</b></span>
             </div>
-            <i class="less-emphasis fas fa-search border-0 m-1 mr-3 ml-5 pl-5"></i>
+            <fa-icon [icon]="icons.search" class="less-emphasis border-0 m-1 mr-3 ml-5 pl-5"></fa-icon>
             <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="getScrum(search.value)" #search>
         </div>
         <div class="m-3 mr-5">
-            <app-avatar></app-avatar>
+            <app-avatar [username]="logged_user" [id]="logged_user"></app-avatar>
         </div>
     </div>
     <div class="row">
@@ -20,7 +20,7 @@
                 <h1>Welcome back, {{logged_user}}!</h1>
             </div>
             <div class="row">
-                <p class="less-emphasis">There are {{ issues?.length }} issues and {{ scrums_bydate?.length }} urgent tickets</p>
+                <p class="less-emphasis">There are {{ getPending()?.length }} issues and {{ getUrgent()?.length }} urgent tickets</p>
             </div>
                 <hr>
             <div class="row pt-4 pb-4">
@@ -51,7 +51,7 @@
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums_bydate"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
-                                        <i class="far fa-calendar"></i>
+                                        <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
                             </div>
@@ -60,30 +60,14 @@
                                 <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums_bydate"/>
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
-                                        <i class="far fa-calendar"></i>
+                                        <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
                             </div>
                         <span class="less-emphasis mr-4">Date</span>
-                            <!-- <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="p-2 d-flex align-items-center border rounded-left">
-                                        <i class="far fa-calendar"></i>
-                                    </div>
-                                </div>
-                                <input type="text" ngbDatepicker class="border border-left-0 form-control" #d="ngbDatepicker"/>
-                                <div class="input-group-append">
-                                    <button class="btn btn-light border border-left-0" (click)="d.toggle()"><i class="fas fa-chevron-down"></i></button>
-                                </div>
-                            </div> -->
                     </div>
                 </div>
             </div>
-            <!-- <div class="row" *ngIf="filter_user && filter_hours">
-                <div>
-                    <h2 class="p-3 m-0">{{ filter_user }} has logged a total of {{ getTotalHours(filter_user, filter_project, filter_from, filter_to) }} hours <span *ngIf="filter_project">in project {{ filter_project }}</span> from {{ filter_from | date:'longDate' }} to {{ filter_to | date:'longDate' }}</h2>
-                </div>
-            </div> -->
             <div class="row pt-4">
                 <div class="col-sm-3">
                     <h4><b>Stand up updates</b></h4>
@@ -101,11 +85,11 @@
                     <span class="category_label"><b>Total Hours</b></span>
                 </div>
             </div>
-            <div class="mb-4" *ngFor="let date_group of filtered_scrum">
-                <div *ngIf="isWithinDate(date_group.date_created, filter_from, filter_to)">
+            <div class="mb-4" *ngFor="let date_group of filtered_scrum | groupScrums:'date_created' ">
+                <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to)">
                     <div class="row mb-3">
                         <div class="col-sm-2 d-flex">
-                            <span class="align-self-center grey-border less-emphasis">{{ date_group.date_created | date:'longDate'}}</span>
+                            <span class="align-self-center grey-border less-emphasis">{{ date_group.date | date:'longDate'}}</span>
                         </div>
                         <div class="col-sm-10">
                             <hr>
@@ -114,7 +98,8 @@
                     <div class="d-flex flex-column m-1 scrumlist">
                         <div class="mt-1 mb-1 scrumitem" *ngFor="let scrum of date_group.scrums">
                             <div *ngIf="((filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project))">
-                                <div class="d-flex pt-4 pb-4 clickable" (click)="scrum.open = !scrum.open">
+                                <div class="d-flex clickable align-items-center" (click)="scrum.open = !scrum.open">
+                                    <app-marker [project]="scrum.project"></app-marker>
                                     <div class="col-2 d-flex">
                                         <div>
                                             <app-avatar [username]="scrum.user" [id]="scrum.user"></app-avatar>
@@ -130,7 +115,7 @@
                                     </div>
                                     <div class="col d-flex p-0 align-items-center">
                                         <div *ngIf="!scrum.open">
-                                            <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="https://png.icons8.com/color/30/000000/confetti.png"></span>
+                                            <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
                                             <span class="less-emphasis" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</span>
                                         </div>
                                     </div>
@@ -149,14 +134,14 @@
                                                 <div class="row flex-column mb-5">
                                                     <p class="category_label"><b>Done</b></p>
                                                     <div class="d-flex" *ngFor="let log of scrum.done_logs">
-                                                        <i class="fas fa-check fa-xs check pr-3 pt-1"></i> 
+                                                        <fa-icon [icon]="icons.check" class="pr-3 pt-1 check"></fa-icon>
                                                         <p class="less-emphasis mb-2">{{ log.message }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="row flex-column">
                                                     <p class="category_label"><b>In progress</b></p>
                                                     <div class="d-flex" *ngFor="let log of scrum.wip_logs">
-                                                        <i class="fas fa-circle-notch fa-xs pr-3 pt-1 wip"></i>
+                                                        <fa-icon [icon]="icons.circle_notch" class="pr-3 pt-1 wip"></fa-icon>
                                                         <p class="less-emphasis mb-2" > {{ log.message }}</p>
                                                     </div>
                                                 </div>
@@ -164,23 +149,23 @@
                                             <div class="col">
                                                 <div class="row flex-column mb-5">
                                                     <p class="category_label"><b>Pending</b></p>
-                                                    <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="https://png.icons8.com/color/30/000000/confetti.png"></span>
+                                                    <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
                                                     <div *ngFor="let issue of scrum.issue_logs" class="issueitem mb-3 d-flex" >
                                                         <div class="redmarker align-self-center"></div>
                                                         <div class="d-flex flex-column flex-fill">
-                                                            <div class="row d-flex flex-column pt-3 pl-4 pr-3 pb-0 ml-2 mr-2 mb-2" (click)="issue.open = !issue.open">
+                                                            <div class="row d-flex flex-column pt-3 pl-4 pr-3 pb-0 ml-2 mr-2 mb-2 clickable" (click)="issue.open = !issue.open">
                                                                 <div class="d-flex justify-content-between">
                                                                     <p class="mb-1 ml-2">{{ issue.issue }}</p>
                                                                     <div class="d-flex align-items-center">
                                                                         <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right mb-1 mr-2">Urgent</p>
-                                                                        <i class="fas fa-angle-down less-emphasis ml-4" *ngIf="!issue.open"></i>
-                                                                        <i class="fas fa-angle-up less-emphasis ml-4" *ngIf="issue.open"></i>
+                                                                        <fa-icon [icon]="icons.angle_down" class="less-emphasis ml-4" *ngIf="!issue.open"></fa-icon>
+                                                                        <fa-icon [icon]="icons.angle_up" class="less-emphasis ml-4" *ngIf="issue.open"></fa-icon>
                                                                     </div>
                                                                 </div>
                                                                 <div *ngIf="!issue.open">
                                                                     <div class="d-flex" *ngIf="issue.deadline">
                                                                     <div class="mr-2">
-                                                                        <img src="https://png.icons8.com/metro/15/dd2556/leave.png" class="ml-2">
+                                                                        <img src="assets/img/leave.png" class="ml-2">
                                                                     </div>
                                                                     <p class="less-emphasis category_labelel">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
                                                                     </div>
@@ -194,7 +179,7 @@
                                                                         <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today"/>
                                                                         <div class="input-group-append">
                                                                             <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
-                                                                                <i class="fas fa-angle-down less-emphasis"></i>
+                                                                                <fa-icon [icon]="icons.angle_down" class="less-emphasis"></fa-icon>
                                                                             </button>
                                                                         </div>
                                                                         </div>

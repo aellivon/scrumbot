@@ -12,6 +12,9 @@ import { StateService } from '@uirouter/angular';
 import { GET_ISSUES,
           UPDATE_ISSUE_STATUS,
           UPDATE_ISSUE_DEADLINE } from 'app/constants/endpoints';
+import { faCircleNotch, faCheck, faSearch,
+          faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-scrumboard',
@@ -19,6 +22,15 @@ import { GET_ISSUES,
   styleUrls: ['./scrumboard.component.css']
 })
 export class ScrumboardComponent implements OnInit {
+
+  icons = {
+    circle_notch: faCircleNotch,
+    check: faCheck,
+    search: faSearch,
+    calendar: faCalendar,
+    angle_up: faAngleUp,
+    angle_down: faAngleDown
+  }
 
   today: Date = new Date();
 
@@ -94,7 +106,7 @@ export class ScrumboardComponent implements OnInit {
   };
 
   model: any = {beginDate: this.from_model.date,
-                        endDate: this.to_model.date};
+                endDate: this.to_model.date};
 
   show_object = {
     id: '',
@@ -106,8 +118,7 @@ export class ScrumboardComponent implements OnInit {
   logged_user;
 
   ngOnInit() {
-      this.authService.authenticate()
-      this.logged_user = localStorage.getItem('user')
+      this.logged_user = this.authService.authenticate()
       this.fetchIssues()
       this.fetchScrums()
       this.fetchUsers()
@@ -120,15 +131,6 @@ export class ScrumboardComponent implements OnInit {
               data => {
                   this.scrums_bydate = data
                   var scrums = _.map(this.scrums_bydate, scrum => {return scrum.scrums})
-                  console.log(_.uniq(scrums, true, 'date_created'))
-                  // this.scrums.map(date_group => {
-                  //   date_group.scrums.map(scrum => {
-                  //     scrum.issue_logs.map(issue => {
-                  //                     issue.open = false
-                  //                 })
-                  //     return scrum
-                  //   })
-                  // })
                   this.filtered_scrum = data
               }
           );
@@ -197,6 +199,25 @@ export class ScrumboardComponent implements OnInit {
       })]
   }
 
+  getUrgent(){
+      if(!this.issues){
+        return null
+      }
+      return this.issues.filter(issue => {
+                       return issue.is_urgent == true &&
+                               issue.status == 'P'
+                  })
+  }
+  
+  getPending(){
+    if(!this.issues){
+      return null
+    }
+    return this.issues.filter(issue => {
+                       return issue.status == 'P'
+                  })
+  }
+
   updateStatus(id, status){
       this.http.post(UPDATE_ISSUE_STATUS(id), {"status":status})
       .subscribe();
@@ -204,22 +225,15 @@ export class ScrumboardComponent implements OnInit {
          return issue.id == id
       })
       this.issues[index].status = status
-      var group_index = this.scrums_bydate.findIndex(scrum => {
-        return scrum.scrums.find(scrum =>{
-           return scrum.issue_logs.find(issue => {
-               return issue.id == id
-            })
-        })
-      })
-      var scrum_index = this.scrums_bydate[group_index].scrums.findIndex(scrum => {
+      var scrum_index = this.scrums_bydate.findIndex(scrum => {
          return scrum.issue_logs.find(issue => {
              return issue.id == id
           })
       })
-      var issue_index = this.scrums_bydate[group_index].scrums[scrum_index].issue_logs.findIndex(issue => {
+      var issue_index = this.scrums_bydate[scrum_index].issue_logs.findIndex(issue => {
          return issue.id == id
       })
-      this.scrums_bydate[group_index].scrums[scrum_index].issue_logs.splice(issue_index,1)
+      this.scrums_bydate[scrum_index].issue_logs.splice(issue_index,1)
   }
 
   updateDeadline(id, deadline){
@@ -242,21 +256,6 @@ export class ScrumboardComponent implements OnInit {
   getScrum(keyword){
     this.filtered_scrum = this.searchService.searchScrums(keyword, this.scrums_bydate)
   }
-
-  // hasIssues(scrum){
-  //   var pending = scrum.issue_logs.filter(issue =>{
-  //                      return issue.status == 'Pending'
-  //                 })
-  //   var resolved = scrum.issue_logs.filter(issue =>{
-  //                      return issue.status == 'Resolved'
-  //                 })
-  //   var closed = scrum.issue_logs.filter(issue =>{
-  //                      return issue.status == 'Closed'
-  //                 })
-  //   return (this.filter_pending && pending.length!=0) ||
-  //           (this.filter_resolved && resolved.length!=0) ||
-  //           (this.filter_closed && closed.length!=0)
-  // }
 
   hasPending(scrum){
     var pending = scrum.issue_logs.filter(issue => {
