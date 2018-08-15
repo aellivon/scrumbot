@@ -1,7 +1,11 @@
+from accounts.models import User, Project
 
 from scrum.models import Scrum, Issue, Log
 
+from django.db.models import Sum, Count
+
 from .constants import STATUS_CHOICES
+
 
 class UsefulFuncitons():
     # This class is for functions that could be used in the future
@@ -11,6 +15,21 @@ class UsefulFuncitons():
             return QuerySet[index]
         except IndexError:
             return ''
+
+    def extract_hours_and_minutes(self, to_extract):
+        # accepts a float then return the hours and minutes from it.
+        to_extract = round(to_extract, 2)
+        to_extract = str(to_extract).split('.')
+
+        hours = to_extract[0]
+        minutes = to_extract[1]
+
+        time = {
+            'hours': float(hours),
+            'minutes': float(minutes)
+        }
+
+        return time
 
 
 class ProduceReportMixin(UsefulFuncitons):
@@ -30,24 +49,8 @@ class ProduceReportMixin(UsefulFuncitons):
         for scrum in scrums:
             done_logs = {}
             wip_logs = {}
-
-            to_push_user = ''
-            to_push_date = ''
-            to_push_project = ''
-
-            if previous_user != scrum.user.username:
-                to_push_user = scrum.user.username
-                previous_user = scrum.user.username
-
-            if previous_project != scrum.project.name:
-                to_push_project = scrum.project.name
-                previous_project = scrum.project.name
-
-            if previous_date != scrum.date_created.date():
-                to_push_date = scrum.date_created.date()
-                previous_date = scrum.date_created.date()
             
-            issues = Issue.objects.filter(scrum__id=scrum.id)
+            issues = Issue.objects.filter(scrum__id=scrum.id).order_by('status')
             if filter_status != '*':
                 issues = issues.filter(status=filter_status)
 
@@ -68,6 +71,23 @@ class ProduceReportMixin(UsefulFuncitons):
             index = 0
             while index < higher_length:
 
+                # this code removes recurring data
+                to_push_user = ''
+                to_push_date = ''
+                to_push_project = ''
+
+                if previous_user != scrum.user.username:
+                    to_push_user = scrum.user.username
+                    previous_user = scrum.user.username
+
+                if previous_project != scrum.project.name:
+                    to_push_project = scrum.project.name
+                    previous_project = scrum.project.name
+
+                if previous_date != scrum.date_created.date():
+                    to_push_date = scrum.date_created.date()
+                    previous_date = scrum.date_created.date()
+
                 done_log_to_push = ''
                 wip_log_to_push = ''
 
@@ -76,9 +96,10 @@ class ProduceReportMixin(UsefulFuncitons):
                     wip_log_to_push = self.get_query_set_data_or_empty_string(wip_logs, index)
                 
                 issue_to_push = self.get_query_set_data_or_empty_string(issues, index)
-
                 # ensures that at least one has a value
                 if done_log_to_push or wip_log_to_push or issue_to_push:
+
+                    issue_to_push.status = STATUS_CHOICES[issue_to_push.status]
                     object_to_insert =  {'user': to_push_user, 'project': to_push_project, 
                         'date': to_push_date, 'task_done': done_log_to_push,
                         'wip_done': wip_log_to_push, 'issue': issue_to_push}
@@ -102,3 +123,142 @@ class ProduceReportMixin(UsefulFuncitons):
             scrum = scrum.filter(project__name=filter_project)
 
         return scrum
+
+
+    def get_hours_of_projects(self, scrums):
+
+        # Total hours rendered in a project
+
+        project_reports = scrums.values('project').order_by('project').annotate(total_hours=Sum('hours'))
+
+        summary_report = []
+        object_to_insert = {}
+
+        for report in project_reports:
+            project = Project.objects.get(id=report['project'])
+
+            time = self.extract_hours_and_minutes(report['total_hours'])
+
+            sentence_string = ""
+
+            sentence_string += f"'{project.name}' got a total of {time['hours']:.0f} hour/s"
+            if time['minutes'] != 0:
+                sentence_string += f" and {time['minutes']:.0f} minute/s"
+            sentence_string += '.'
+
+            object_to_insert = {
+                'to_display': sentence_string,
+            }
+            summary_report.append(object_to_insert)
+
+        return summary_report
+
+
+    def get_hours_of_members(self, scrums):
+
+        # Total hours rendered of a person
+
+        user_reports = scrums.values('user').order_by('user').annotate(total_hours=Sum('hours'))
+        
+        summary_report = []
+        object_to_insert = {}
+
+        for report in user_reports:
+            user = User.objects.get(id=report['user'])
+            sentence_string = ""
+
+            time = self.extract_hours_and_minutes(report['total_hours'])
+
+            # string builder
+            sentence_string += f"'{user.username}' worked for a total of {time['hours']:.0f} hour/s"
+            if time['minutes'] != 0:
+                sentence_string += f" and {time['minutes']:.0f} minute/s"
+            sentence_string += '.'
+
+            object_to_insert = {
+                'to_display': sentence_string
+            }
+
+            summary_report.append(object_to_insert)
+
+        return summary_report
+
+
+    def get_hours_of_person_per_project(self, scrums):
+       
+        # Total hours a person rendered in a project
+
+        user_per_project_reports = scrums.values('user','project').order_by('user','project').annotate(total_hours=Sum('hours'))
+
+        summary_report = []
+        object_to_insert = {}
+
+        for report in user_per_project_reports:
+            user = User.objects.get(id=report['user'])
+            project = Project.objects.get(id=report['project'])
+
+            sentence_string = ""
+
+            time = self.extract_hours_and_minutes(report['total_hours'])
+
+            sentence_string = ""
+
+            sentence_string += f"'{user.username}' spent a total of {time['hours']:.0f} hour/s"
+            if time['minutes'] != 0:
+                sentence_string += f" and {time['minutes']:.0f} minute/s"
+            sentence_string += f" on the project '{project.name}'."
+
+            object_to_insert = {
+                'to_display': sentence_string
+            }
+
+            summary_report.append(object_to_insert)
+
+        return summary_report
+
+
+    def get_urgent_issue_count(self, scrums):
+
+        # Count issues to report summary
+        issues = Issue.objects.filter(scrum__in=scrums
+            ).values('scrum__user__username', 'status'
+            ).order_by('scrum__user', 'status'
+            ).annotate(total=Count('status'))
+        
+        for issue in issues:
+            issue['status'] = STATUS_CHOICES[issue['status']]
+
+        return issues
+
+    def summary_report(self, scrums):
+
+        # This gets all summary of the project
+
+        members = self.get_hours_of_members(scrums)
+        projects = self.get_hours_of_projects(scrums)
+        person_per_project = self.get_hours_of_person_per_project(scrums)
+
+        full_summary_report = {
+            'members': members,
+            'projects': projects,
+            'person_per_project': person_per_project
+        }
+        
+        return full_summary_report
+
+
+    def issue_summary_report(self, scrums):
+
+        # This gets all the summary of issues
+
+        members = self.get_hours_of_members(scrums)
+        issues = self.get_urgent_issue_count(scrums)
+
+        full_issue_summary_report = {
+            'members': members,
+            'issues': issues
+        }
+        
+        return full_issue_summary_report
+
+

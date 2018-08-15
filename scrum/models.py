@@ -1,4 +1,5 @@
 from django.db import models
+
 from accounts.models import User, Project
         
 
@@ -10,7 +11,7 @@ class Scrum(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    hours = models.CharField(max_length=10)
+    hours = models.FloatField()
     is_edited = models.BooleanField(default=False)
 
     def __str__(self):
