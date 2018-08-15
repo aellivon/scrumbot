@@ -38,12 +38,6 @@ class ProduceReportMixin(UsefulFuncitons):
     def  format_data(self, scrums, include_logs, filter_status):
         # formatting data so the front end can gracefully place the data
 
-        # This allows the script to detect when an entry is already a duplicate
-        #   This would allow the user know at a glance that the data is the same
-        #       below.
-        previous_user = ''
-        previous_project = ''
-        previous_date = ''
 
         formatted_data = []
         for scrum in scrums:
@@ -71,22 +65,9 @@ class ProduceReportMixin(UsefulFuncitons):
             index = 0
             while index < higher_length:
 
-                # this code removes recurring data
-                to_push_user = ''
-                to_push_date = ''
-                to_push_project = ''
-
-                if previous_user != scrum.user.username:
-                    to_push_user = scrum.user.username
-                    previous_user = scrum.user.username
-
-                if previous_project != scrum.project.name:
-                    to_push_project = scrum.project.name
-                    previous_project = scrum.project.name
-
-                if previous_date != scrum.date_created.date():
-                    to_push_date = scrum.date_created.date()
-                    previous_date = scrum.date_created.date()
+                to_push_user = scrum.user.username
+                to_push_project = scrum.project.name
+                to_push_date = scrum.date_created.date()
 
                 done_log_to_push = ''
                 wip_log_to_push = ''
@@ -98,8 +79,8 @@ class ProduceReportMixin(UsefulFuncitons):
                 issue_to_push = self.get_query_set_data_or_empty_string(issues, index)
                 # ensures that at least one has a value
                 if done_log_to_push or wip_log_to_push or issue_to_push:
-
-                    issue_to_push.status = STATUS_CHOICES[issue_to_push.status]
+                    if issue_to_push:
+                        issue_to_push.status = STATUS_CHOICES[issue_to_push.status]
                     object_to_insert =  {'user': to_push_user, 'project': to_push_project, 
                         'date': to_push_date, 'task_done': done_log_to_push,
                         'wip_done': wip_log_to_push, 'issue': issue_to_push}
