@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from django.template import Context
-from django.contrib.humanize.templatetags.humanize import naturalday
 
 from xhtml2pdf import pisa
 
@@ -28,6 +27,8 @@ class OverAllReviewReport(View, ProduceReportMixin):
         # fetching an setting up necessary data
         data = self.fetch_data(filter_project, filter_user, filter_from_date, filter_until_date)
 
+        summary_report = self.summary_report(data)
+
         data = self.format_data(data, True, '*')
 
         # For the title of the report
@@ -42,11 +43,16 @@ class OverAllReviewReport(View, ProduceReportMixin):
         filters = {
             'project': filter_project,
             'user': filter_user,
-            'from_date': naturalday(filter_from_date),
-            'until_date': naturalday(filter_until_date)
+            'from_date': filter_from_date.date(),
+            'until_date': filter_until_date.date()
         }
 
-        context = {'data': data, 'filters': filters, 'display_type': 'overall'}
+
+        context = {'data': data, 'filters': filters, 'display_type': 'overall',
+          'member_reports': summary_report['members'], 'project_reports': summary_report['projects'],
+          'person_per_project_report': summary_report['person_per_project']
+         }
+
         template = get_template('pdf_format.html')
 
         # rendering of template
@@ -63,10 +69,11 @@ class OverAllReviewReport(View, ProduceReportMixin):
         file.close()
         response = HttpResponse(pdf, content_type='application/pdf')
 
+        # response = HttpResponse(html)
         # #   this is the headers that will let the response know that this file must
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
-        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        # response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
 
         return response
 
@@ -86,6 +93,8 @@ class IssueReport(View, ProduceReportMixin):
         # fetching an setting up necessary data
         data = self.fetch_data(filter_project, filter_user, filter_from_date, filter_until_date)
 
+        summary_report = self.issue_summary_report(data)
+
         data = self.format_data(data, False, filter_status)
 
         # For the title of the report
@@ -100,11 +109,13 @@ class IssueReport(View, ProduceReportMixin):
         filters = {
             'project': filter_project,
             'user': filter_user,
-            'from_date': naturalday(filter_from_date),
-            'until_date': naturalday(filter_until_date)
+            'from_date': filter_from_date.date(),
+            'until_date': filter_until_date.date()
         }
 
-        context = {'data': data, 'filters': filters, 'display_type': 'issues'}
+        context = {'data': data, 'filters': filters, 'display_type': 'issues',
+            'member_reports': summary_report['members'], 'issues': summary_report['issues']
+        }
         template = get_template('pdf_format.html')
 
         # rendering of template
@@ -123,7 +134,7 @@ class IssueReport(View, ProduceReportMixin):
         # #   this is the headers that will let the response know that this file must
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
-        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        # response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
 
         return response
 

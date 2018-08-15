@@ -1,80 +1,156 @@
 <style>
-    table, th, td {
-        border: 1px solid black;
-        font-size: 15px;
+table,
+th,
+td {
+    border: 1px solid black;
+    font-size: 15px;
+    text-align: center;
+    padding-top: 10px;
+}
+
+@page {
+    size: letter landscape;
+    margin: 1cm;
+}
+
+@media print {
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .font-size-30 {
+        font-size: 30px;
+    }
+
+    .font-size-15{
+      font-size: 15px;
+    }
+
+    .title-info {
         text-align: center;
+        display: flex;
+        margin-bottom: 0;
+    }
+
+    .title-content {
         padding-top: 10px;
-    }
-    
-    @page {
-        size: letter landscape;
-        margin: 1cm;
-    }
-    .w-100{
-      width: 100%;
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 100px;
+        background: red;
+        line-height: 1;
     }
 
-    .title_info{
-      text-align: center;
-      display: flex;
+    .pb-0 {
+        padding-bottom: 0px;
     }
 
-    .title_content{
-      padding-top: 10 px;
+    .mb-0 {
+        margin-bottom: 0px;
+    }
+
+    .pt-0 {
+        padding-top: 0px;
+    }
+
+    .mt-0 {
+        margin-top: 0px;
+    }
+
+    .mt-n-50 {
+        margin-top: -50px;
+    }
+
+    .sub-summary-title-report{
       font-size: 20px;
       font-weight: bold;
     }
-
-    .pb-0{
-      padding-bottom:0px;
-    }
-
-    .mb-0{
-      margin-bottom: 0px;
-    }
-
-    .pt-0{
-      padding-top:0px;
-    }
-
-    .mt-0{
-      margin-top: 0px;
-    }
-
-    .mt-n-10{
-      margin-top: -50px;
-    }
-
+}
 </style>
-
-{%  load humanize  %}
-
-<div class="w-100 title_info pb-0 mb-0">
-  <p class="title_content pb-0 mb-0"> {{ filters.project }} by {{ filters.user }} from {{ filters.from_date }} until {{ filters.until_date }} </p>
+<div class="w-100 title-info">
+    <p class="title-content"> {{ filters.project }} by {{ filters.user }} from {{ filters.from_date }} until {{ filters.until_date }} </p>
 </div>
-
-
-<table class="w-100 mt-0 pt-0" >
-  <tr>
-    <th>Name</th>
-    <th>Project</th> 
-    <th>Date</th>
-    {% if display_type == 'overall'  %}
-      <th>Tasks Done</th>
-      <th>Working On</th>
-    {% endif %}
-    <th>Issues</th>
-  </tr>
-  {% for row in data %}
+<table class="w-100 mt-0 pt-0">
     <tr>
-      <td>{{ row.user }} </td>
-      <td>{{ row.project }} </td>
-      <td>{{ row.date | naturalday }}</td>
-      {% if display_type == 'overall'  %}
-        <td> {{ row.task_done }}</td>
-        <td>{{ row.wip_done }}</td>
-      {% endif %}
-      <td> {{ row.issue }} </td>
+        <th>Name</th>
+        <th>Project</th>
+        <th>Date</th>
+        {% if display_type == 'overall' %}
+          <th>Tasks Done</th>
+          <th>Working On</th>
+        {% endif %}
+        <th>Issues</th>
+        {% if display_type == 'issues' %}
+          <th> Status </th>
+        {% endif %}
     </tr>
-  {% endfor %}
+    {% for row in data %}
+    <tr>
+        <td>{{ row.user }} </td>
+        <td>{{ row.project }} </td>
+        <td>{{ row.date }}</td>
+        {% if display_type == 'overall' %}
+          <td> {{ row.task_done }}</td>
+          <td>{{ row.wip_done }}</td>
+        {% endif %}
+        <td> {{ row.issue }} </td>
+        {% if display_type == 'issues' %}
+          <td> {{ row.issue.status }} </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
 </table>
+
+<pdf:nextpage />
+
+<p class="title-info font-size-30"> Report Summary </p>
+ {% if display_type == 'overall' %}
+    {% if member_reports %}
+      <p class="sub-summary-title-report"> Member Summary Report</p>
+      <ul>
+        {% for report in member_reports %}
+          <li class="font-size-15 mt-0">{{ report.to_display }}</li> 
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if project_reports %}
+      <p class="sub-summary-title-report"> Project Summary Report</p>
+      <ul>
+        {% for report in project_reports %}
+          <li class="font-size-15 mt-0">{{ report.to_display }}</li> 
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+
+    {% if person_per_project_report %}
+      <p class="sub-summary-title-report"> Project Per Person Summary Report</p>
+      <ul>
+        {% for report in person_per_project_report %}
+          <li class="font-size-15 mt-0">{{ report.to_display }}</li> 
+        {% endfor %}
+      </ul>
+    {% endif %}
+{% else %}
+    {% if member_reports %}
+      <p class="sub-summary-title-report"> Member Summary Report</p>
+      <ul>
+        {% for report in member_reports %}
+          <li class="font-size-15 mt-0">{{ report.to_display }}</li> 
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if issues %}
+      <p class="sub-summary-title-report"> Issue Summary Report</p>
+      <ul>
+        {% for issue in issues %}
+          <li class="font-size-15 mt-0">
+            {{ issue.scrum__user__username }} got {{ issue.total }} {{ issue.status }} issues
+          </li> 
+        {% endfor %}
+      </ul>
+    {% endif %}
+{% endif %}
+
