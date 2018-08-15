@@ -1,0 +1,260 @@
+[33mcommit ad34759e1fd7a29fef1bd1a77d639306b6fa46f4[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/reports[m[33m, [m[1;31morigin/feature/reports[m[33m)[m
+Author: aellivon <aellivon@gmail.com>
+Date:   Mon Aug 13 13:44:40 2018 +0800
+
+    issue report
+
+[33mcommit f18870a162b5b329253c60773739e81f08f7f48e[m[33m ([m[1;32mdevelop[m[33m)[m
+Author: aellivon <aellivon@gmail.com>
+Date:   Mon Aug 13 11:59:05 2018 +0800
+
+    overall_report
+
+[33mcommit c071abb663908f45b0a1eb3b78ae30697537f6ef[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 4e1d0fd dd1823c
+Author: Earvin <earvingemenez@users.noreply.github.com>
+Date:   Wed Aug 8 14:39:56 2018 +0800
+
+    Merge pull request #4 from Chibi-Shem/feature/frontend
+    
+    fixed password setting
+
+[33mcommit dd1823c2d82edd9399e3fad85598e47bb86c2c12[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Wed Aug 8 14:37:08 2018 +0800
+
+    fixed password setting
+
+[33mcommit 4e1d0fd2e974e171a999d2e2fbf56e0eb299b2ec[m
+Author: Earvin Gemenez <earvin.gemenez@gmail.com>
+Date:   Wed Aug 8 11:43:31 2018 +0800
+
+    removed dev credentials and configuration in settings.py
+
+[33mcommit bfbd5d491202dbc61561815ba18c8e396a70d0ab[m
+Author: Earvin Gemenez <earvin.gemenez@gmail.com>
+Date:   Wed Aug 8 11:36:46 2018 +0800
+
+    removed dist files
+
+[33mcommit 360ee526667c543efda5f4520b03b1be392a6e96[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Aug 7 16:58:39 2018 +0800
+
+    Added angular files
+
+[33mcommit a065deaa8cf560f34247f763269bb44891c9568c[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Aug 7 14:52:07 2018 +0800
+
+    removed dist/ in .gitignore
+
+[33mcommit a476ac90c869d6cc8b4afb1a318a939069561d03[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Aug 7 16:52:57 2018 +0800
+
+    added login page
+
+[33mcommit bfaa1ddd4b1e88bf17f6604793ae2ecc8cab6a3c[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Aug 7 14:42:27 2018 +0800
+
+    scrumbot adds private channel
+
+[33mcommit a1fd7047f4bf7df96a812765e4cb3ef7920fb05a[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Aug 6 17:31:16 2018 +0800
+
+    implemented postgre db
+
+[33mcommit 5e084d90457bebc3e3bf735617fd9a3c30d57530[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Aug 6 17:06:26 2018 +0800
+
+    updated requirements
+
+[33mcommit c6e47e2c5dd015e4f9180d187f06956c59324be6[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Aug 3 16:04:04 2018 +0800
+
+    1.0.0.0
+
+[33mcommit 521048b3aa5e93330d6127797f8028eb1d1e89c7[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Aug 6 16:44:52 2018 +0800
+
+    minor code polishing
+
+[33mcommit 01facbcb9c043640601b21818a35d3446544e0b0[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Aug 3 17:55:19 2018 +0800
+
+    added daterangepicker
+
+[33mcommit 51e9339ec1c10347229f51c051a737b65406381a[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Aug 3 15:54:41 2018 +0800
+
+    issue details popover
+
+[33mcommit 74965da1cbbf6b93c6ad6f306b1038623f6e5553[m
+Author: Shem <carl.ipanag@gmail.com>
+Date:   Fri Aug 3 00:49:59 2018 +0800
+
+    added deadlines
+
+[33mcommit 70abad7fd6796372de4775b7afa88c9d4b49a0a1[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Thu Aug 2 18:15:52 2018 +0800
+
+    added issues page
+
+[33mcommit 29703759ae243b6e28da42ffbe2a8d5240dd6ace[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Wed Aug 1 18:23:29 2018 +0800
+
+    followed ui changes
+
+[33mcommit 7a420b88bafd9295e6c855db9d5e8396bd4dfc1a[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Jul 31 19:53:59 2018 +0800
+
+    scrum list frontend changes
+
+[33mcommit b8c5485e05a9ec8b179bf3d803e07f68f21111fe[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Jul 30 18:39:40 2018 +0800
+
+    added /updatescrum slash command
+
+[33mcommit 438e5df6298ad53c8d0f73e71d67e3b0fea451f2[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Jul 27 20:14:33 2018 +0800
+
+    added urgent
+
+[33mcommit 3a9396aecdda594a5626e7e134c8604ae1a7f6de[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Jul 27 16:22:18 2018 +0800
+
+    frontend polishing
+
+[33mcommit a240d8a29dd531e4d4a3cdd83b3088b51f6701a1[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Thu Jul 26 18:33:58 2018 +0800
+
+    added some error handling on parsing data
+
+[33mcommit d5eed1199a003c2ea224a0c1836cf770e2de2e91[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Thu Jul 26 15:23:41 2018 +0800
+
+    removed redundant folder
+
+[33mcommit 3b747b6378837787e20f9698cfcbf70487875d39[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Thu Jul 26 15:15:41 2018 +0800
+
+    frontend, logged hours summary and filters
+
+[33mcommit c693d39158b0331bbbd0900e7b9223b44da8fd68[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Wed Jul 25 18:54:27 2018 +0800
+
+    frontend filtering
+
+[33mcommit 08e5fc639b0dc05adb3f2142e42faf6be8483517[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Jul 24 19:09:01 2018 +0800
+
+    frontend fixes and parsing
+
+[33mcommit 65ad65ce6321b3ee08f68d5e7b790210dd0aeab5[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Jul 23 18:14:14 2018 +0800
+
+    div placements on frontend
+
+[33mcommit c49c0a5119eb55034bf243111872c49ed3528ead[m
+Author: Shem <carl.ipanag@gmail.com>
+Date:   Sat Jul 21 18:15:31 2018 +0800
+
+    filtering projects
+
+[33mcommit e3bb60cdce948f461ceca1daf30d8470ba9b256c[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Jul 20 20:17:22 2018 +0800
+
+    added projects table
+
+[33mcommit 7f8d668c96d5c62ef855b522a60e341e71949315[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Jul 20 17:07:07 2018 +0800
+
+    added issue tracker
+
+[33mcommit b75482e61ff263742bab95fab7e8820c08395c2a[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Fri Jul 20 13:31:27 2018 +0800
+
+    added filtering
+
+[33mcommit 44976135beb6a95143f52ed3fee4f4cc94637344[m
+Author: Shem <carl.ipanag@gmail.com>
+Date:   Fri Jul 20 08:33:25 2018 +0800
+
+    added filters
+
+[33mcommit d3f8d871cd8f19455e7e4944c5b28dd5dc4a771e[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Thu Jul 19 18:14:29 2018 +0800
+
+    added results page
+
+[33mcommit 600423c840b69ae95f9557507a74020453b0c11d[m
+Author: Shem <carl.ipanag@gmail.com>
+Date:   Wed Jul 18 23:59:54 2018 +0800
+
+    added scrum api
+
+[33mcommit 834e13b6ff9ef9f4a356dd7a1a6fe41f93b15af6[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Wed Jul 18 18:22:24 2018 +0800
+
+    added backend API endpoints
+
+[33mcommit 74e9c4876da66507b43ac1a8d0a7e34d945600bc[m
+Author: Shem <carl.ipanag@gmail.com>
+Date:   Tue Jul 17 23:51:33 2018 +0800
+
+    added login ui
+
+[33mcommit 8196260d87e7c578e28870173f1779f2b5493087[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Tue Jul 17 18:15:45 2018 +0800
+
+    add create team ui
+
+[33mcommit 80becdb7f78e689b2b78dcaef9564f7e486f63a5[m
+Author: Shem <carl.ipanag@gmail.com>
+Date:   Mon Jul 16 23:11:12 2018 +0800
+
+    added frontend and 2 new apps
+
+[33mcommit 2a5954ce9541da16572501fd8e5682275ee4f9ac[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Jul 16 18:13:45 2018 +0800
+
+    created slack command connection
+
+[33mcommit 9e4cf02aaec8b20ad0e76c39abaa5a70dbe1d8b6[m
+Author: Chibi-Shem <carl.ipanag@gmail.com>
+Date:   Mon Jul 16 15:08:24 2018 +0800
+
+    initial commit
+
+[33mcommit 4217d33b962283c4aa6fa0efd17dbb9d8a705efa[m
+Author: Manny Candidier <mhan.candidier@gmail.com>
+Date:   Mon Jul 16 14:49:50 2018 +0800
+
+    Initial commit
