@@ -73,7 +73,7 @@ class OverAllReviewReport(View, ProduceReportMixin):
         # #   this is the headers that will let the response know that this file must
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
-        # response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
 
         return response
 
@@ -134,7 +134,7 @@ class IssueReport(View, ProduceReportMixin):
         # #   this is the headers that will let the response know that this file must
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
-        # response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
 
         return response
 
