@@ -1,13 +1,25 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet
-from django.shortcuts import get_object_or_404
-from accounts.models import User, Project
-from .models import Log, Issue, Scrum
+import requests
+
+from accounts.models import User, Team, Project
 from accounts.serializers import (
                                 UserSerializer,
                                 ProjectSerializer
                                 )
+
+from django.shortcuts import get_object_or_404
+from django.http import QueryDict
+from django.conf import settings
+
+from .models import Log, Issue, Scrum
+
+from scrumbot.mixins import CRUDMixin, ParseMixin
+
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
+from rest_framework.permissions import IsAuthenticated
+
 from .serializers import (
                         LogSerializer,
                         IssueSerializer,
@@ -16,15 +28,14 @@ from .serializers import (
                         IssueStatusSerializer,
                         IssueDeadlineSerializer
                         )
-from scrumbot.mixins import CRUDMixin, ParseMixin
-from django.http import QueryDict
-from django.conf import settings
-import requests
+
 
 class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
     """
     Scrum API
     """
+
+    permission_classes = (IsAuthenticated,)
     
     def create_scrum(self, request, *args, **kwargs):
         """
@@ -186,6 +197,8 @@ class IssuesAPI(ViewSet, CRUDMixin):
     """
     Issues API
     """
+
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         """
