@@ -67,8 +67,8 @@ export class TokenService {
   // let the user re-login to generate
   // a new authentication token.
   flagToken () {
-    this.auth.rmToken();
-    this.state.go('login');
+    // this.auth.rmToken();
+    // this.state.go('login');
   }
 
   checkPermission(err){

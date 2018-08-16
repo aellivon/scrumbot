@@ -1,6 +1,6 @@
 import requests
 
-from accounts.models import User, Team, Project
+from accounts.models import User, Project
 from accounts.serializers import (
                                 UserSerializer,
                                 ProjectSerializer

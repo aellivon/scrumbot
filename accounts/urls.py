@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TeamAPI, UserAPI, ProjectAPI
+from .views import UserAPI, ProjectAPI
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 
@@ -22,7 +22,6 @@ list_projects = ProjectAPI.as_view({
 urlpatterns = [
     path('users/', list_users, name='list_users'),
     path('projects/', list_projects, name='list_projects'),
-    path('create/', create_team, name='create'),
     path('login/', obtain_jwt_token),
     path('refresh/', refresh_jwt_token),
     path('users/<str:team_id>/', list_users, name='list_users'),
