@@ -32,6 +32,8 @@ export class ScrumboardComponent implements OnInit {
     angle_down: faAngleDown
   }
 
+  current_page: string = "scrumboard";
+
   today: Date = new Date();
 
   filter_to: Date = new Date();
@@ -62,7 +64,6 @@ export class ScrumboardComponent implements OnInit {
       private searchService: SearchService,
       private dataService: DataService,
       private stateService: StateService,
-      private authService: AuthenticationService,
   ) { }
 
   scrums_bydate: any
@@ -115,15 +116,18 @@ export class ScrumboardComponent implements OnInit {
 
   deadline: Date;
 
-  logged_user;
 
   ngOnInit() {
-      this.logged_user = this.authService.authenticate()
       this.fetchIssues()
       this.fetchScrums()
       this.fetchUsers()
       this.fetchProjects()
 
+  }
+
+  searchSetter(keyword: string){
+    console.log(keyword);
+    this.getScrum(keyword);
   }
 
   fetchScrums(){

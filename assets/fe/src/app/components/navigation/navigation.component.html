@@ -1,0 +1,22 @@
+    <div class="row border-bottom d-flex justify-content-between">
+        <div class="m-3 ml-5 pl-5 d-flex align-items-center w-50">
+            <div class="tabs clickable">
+                <span class="less-emphasis" (click)="goToDashboard()"><b>Dashboard</b></span>
+            </div>
+            <div class="tabs clickable">
+                <span class="less-emphasis" (click)="goToIssues()"><b>All Issues</b></span>
+            </div>
+            <fa-icon [icon]="icons.search" class="less-emphasis border-0 m-1 mr-3 ml-5 pl-5"></fa-icon>
+            <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="searchSetter(search.value)" #search>
+        </div>
+        <div class="m-3 mr-5 col-lg-1 col-md-1 col-sm-1" >
+            <app-avatar [username]="logged_user" [id]="logged_user" [satPopoverAnchorFor]="contactPopover" (click)="contactPopover.toggle()"></app-avatar>
+        </div>
+    </div>
+
+<sat-popover #contactPopover verticalAlign="below" horizontalAlign="end" forceAlignment>
+    <div class="container-with-shadow container-margin">
+        <a (click)="logOut()" class="dropdown-item">Logout</a>
+    </div>
+</sat-popover>
+

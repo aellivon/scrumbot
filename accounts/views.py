@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import render
-from django.contrib.auth import login
+from django.contrib.auth import login, logout, authenticate
 from .serializers import (TeamSerializer,
                         UserSerializer,
                         ProjectSerializer,
@@ -45,6 +45,14 @@ class UserAPI(ViewSet, CRUDMixin):
         serializer.is_valid(raise_exception=True)
         user = serializer.user
         login(self.request, user)
+        return Response(status=200)
+
+    def logout(self, request):
+        """
+            log out end point
+        """
+        logout(request)
+        print(str(request.user))
         return Response(status=200)
 
 class ProjectAPI(ViewSet, CRUDMixin):

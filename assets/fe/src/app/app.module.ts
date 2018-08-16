@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 // INSTALLED MODULES
@@ -28,7 +28,8 @@ import { MarkerComponent } from 'app/components/marker/marker.component';
 import { LoginComponent } from 'app/components/forms/login/login.component';
 import { GroupScrumsPipe } from './pipes/group-scrums.pipe';
 import { GroupIssuesPipe } from './pipes/group-issues.pipe';
-
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { TokenService } from './services/interceptors/token-service.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { GroupIssuesPipe } from './pipes/group-issues.pipe';
     LoginComponent,
     GroupScrumsPipe,
     GroupIssuesPipe,
+    NavigationComponent,
   ],
   imports: [
     NgbModule.forRoot(),
@@ -61,7 +63,9 @@ import { GroupIssuesPipe } from './pipes/group-issues.pipe';
     DataTableModule,
     NgxMyDatePickerModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

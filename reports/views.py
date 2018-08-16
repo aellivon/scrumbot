@@ -6,6 +6,8 @@ from django.template import Context
 
 from xhtml2pdf import pisa
 
+from rest_framework.permissions import IsAuthenticated
+
 from scrum.models import Scrum
 
 from datetime import datetime
@@ -14,6 +16,8 @@ from .mixins import ProduceReportMixin
 
 class OverAllReviewReport(View, ProduceReportMixin):
     # Generating the report for the overall report
+
+    permission_classes = (IsAuthenticated,)
 
     def get(self, *args, **kwargs):
 
@@ -80,6 +84,8 @@ class OverAllReviewReport(View, ProduceReportMixin):
 
 class IssueReport(View, ProduceReportMixin):
     # Generating the report for the issue report
+
+    permission_classes = (IsAuthenticated,)
 
     def get(self, *args, **kwargs):
 
