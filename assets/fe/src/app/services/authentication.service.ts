@@ -58,7 +58,6 @@ export class AuthenticationService {
   setUser(username){
     // Set user so there won't be any side effects on
     //   refactoring
-    console.log(username);
     localStorage.setItem('user', username);
   }
 
