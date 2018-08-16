@@ -43,7 +43,6 @@ export class AuthenticationService {
         data => {
           this.setToken(data);
           this.setRefreshTokenCallState(false);
-          console.log(data);
           return data;
         }
      )

@@ -27,9 +27,6 @@ export class LoginComponent implements OnInit {
     const x = this.authService.loginUser({"username":username.value, "password":password.value});
     x.then(
       data => {
-        console.log(data);
-
-        
         this.stateService.go('scrumboard');
       }
     )
