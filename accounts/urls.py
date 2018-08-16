@@ -3,7 +3,6 @@ from .views import TeamAPI, UserAPI, ProjectAPI
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 
-
 login = UserAPI.as_view({
     'post': 'login'
 })
@@ -21,7 +20,6 @@ list_projects = ProjectAPI.as_view({
 })
 
 urlpatterns = [
-    path('login/', login, name='login'),
     path('users/', list_users, name='list_users'),
     path('projects/', list_projects, name='list_projects'),
     path('create/', create_team, name='create'),

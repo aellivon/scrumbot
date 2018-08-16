@@ -34,6 +34,14 @@ class UserAPI(ViewSet, CRUDMixin):
         login(self.request, user)
         return Response(status=200)
 
+    def logout(self, request):
+        """
+            log out end point
+        """
+        logout(request)
+        print(str(request.user))
+        return Response(status=200)
+
 class ProjectAPI(ViewSet, CRUDMixin):
     """
     Slack project API
