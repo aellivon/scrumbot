@@ -20,7 +20,7 @@ export class SearchService {
                         })
         return scrum.user.search(new RegExp(keyword, 'i')) >= 0 || 
         scrum.project.search(new RegExp(keyword, 'i')) >= 0  ||
-        scrum.hours.search(new RegExp(keyword, 'i')) >= 0 ||
+        scrum.hours.toString().search(new RegExp(keyword, 'i')) >= 0 ||
         done_logs.length!=0 || wip_logs.length!=0
         || issue_logs.length!=0
       })

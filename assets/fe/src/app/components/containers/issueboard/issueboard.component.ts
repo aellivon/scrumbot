@@ -25,6 +25,8 @@ export class IssueboardComponent implements OnInit {
     angle_down: faAngleDown
   }
 
+  current_page: string = "issues";
+
   today: Date = new Date();
 
   filter_to: Date = new Date();
@@ -98,6 +100,10 @@ export class IssueboardComponent implements OnInit {
   };
 
   logged_user;
+
+  searchSetter(keyword){
+    this.getIssues(keyword);
+  }
 
   ngOnInit() {
       this.logged_user = this.authService.authenticate()
@@ -194,10 +200,6 @@ export class IssueboardComponent implements OnInit {
   isWithinDate(issue_date, filter_from, filter_to){
     return (new Date(issue_date).setHours(0,0,0,0) >= filter_from.setHours(0,0,0,0) &&
             new Date(issue_date).setHours(0,0,0,0) <= filter_to.setHours(0,0,0,0))
-  }
-
-  goToDashboard(){
-    this.stateService.go('scrumboard');
   }
 
    formatDateToPython(to_format_date: Date){
