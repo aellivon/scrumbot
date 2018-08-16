@@ -36,10 +36,8 @@ export class TokenService {
     if(this.auth.authenticate()){
 
        req = r.clone({ headers: r.headers.set('Authorization', this.authtoken()) });
-       console.log(this.auth.getRefreshTokenCallState());
        // Refreshes the token 
        if(this.auth.getRefreshTokenCallState() === false){
-          console.log("refresh");
           this.auth.setRefreshTokenCallState(true);
           this.auth.refreshToken();
        }
