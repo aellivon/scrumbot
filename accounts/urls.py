@@ -21,7 +21,6 @@ list_projects = ProjectAPI.as_view({
 })
 
 urlpatterns = [
-    path('login/', login, name='login'),
     path('users/', list_users, name='list_users'),
     path('projects/', list_projects, name='list_projects'),
     path('login/', obtain_jwt_token),
