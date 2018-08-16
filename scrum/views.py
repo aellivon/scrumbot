@@ -34,8 +34,6 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
     """
     Scrum API
     """
-
-    permission_classes = (IsAuthenticated,)
     
     def create_scrum(self, request, *args, **kwargs):
         """
