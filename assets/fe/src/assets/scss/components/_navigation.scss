@@ -1,0 +1,33 @@
+.container-with-shadow{
+    background-color: white;
+    padding: 30px 40px;
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+    width: 150px;
+}
+
+
+.container-margin{
+    margin-right: 35px;
+    padding: 10px;
+}
+
+
+.navigation-text{
+  width: 64px;
+  height: 19px;
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3;
+}
+
+
+
+.fix-align{
+    padding-top: 1px;
+}

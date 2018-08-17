@@ -64,6 +64,7 @@ export class ScrumboardComponent implements OnInit {
       private searchService: SearchService,
       private dataService: DataService,
       private stateService: StateService,
+      private authService: AuthenticationService
   ) { }
 
   scrums_bydate: any
@@ -73,6 +74,7 @@ export class ScrumboardComponent implements OnInit {
 
   filter_user = ''
   filter_project = ''
+  logged_user = ''
 
   filtered_scrum: any;
 
@@ -118,10 +120,11 @@ export class ScrumboardComponent implements OnInit {
 
 
   ngOnInit() {
-      this.fetchIssues()
-      this.fetchScrums()
-      this.fetchUsers()
-      this.fetchProjects()
+      this.fetchIssues();
+      this.fetchScrums();
+      this.fetchUsers();
+      this.fetchProjects();
+      this.logged_user =this.authService.getUser();
 
   }
 
@@ -256,6 +259,25 @@ export class ScrumboardComponent implements OnInit {
   getTotalHours(user, project, from, to){
     var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrums_bydate)
     return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
+  }
+
+  filteredExists(to_filter){
+    let exists = false;
+    console.log(to_filter.scrums);
+    let remember_key = "";
+    for(var key in to_filter.scrums){
+      if(to_filter.scrums[key].user == this.filter_user){
+        exists = true;
+        break;
+      }
+      // some changes must be made
+      if(to_filter.scrums[key].project == this.filter_project){
+        exists = true;
+        break;
+      }
+    }
+   
+    return exists;
   }
 
   getScrum(keyword){
