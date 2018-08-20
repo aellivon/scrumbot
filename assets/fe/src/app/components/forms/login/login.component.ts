@@ -15,23 +15,31 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      if(localStorage.getItem('user')){
-        this.stateService.go('scrumboard')
-      }
+      // if(localStorage.getItem('user')){
+      //   this.stateService.go('scrumboard')
+      // }
   }
 
   invalid_message;
 
   login(username, password){
-        this.authService.loginUser({"username":username.value, "password":password.value})
-                .subscribe(()=>{
-                    localStorage.setItem('user',username.value)
-                    this.stateService.go('scrumboard')},
-                    ()=>{
-                    this.invalid_message="INVALID USERNAME OR PASSWORD"
-                    }
-                )
+    //. A log in promise
+    const x = this.authService.loginUser({"username":username.value, "password":password.value});
+    x.then(
+      data => {
+        this.stateService.go('scrumboard');
+      }
+    )
+    .catch(
+      errors => {
+        console.log(errors);
+        if(errors.non_field_errors){
+         this.invalid_message = errors.non_field_errors
+        
+        }else{
+           this.invalid_message="Please fill up the form!";
+        }
+      }
+    )
   }
-
-
 }

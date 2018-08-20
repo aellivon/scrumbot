@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import render
-from django.contrib.auth import login
+from django.contrib.auth import login, logout, authenticate
 from .serializers import (UserSerializer,
                         ProjectSerializer,
                         LoginSerializer)
