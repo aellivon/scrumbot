@@ -59,9 +59,9 @@
           </div>
         </div>
       </div>
-      <div class="row pt-4 ">
+      <div class="row pt-4">
         <div class="col-sm-12 d-flex justify-content-between">
-          <h4><b>Stand up updates</b></h4>
+          <h4 class="font-lato-16 header-title-size font-color-black">Stand up updates</h4>
           <button (click)="producePDFReport()" class="btn btn-primary align-button"> Download PDF </button>
         </div>
       </div>
@@ -97,7 +97,7 @@
                       <app-avatar [username]="scrum.user" [id]="scrum.user"></app-avatar>
                     </div>
                     <div class="ml-3 pt-4 mb-3" >
-                      <p class=" mb-0 pb-0 user text-truncate ">{{ scrum.user }}</p>
+                      <p class=" mb-0 pb-0 user text-truncate">{{ scrum.user }}</p>
                       <span class="less-emphasis category_label pt-0 mt-0">{{ scrum.date_created | date:'shortTime'}} <span *ngIf="scrum.is_edited">(edited)</span></span>
                     </div>
                   </div>
