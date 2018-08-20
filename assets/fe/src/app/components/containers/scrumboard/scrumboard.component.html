@@ -2,7 +2,10 @@
   <app-navigation [current_page]="current_page" (searchEvent)="searchSetter($event)"></app-navigation>
   <div class="row">
     <div class="col mt-2 ml-5">
-      <div class="message-box pt-5 pl-5 pb-4">
+      <div class="message-box pt-3 pl-5 pb-4" *ngIf="show_welcome_message">
+        <div class="row d-flex justify-content-end p-0 pr-4 m-0">
+          <p (click)="hideWelcomeMessage()" class="close-welcome-message">x</p>
+        </div>
         <div class="row">
           <h1>Welcome back, {{logged_user}}!</h1>
         </div>
@@ -10,7 +13,7 @@
           <p class="less-emphasis">There are {{ getPending()?.length }} issues and {{ getUrgent()?.length }} urgent tickets</p>
         </div>
       </div>
-      <hr>
+      <hr *ngIf="show_welcome_message">
       <div class="row pt-4 pb-4">
         <div class="col d-flex flex-column">
           <div class="d-flex flex-row align-items-center">
@@ -76,7 +79,6 @@
       </div>
       <div class="mb-4" *ngFor="let date_group of filtered_scrum | groupScrums:'date_created'" >
         <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to) && filteredExists(date_group)">
-          {{filteredExists(date_group)}}
           <div class="row mb-3">
             <div class="col-sm-2 d-flex">
               <span class="align-self-center grey-border less-emphasis">{{ date_group.date | date:'longDate'}}</span>
@@ -95,21 +97,21 @@
                       <app-avatar [username]="scrum.user" [id]="scrum.user"></app-avatar>
                     </div>
                     <div class="ml-3 pt-4 mb-3" >
-                      <p class="user mb-0 pb-0 text-truncate">{{ scrum.user }}</p>
+                      <p class=" mb-0 pb-0 user text-truncate ">{{ scrum.user }}</p>
                       <span class="less-emphasis category_label pt-0 mt-0">{{ scrum.date_created | date:'shortTime'}} <span *ngIf="scrum.is_edited">(edited)</span></span>
                     </div>
                   </div>
-                  <div class="col-4 d-flex ml-3 align-items-center">
+                  <div class="col-lg-4 col-md-5 col-lg-4 d-flex  align-items-center ml-5">
                     <span class="project_label" *ngIf="!scrum.open">#{{ scrum.project }}</span>
                   </div>
                   <div class="col d-inline-block p-0 align-items-center">
                     <div *ngIf="!scrum.open">
-                      <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
+                      <span class="less-emphasis inital-truncate mt-2 text-truncate" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
                       <p class="less-emphasis inital-truncate mt-2 text-truncate" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</p>
                     </div>
                   </div>
                   <div class="col d-flex pr-4 align-items-center justify-content-end">
-                    <span><b>{{ scrum.hours }}</b></span>
+                    <span><b>{{ paddingZero(scrum.hours) }}</b></span>
                   </div>
                 </div>
                 <div [collapse]="!scrum.open">
@@ -124,27 +126,27 @@
                           <p class="category_label"><b>Done</b></p>
                           <div class="d-flex" *ngFor="let log of scrum.done_logs">
                             <fa-icon [icon]="icons.check" class="pr-3 pt-1 check"></fa-icon>
-                            <p class="less-emphasis mb-2 collapsable-box">{{ log.message }}</p>
+                            <p class="less-emphasis mb-2 collapsable-box font-lato-16">{{ log.message }}</p>
                           </div>
                         </div>
                         <div class="row flex-column">
                           <p class="category_label"><b>In progress</b></p>
                           <div class="d-flex" *ngFor="let log of scrum.wip_logs">
                             <fa-icon [icon]="icons.circle_notch" class="pr-3 pt-1 wip"></fa-icon>
-                            <p class="less-emphasis mb-2 collapsable-box"> {{ log.message }}</p>
+                            <p class="less-emphasis mb-2 collapsable-box font-lato-16"> {{ log.message }}</p>
                           </div>
                         </div>
                       </div>
                       <div class="col">
                         <div class="row flex-column mb-5 ml-5">
                           <p class="category_label"><b>Pending</b></p>
-                          <span class="less-emphasis" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
+                          <span class="less-emphasis font-lato-16" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="assets/img/confetti.png"></span>
                           <div *ngFor="let issue of scrum.issue_logs" class="box-shadow mb-3 d-flex">
                             <div class="redmarker align-self-center"></div>
                             <div class="d-flex flex-column flex-fill">
                               <div class="row d-flex flex-column pt-3 pl-4 pr-3 pb-0 ml-2 mr-2 mb-2 clickable" (click)="issue.open = !issue.open">
                                 <div class="d-flex justify-content-between">
-                                  <p class="mb-1 ml-0 issue-collapsable-box">{{ issue.issue }}</p>
+                                  <p class="mb-1 ml-0 issue-collapsable-box font-lato-16 font-color-black">{{ issue.issue }}</p>
                                   <div class="d-flex align-items-center">
                                     <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right mb-1 mr-2 ml-2">Urgent</p>
                                     <fa-icon [icon]="icons.angle_down" class="less-emphasis ml-4" *ngIf="!issue.open"></fa-icon>
@@ -156,7 +158,7 @@
                                     <div class="mr-2">
                                       <img src="assets/img/leave.png" class="ml-2">
                                     </div>
-                                    <p class="less-emphasis category_labelel">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
+                                    <p class="less-emphasis category_label font-lato-16 override-14-px">{{ issue.deadline | date:'longDate'}} - {{ issue.deadline | date:'shortTime'}}</p>
                                   </div>
                                 </div>
                               </div>
@@ -178,7 +180,7 @@
                                     <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
                                   </div>
                                 </div>
-                                <div>
+                                <div class="d-flex">
                                   <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
                                   <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
                                 </div>
@@ -196,7 +198,7 @@
         </div>
       </div>
     </div>
-    <div class="col-3 border-left issuelist p-0">
+    <div class="col-lg-3 col-md-12 col-sm-12 border-left issuelist p-0">
       <div class="row m-4">
         <b class="category_label">Issues stream</b>
       </div>
