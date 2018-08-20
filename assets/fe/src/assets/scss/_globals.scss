@@ -9,6 +9,27 @@
     font-size: 12px;
 }
 
+
+.font-lato-16{
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3
+}
+
+.font-color-black{
+  color: #172236;
+}
+
+.override-14-px{
+  font-size: 14px;
+}
+
 .select-project{
   width: 107px;
   height: 27px;

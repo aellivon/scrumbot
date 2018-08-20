@@ -106,7 +106,7 @@
                                             <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
                                         </div>
                                         <div class="ml-3">
-                                            <span><b>{{ issue.scrum_data.user_username }}</b></span>
+                                            <p class="font-lato-16 font-color-black">{{ issue.scrum_data.user_username }}</p>
                                             <br>
                                             <span class="less-emphasis category_label">{{ issue.scrum_data.date_created | date:'shortTime'}} <span *ngIf="issue.scrum_data.is_edited">(edited)</span></span>
                                         </div>
