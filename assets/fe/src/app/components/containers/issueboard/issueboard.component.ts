@@ -99,6 +99,19 @@ export class IssueboardComponent implements OnInit {
       disableUntil: this.disabled_from
   };
 
+
+  filteredExists(to_filter){
+
+    let x = to_filter.filter(x => {
+        return x.scrum_data.user_username.search(new RegExp(this.filter_user, 'i')) >= 0 &&
+               x.scrum_data.project_name.search(new RegExp(this.filter_project, 'i')) >= 0 &&
+               x.status.search(new RegExp(this.filter_status, 'i')) >= 0
+      });
+    console.log(x);
+    return x.length;
+  }
+
+
   logged_user;
 
   searchSetter(keyword){
