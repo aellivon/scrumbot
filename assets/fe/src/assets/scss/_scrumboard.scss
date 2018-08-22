@@ -4,6 +4,7 @@
 
 .message-box{
     background-color: #f8fbff;
+    height: 150px;
 }
 
 .check{
@@ -28,8 +29,35 @@
   color: #172236;
 }
 
+.label-filter-date{
+  height: 27px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  color: #9093a3;
+}
+
+
 .w-33{
   width: 33%;
+}
+
+
+.scrumboard-header-title{
+  height: 15px;
+  font-family: $Lato-Regular;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  color: #172236;
 }
 
 .overflow-x-hidden{
@@ -73,7 +101,7 @@
 }
 
 .close-welcome-message {
-  width: 11px;
+  width: 20px;
   height: 20px;
   font-size: 20px;
   font-weight: normal;

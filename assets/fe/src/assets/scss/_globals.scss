@@ -1,6 +1,16 @@
 
 .searchbar{
-    width: 600px;
+  width: 600px;
+  height: 19px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: black;
 }
 
 .urgent{
@@ -36,7 +46,7 @@
     width: 100px;
     overflow-wrap: hidden;
     height: 14px;
-    font-family: Lato;
+    font-family: $Lato-Regular;
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -48,9 +58,6 @@
 }
 
 
-.height-16{
-  height: 16px;
-}
 
 
 .header-title-size{
@@ -113,6 +120,19 @@
     border: solid 1px #f7f7fa;
 }
 
+.hours-title{
+  height: 19px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #172236;
+}
+
 .deadline_picker{
     width: 164px;
 }
@@ -130,6 +150,13 @@
 .clickable{
     cursor: pointer;
 }
+
+.font-lato-16-height-19{
+  height: 19px;
+  font-family: $Lato-Regular;
+  font-size: 16px;
+}
+
 
 .mydrp .selectiongroup {
     height: 38px;

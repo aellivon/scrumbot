@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col mt-2 ml-0">
       <div class="ml-5">
-        <div class="message-box pt-3 pl-5 pb-4" *ngIf="show_welcome_message">
+        <div class="message-box pt-2 pl-5 pb-4" *ngIf="show_welcome_message">
           <div class="row d-flex justify-content-end p-0 pr-4 m-0">
             <p (click)="hideWelcomeMessage()" class="close-welcome-message">x</p>
           </div>
@@ -56,7 +56,7 @@
                                     </button>
                                 </span>
               </div>
-              <span class="less-emphasis mr-4">Date</span>
+              <span class="less-emphasis mr-4 label-filter-date">Date</span>
             </div>
           </div>
         </div>
@@ -68,13 +68,13 @@
         </div>
         <div class="row mt-3 d-flex ">
           <div class="offset-2 col-2 d-flex pl-4">
-            <span class="category_label"><b>Project Channel</b></span>
+            <span class="category_label scrumboard-header-title"><b>Project Channel</b></span>
           </div>
           <div class="offset-2 col-2">
-            <span class="category_label"><b>Issues</b></span>
+            <span class="category_label scrumboard-header-title"><b>Issues</b></span>
           </div>
-          <div class="offset-2 col-2">
-            <span class="category_label"><b>Total Hours</b></span>
+          <div class="offset-2 col-2 pl-1">
+            <span class="category_label scrumboard-header-title "><b>Total Hours</b></span>
           </div>
         </div>
       </div>
@@ -103,16 +103,16 @@
                     </div>
                   </div>
                   <div class="col-2 d-flex pl-4">
-                    <span class="project_label" *ngIf="!scrum.open">#{{ scrum.project }}</span>
+                    <span class="project_label font-lato-16-height-19" *ngIf="!scrum.open">#{{ scrum.project }}</span>
                   </div>
                   <div class="col-2 offset-2">
                     <div *ngIf="!scrum.open">
-                      <span class="less-emphasis inital-truncate mt-2 text-truncate height-16" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
-                      <p class="less-emphasis inital-truncate mt-2 text-truncate height-16" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</p>
+                      <span class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19 pt-1" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
+                      <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19 pt-1" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</p>
                     </div>
                   </div>
                   <div class="col-2 offset-2">
-                    <span><b>{{ paddingZero(scrum.hours) }}</b></span>
+                    <span class="hours-title">{{ paddingZero(scrum.hours) }}</span>
                   </div>
                 </div>
                 <div [collapse]="!scrum.open">
