@@ -1,0 +1,210 @@
+.hoverable:hover{
+     background-color: #f8fbff;
+}
+
+.message-box{
+    background-color: #f8fbff;
+}
+
+.check{
+    color: #2be5ac;
+}
+
+
+.sidebar_username{
+  width: 110px;
+  height: 19px;
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #172236;
+}
+
+.project-time{
+  width: 70px;
+  height: 15px;
+  font-family: $Lato-Regular;
+  font-size: 12px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3;
+}
+
+.user{
+  width: 110px;
+  height: 19px;
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #172236;
+}
+
+.height-200{
+    height: 200px;
+}
+
+.overflow-hidden{
+  overflow-x: hidden;
+}
+
+.close-welcome-message {
+  width: 11px;
+  height: 20px;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  text-align: left;
+  color: #bcc4ed;
+  cursor: pointer;
+}
+
+.scrumbot-urgent{
+      width: 18%;
+      height: 20px;
+      font-family: $Lato-Regular;
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.25;
+      letter-spacing: normal;
+      text-align: left;
+      color: #ffffff;
+}
+
+
+.sidebar-issue{
+
+    word-wrap: break;
+    width: 70%;
+    max-height: 35px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    font-family: $Lato-Regular;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #9093a3;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+    margin-right: 0px;
+    padding-right: 0px;
+}
+
+
+.wip{
+    color: #ffc455;
+}
+
+.issueitem{
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+}
+
+.label{
+    font-size: 14px;
+}
+
+.date_filters{
+    width: 170px;
+}
+
+.box-shadow{
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+}
+
+.redmarker{
+  width: 2px;
+  height: 37px;
+  background-color: #dd2556;
+}
+
+.scrumlist{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.issuelist{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 1350px;
+}
+
+.datepicker{
+    width: 130px;
+}
+
+.label-filter-members{
+  height: 27px;
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3;
+  width: 30%;
+}
+
+.label-filter-project{
+  width: 30%;
+  height: 27px;
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3;
+}
+
+.initial-box{
+    word-wrap: break-word;
+
+    max-height: 50px;
+    max-width:400px;
+}
+
+.issue-collapsable-box{
+    word-wrap: break-word;
+    width:300px;
+    overflow-x: hidden;
+}
+
+
+.collapsable-box{
+    word-wrap: break-word;
+    width:300px;
+    overflow-x: hidden;
+}
+
+.wraplongtext{
+    word-wrap: break-word;
+}

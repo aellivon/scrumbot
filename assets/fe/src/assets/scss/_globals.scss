@@ -1,0 +1,121 @@
+
+.searchbar{
+    width: 600px;
+}
+
+.urgent{
+    background-color: #dd2556;
+    color: white;
+    font-size: 12px;
+}
+
+
+.font-lato-16{
+  font-family: $Lato-Regular;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3
+}
+
+
+.inital-truncate{
+    width: 200px;
+    overflow-wrap: hidden;
+    height: 14px;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.19;
+    letter-spacing: normal;
+    text-align: left;
+    color: #9093a3;
+}
+
+.header-title-size{
+  font-size: 24px;
+}
+
+.pop-over-issues{
+  width: 100%;
+  overflow-wrap: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.override-font-24px{
+  font-size: 24px;
+}
+
+.font-color-black{
+  color: #172236;
+}
+
+.override-14-px{
+  font-size: 14px;
+}
+
+.project_label{
+  width: 51px;
+  height: 17px;
+  font-family: $Lato-Regular;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  text-align: left;
+  color: #4361ff;
+}
+
+
+.select-project{
+  width: 107px;
+  height: 27px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9093a3
+}
+
+.scrumitem{
+    box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);
+    border: solid 1px #f7f7fa;
+}
+
+.deadline_picker{
+    width: 164px;
+}
+
+.statusbtn{
+    width: 185px;
+    height: 45px
+}
+
+.tabs{
+    margin: 0px 30px;
+    width: 150px;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.mydrp .selectiongroup {
+    height: 38px;
+}

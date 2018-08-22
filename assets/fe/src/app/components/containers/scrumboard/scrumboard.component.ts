@@ -33,7 +33,7 @@ export class ScrumboardComponent implements OnInit {
   }
 
   current_page: string = "scrumboard";
-
+  show_welcome_message: boolean = true;
   today: Date = new Date();
 
   filter_to: Date = new Date();
@@ -64,6 +64,7 @@ export class ScrumboardComponent implements OnInit {
       private searchService: SearchService,
       private dataService: DataService,
       private stateService: StateService,
+      private authService: AuthenticationService
   ) { }
 
   scrums_bydate: any
@@ -73,6 +74,7 @@ export class ScrumboardComponent implements OnInit {
 
   filter_user = ''
   filter_project = ''
+  logged_user = ''
 
   filtered_scrum: any;
 
@@ -118,15 +120,15 @@ export class ScrumboardComponent implements OnInit {
 
 
   ngOnInit() {
-      this.fetchIssues()
-      this.fetchScrums()
-      this.fetchUsers()
-      this.fetchProjects()
+      this.fetchIssues();
+      this.fetchScrums();
+      this.fetchUsers();
+      this.fetchProjects();
+      this.logged_user =this.authService.getUser();
 
   }
 
   searchSetter(keyword: string){
-    console.log(keyword);
     this.getScrum(keyword);
   }
 
@@ -150,6 +152,10 @@ export class ScrumboardComponent implements OnInit {
           );
   }
 
+  hideWelcomeMessage(){
+    this.show_welcome_message = false;
+  }
+
   fetchUsers(){
       this.dataService.fetchUsers()
           .subscribe(
@@ -157,6 +163,20 @@ export class ScrumboardComponent implements OnInit {
                   this.users = data
               }
           );
+  }
+
+  paddingZero(to_pad){
+    let str_to_pad:string = to_pad.toString();
+    let array_to_pad = str_to_pad.split('.');
+    try{
+       if(array_to_pad[1].length == 1){
+         array_to_pad[1] += "0";
+       }
+       return array_to_pad[0] + ":" + array_to_pad[1];
+    }catch(exception){
+      // catch index error
+      return array_to_pad[0] + ":00";
+    }
   }
 
   fetchProjects(){
@@ -256,6 +276,30 @@ export class ScrumboardComponent implements OnInit {
   getTotalHours(user, project, from, to){
     var filtered_data = this.filterService.filterScrum(user, project, from, to, this.scrums_bydate)
     return filtered_data.map(scrum => scrum.hours).reduce((x,y) => (+x)+(+y), 0)
+  }
+
+  filteredExists(to_filter){
+    // This filters the user and removes the date gui completely
+    let exists = false;
+    
+    let remember_key = "";
+    for(var key in to_filter.scrums){
+      if(this.filter_project == "" && this.filter_user == ""){
+        exists = true;
+        break;
+      }else if(this.filter_project == to_filter.scrums[key].project && this.filter_user == ""){
+        exists = true;
+        break;
+      }else if(this.filter_user == to_filter.scrums[key].user && this.filter_project == ""){
+        exists = true;
+        break;
+      }else if(to_filter.scrums[key].user == this.filter_user && to_filter.scrums[key].project == this.filter_project){
+        exists = true;
+        break;
+      }
+   
+    }
+    return exists;
   }
 
   getScrum(keyword){

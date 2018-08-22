@@ -60,6 +60,10 @@ export class AuthenticationService {
     localStorage.setItem('user', username);
   }
 
+  getUser(){
+    return localStorage.getItem('user');
+  }
+
   setToken (d) {
      // Setting token to the local storage
       (<any>window).localStorage[AUTH_KEY] = JSON.stringify(d);

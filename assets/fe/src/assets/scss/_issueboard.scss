@@ -1,0 +1,67 @@
+.issues_container{
+    margin: 0 120px 0 120px;
+}
+
+.issue_box{
+    max-width: 400px;
+}
+
+.issue_details{
+    background-color: white;
+    margin-right: 20px;
+    padding: 30px 40px;
+    width: 500px;
+    box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
+}
+
+.ng-star-inserted{
+     // Overriding fron bootsrap style
+    .text-center{
+        font-family: $Lato-Regular;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.19;
+        letter-spacing: normal;
+        text-align: left;
+        color: #9093a3;
+        background-color: white;
+        border: 1px solid gray;
+        height: calc(2.25rem + 2px);
+    }
+}
+
+
+.bs-timepicker-field{
+    // Overriding fron bootsrap style
+    font-family: $Lato-Regular;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.19;
+    letter-spacing: normal;
+    text-align: left;
+    color: #9093a3;
+}
+
+.marker_static{
+    width: 5px;
+    height: 61px;
+    margin-right: 30px;
+    background-color: #2be5ac;
+}
+
+.summary_box{
+    background-color: #effffa;
+}
+
+.title{
+    font-size: 18px;
+    color: #2be5ac;
+}
+
+.deadline_label{
+    color: #dd2556;
+}
