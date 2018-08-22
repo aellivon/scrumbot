@@ -68,13 +68,13 @@
         </div>
         <div class="row mt-3 d-flex ">
           <div class="offset-2 col-2 d-flex pl-4">
-            <span class="category_label scrumboard-header-title"><b>Project Channel</b></span>
+            <span class="category_label scrumboard-header-title">Project Channel</span>
           </div>
           <div class="offset-2 col-2">
-            <span class="category_label scrumboard-header-title"><b>Issues</b></span>
+            <span class="category_label scrumboard-header-title">Issues</span>
           </div>
           <div class="offset-2 col-2 pl-1">
-            <span class="category_label scrumboard-header-title "><b>Total Hours</b></span>
+            <span class="category_label scrumboard-header-title ">Total Hours</span>
           </div>
         </div>
       </div>
@@ -124,14 +124,14 @@
                     <div class="d-flex">
                       <div class="col pr-5">
                         <div class="row flex-column mb-5">
-                          <p class="category_label"><b>Done</b></p>
+                          <p class="category_label">Done</p>
                           <div class="d-flex" *ngFor="let log of scrum.done_logs">
                             <fa-icon [icon]="icons.check" class="pr-3 pt-1 check"></fa-icon>
                             <p class="less-emphasis mb-2 collapsable-box font-lato-16">{{ log.message }}</p>
                           </div>
                         </div>
                         <div class="row flex-column">
-                          <p class="category_label"><b>In progress</b></p>
+                          <p class="category_label">In progress</p>
                           <div class="d-flex" *ngFor="let log of scrum.wip_logs">
                             <fa-icon [icon]="icons.circle_notch" class="pr-3 pt-1 wip"></fa-icon>
                             <p class="less-emphasis mb-2 collapsable-box font-lato-16"> {{ log.message }}</p>
@@ -140,7 +140,7 @@
                       </div>
                       <div class="col">
                         <div class="row flex-column mb-5 ml-0">
-                          <p class="category_label"><b>Pending</b></p>
+                          <p class="category_label">Pending</p>
                           <span class="less-emphasis font-lato-16" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
                           <div *ngFor="let issue of scrum.issue_logs" class="box-shadow mb-3 d-flex">
                             <div class="redmarker align-self-center"></div>
@@ -201,7 +201,7 @@
     </div>
     <div class="col-lg-3 col-md-12 col-sm-12 border-left issuelist p-0 pt-4">
       <div class="row mt-4 ml-4 mr-4 mb-0">
-        <b class="category_label">Issues stream</b>
+        <p class="category_label font-weight-bold">Issues stream </p>
       </div>
       <div class="d-flex flex-column">
         <div *ngFor="let issue of issues">

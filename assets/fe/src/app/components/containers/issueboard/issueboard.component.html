@@ -70,19 +70,19 @@
             </div>
             <div class="row pt-4 ">
                 <div class="col-sm-12 d-flex justify-content-between">
-                    <h4><b>Issues list</b></h4>
+                    <h4 class="font-bold">Issues list</h4>
                     <button (click)="producePDFReport()" class="btn btn-primary align-button"> Download PDF </button>
                 </div>
             </div>
             <div class="row mt-3 d-flex">
                 <div class="offset-3 col-2">
-                    <span class="category_label"><b>Project Channel</b></span>
+                    <span class="category_label font-bold">Project Channel</span>
                 </div>
                 <div class="offset-1 col-2 pl-0">
-                    <span class="category_label"><b>Issues</b></span>
+                    <span class="category_label font-bold">Issues</span>
                 </div>
                 <div class="offset-2 col-2">
-                    <span class="category_label pr-5"><b>Due Date</b></span>
+                    <span class="category_label pr-5 font-bold">Due Date</span>
                 </div>
             </div>
             <div class="mb-4" *ngFor="let date_group of filtered_issues | groupIssues:'date_created' ">
