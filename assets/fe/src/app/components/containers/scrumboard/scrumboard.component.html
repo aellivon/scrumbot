@@ -107,8 +107,8 @@
                   </div>
                   <div class="col-2 offset-2">
                     <div *ngIf="!scrum.open">
-                      <span class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19 pt-1" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
-                      <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19 pt-1" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</p>
+                      <span class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19 " *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
+                      <p class="less-emphasis inital-truncate mt-2 text-truncate font-lato-16-height-19 " *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</p>
                     </div>
                   </div>
                   <div class="col-2 offset-2">
