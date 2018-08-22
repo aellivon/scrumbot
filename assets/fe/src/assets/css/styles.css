@@ -429,12 +429,17 @@
   color: #9093a3;
 }
 
-/* line 50, ../scss/_globals.scss */
+/* line 51, ../scss/_globals.scss */
+.height-16 {
+  height: 16px;
+}
+
+/* line 56, ../scss/_globals.scss */
 .header-title-size {
   font-size: 24px;
 }
 
-/* line 54, ../scss/_globals.scss */
+/* line 60, ../scss/_globals.scss */
 .pop-over-issues {
   width: 100%;
   overflow-wrap: hidden;
@@ -445,22 +450,22 @@
   hyphens: auto;
 }
 
-/* line 64, ../scss/_globals.scss */
+/* line 70, ../scss/_globals.scss */
 .override-font-24px {
   font-size: 24px;
 }
 
-/* line 68, ../scss/_globals.scss */
+/* line 74, ../scss/_globals.scss */
 .font-color-black {
   color: #172236;
 }
 
-/* line 72, ../scss/_globals.scss */
+/* line 78, ../scss/_globals.scss */
 .override-14-px {
   font-size: 14px;
 }
 
-/* line 76, ../scss/_globals.scss */
+/* line 82, ../scss/_globals.scss */
 .project_label {
   width: 33%;
   height: 17px;
@@ -475,7 +480,7 @@
   color: #4361ff;
 }
 
-/* line 91, ../scss/_globals.scss */
+/* line 97, ../scss/_globals.scss */
 .select-project {
   width: 107px;
   height: 27px;
@@ -490,35 +495,35 @@
   color: #9093a3;
 }
 
-/* line 105, ../scss/_globals.scss */
+/* line 111, ../scss/_globals.scss */
 .scrumitem {
   box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);
   border: solid 1px #f7f7fa;
 }
 
-/* line 110, ../scss/_globals.scss */
+/* line 116, ../scss/_globals.scss */
 .deadline_picker {
   width: 164px;
 }
 
-/* line 114, ../scss/_globals.scss */
+/* line 120, ../scss/_globals.scss */
 .statusbtn {
   width: 185px;
   height: 45px;
 }
 
-/* line 119, ../scss/_globals.scss */
+/* line 125, ../scss/_globals.scss */
 .tabs {
   margin: 0px 30px;
   width: 150px;
 }
 
-/* line 124, ../scss/_globals.scss */
+/* line 130, ../scss/_globals.scss */
 .clickable {
   cursor: pointer;
 }
 
-/* line 128, ../scss/_globals.scss */
+/* line 134, ../scss/_globals.scss */
 .mydrp .selectiongroup {
   height: 38px;
 }
