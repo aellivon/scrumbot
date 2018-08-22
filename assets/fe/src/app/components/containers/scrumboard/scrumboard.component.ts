@@ -128,6 +128,11 @@ export class ScrumboardComponent implements OnInit {
 
   }
 
+
+  returnToDisplayHumanizeTime(){
+
+  }
+
   searchSetter(keyword: string){
     this.getScrum(keyword);
   }

@@ -10,9 +10,12 @@
     color: #2be5ac;
 }
 
+.offset-project-channel{
+
+}
 
 .sidebar_username{
-  width: 110px;
+  width: 33%;
   height: 19px;
   font-family: $Lato-Regular;
   font-size: 16px;
@@ -23,6 +26,14 @@
   letter-spacing: normal;
   text-align: left;
   color: #172236;
+}
+
+.w-33{
+  width: 33%;
+}
+
+.overflow-x-hidden{
+  overflow-x: hidden;
 }
 
 .project-time{

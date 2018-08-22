@@ -1,86 +1,87 @@
 <div class="container-fluid">
   <app-navigation [current_page]="current_page" (searchEvent)="searchSetter($event)"></app-navigation>
   <div class="row">
-    <div class="col mt-2 ml-5">
-      <div class="message-box pt-3 pl-5 pb-4" *ngIf="show_welcome_message">
-        <div class="row d-flex justify-content-end p-0 pr-4 m-0">
-          <p (click)="hideWelcomeMessage()" class="close-welcome-message">x</p>
-        </div>
-        <div class="row">
-          <h1>Welcome back, {{logged_user}}!</h1>
-        </div>
-        <div class="row">
-          <p class="less-emphasis">There are {{ getPending()?.length }} issues and {{ getUrgent()?.length }} urgent tickets</p>
-        </div>
-      </div>
-      <hr *ngIf="show_welcome_message">
-      <div class="row pt-4 pb-4">
-        <div class="col d-flex flex-column">
-          <div class="d-flex flex-row align-items-center">
-            <span class="less-emphasis label-filter-project">Select Project</span>
-            <div class="input-group">
-              <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrums_bydate" #select_project>
-                <option selected value="">All Projects</option>
-                <option *ngFor="let project of projects">{{ project.name }}</option>
-              </select>
-            </div>
+    <div class="col mt-2 ml-0">
+      <div class="ml-5">
+        <div class="message-box pt-3 pl-5 pb-4" *ngIf="show_welcome_message">
+          <div class="row d-flex justify-content-end p-0 pr-4 m-0">
+            <p (click)="hideWelcomeMessage()" class="close-welcome-message">x</p>
           </div>
-          <br>
-          <div class="d-flex flex-row align-items-center">
-            <span class="less-emphasis label-filter-members">Members</span>
-            <div class="input-group">
-              <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums_bydate" #select_user>
-                <option selected value="">All Members</option>
-                <option *ngFor="let user of users">{{ user.username }}</option>
-              </select>
-            </div>
+          <div class="row">
+            <h1>Welcome back, {{logged_user}}!</h1>
+          </div>
+          <div class="row">
+            <p class="less-emphasis">There are {{ getPending()?.length }} issues and {{ getUrgent()?.length }} urgent tickets</p>
           </div>
         </div>
-        <div class="col d-flex flex-column">
-          <div class="d-flex flex-row-reverse align-items-center">
-            <div class="input-group date_filters">
-              <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums_bydate" />
-              <span class="input-group-append">
+        <hr *ngIf="show_welcome_message">
+        <div class="row pt-4 pb-4">
+          <div class="col d-flex flex-column">
+            <div class="d-flex flex-row align-items-center">
+              <span class="less-emphasis label-filter-project">Select Project</span>
+              <div class="input-group">
+                <select class="custom-select less-emphasis" (change)="filter_project=select_project.value; filtered_scrum=scrums_bydate" #select_project>
+                  <option selected value="">All Projects</option>
+                  <option *ngFor="let project of projects">{{ project.name }}</option>
+                </select>
+              </div>
+            </div>
+            <br>
+            <div class="d-flex flex-row align-items-center">
+              <span class="less-emphasis label-filter-members">Members</span>
+              <div class="input-group">
+                <select class="custom-select less-emphasis" (change)="filter_user=select_user.value; filtered_scrum=scrums_bydate" #select_user>
+                  <option selected value="">All Members</option>
+                  <option *ngFor="let user of users">{{ user.username }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col d-flex flex-column">
+            <div class="d-flex flex-row-reverse align-items-center">
+              <div class="input-group date_filters">
+                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="to" [(ngModel)]="to_model" [options]="toOptions" #to_dp="ngx-mydatepicker" (dateChanged)="setDateToFilter($event); filtered_scrum=scrums_bydate" />
+                <span class="input-group-append">
                                     <button type="button" class="btn btn-light less-emphasis grey-border" (click)="to_dp.toggleCalendar()">
                                         <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
-            </div>
-            <h3 class="m-0 mr-2 ml-2">-</h3>
-            <div class="input-group date_filters">
-              <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums_bydate" />
-              <span class="input-group-append">
+              </div>
+              <h3 class="m-0 mr-2 ml-2">-</h3>
+              <div class="input-group date_filters">
+                <input class="form-control datepicker less-emphasis" ngx-mydatepicker name="from" [(ngModel)]="from_model" [options]="fromOptions" #from_dp="ngx-mydatepicker" (dateChanged)="setDateFromFilter($event); filtered_scrum=scrums_bydate" />
+                <span class="input-group-append">
                                     <button type="button" class="btn btn-light  less-emphasis grey-border" (click)="from_dp.toggleCalendar()">
                                         <fa-icon [icon]="icons.calendar"></fa-icon>
                                     </button>
                                 </span>
+              </div>
+              <span class="less-emphasis mr-4">Date</span>
             </div>
-            <span class="less-emphasis mr-4">Date</span>
+          </div>
+        </div>
+        <div class="row pt-4">
+          <div class="col-12 d-flex justify-content-between pl-3">
+            <h4 class="font-lato-16 header-title-size font-color-black">Stand up updates</h4>
+            <button (click)="producePDFReport()" class="btn btn-primary align-button"> Download PDF </button>
+          </div>
+        </div>
+        <div class="row mt-3 d-flex ">
+          <div class="offset-2 col-2 d-flex pl-4">
+            <span class="category_label"><b>Project Channel</b></span>
+          </div>
+          <div class="offset-2 col-2">
+            <span class="category_label"><b>Issues</b></span>
+          </div>
+          <div class="offset-2 col-2">
+            <span class="category_label"><b>Total Hours</b></span>
           </div>
         </div>
       </div>
-      <div class="row pt-4">
-        <div class="col-sm-12 d-flex justify-content-between">
-          <h4 class="font-lato-16 header-title-size font-color-black">Stand up updates</h4>
-          <button (click)="producePDFReport()" class="btn btn-primary align-button"> Download PDF </button>
-        </div>
-      </div>
-      <div class="row mt-3 ">
-        <div class="col-4 d-flex justify-content-end pr-5">
-          <span class="category_label"><b>Project Channel</b></span>
-        </div>
-        <div class="col-2"></div>
-        <div class="col">
-          <span class="category_label"><b>Issues</b></span>
-        </div>
-        <div class="col d-flex justify-content-end mr-4">
-          <span class="category_label"><b>Total Hours</b></span>
-        </div>
-      </div>
-      <div class="mb-4" *ngFor="let date_group of filtered_scrum | groupScrums:'date_created'" >
+      <div class="mb-4" *ngFor="let date_group of filtered_scrum | groupScrums:'date_created'">
         <div *ngIf="isWithinDate(date_group.date, filter_from, filter_to) && filteredExists(date_group)">
-          <div class="row mb-3">
-            <div class="col-sm-2 d-flex">
+          <div class="row mb-3 ml-5">
+            <div class="col-sm-2 d-flex pl-0">
               <span class="align-self-center grey-border less-emphasis">{{ date_group.date | date:'longDate'}}</span>
             </div>
             <div class="col-sm-10">
@@ -88,40 +89,40 @@
             </div>
           </div>
           <div class="d-flex flex-column m-1 scrumlist">
-            <div *ngFor="let scrum of date_group.scrums"  >
-              <div *ngIf="((filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project))" class="mt-1 mb-1 scrumitem box-shadow mb-2">
+            <div *ngFor="let scrum of date_group.scrums">
+              <div *ngIf="((filter_user=='' || scrum.user==filter_user) && (filter_project=='' || scrum.project==filter_project))" class="mt-1 scrumitem ml-3 box-shadow mb-2">
                 <div class="d-flex clickable align-items-center" (click)="scrum.open = !scrum.open">
-                  <app-marker [project]="scrum.project"></app-marker>
-                  <div class="col-2 d-flex">
+                  <app-marker *ngIf="!scrum.open" [project]="scrum.project"></app-marker>
+                  <div class="ml-1 pl-4 col-2 d-flex">
                     <div class="pt-4">
                       <app-avatar [username]="scrum.user" [id]="scrum.user"></app-avatar>
                     </div>
-                    <div class="ml-3 pt-4 mb-3" >
-                      <p class=" mb-0 pb-0 user text-truncate">{{ scrum.user }}</p>
+                    <div class="ml-3 pt-4 mb-3 w-75">
+                      <p class=" mb-0 pb-0 user text-truncate w-100">{{ scrum.user }}</p>
                       <span class="less-emphasis category_label pt-0 mt-0">{{ scrum.date_created | date:'shortTime'}} <span *ngIf="scrum.is_edited">(edited)</span></span>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-5 col-lg-4 d-flex  align-items-center ml-5">
+                  <div class="col-2 d-flex pl-4">
                     <span class="project_label" *ngIf="!scrum.open">#{{ scrum.project }}</span>
                   </div>
-                  <div class="col d-inline-block p-0 align-items-center">
+                  <div class="col-2 offset-2">
                     <div *ngIf="!scrum.open">
                       <span class="less-emphasis inital-truncate mt-2 text-truncate" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
                       <p class="less-emphasis inital-truncate mt-2 text-truncate" *ngIf="hasPending(scrum)">{{ scrum.issue_logs[0].issue }}</p>
                     </div>
                   </div>
-                  <div class="col d-flex pr-4 align-items-center justify-content-end">
+                  <div class="col-2 offset-2">
                     <span><b>{{ paddingZero(scrum.hours) }}</b></span>
                   </div>
                 </div>
                 <div [collapse]="!scrum.open">
-                  <div class="d-flex flex-column p-5">
+                  <div class="d-flex flex-column p-5 ml-4">
                     <div>
                       <span class="project_label collapsable-box">#{{ scrum.project }}</span>
                     </div>
                     <br>
                     <div class="d-flex">
-                      <div class="col pr-4">
+                      <div class="col pr-5">
                         <div class="row flex-column mb-5">
                           <p class="category_label"><b>Done</b></p>
                           <div class="d-flex" *ngFor="let log of scrum.done_logs">
@@ -138,17 +139,17 @@
                         </div>
                       </div>
                       <div class="col">
-                        <div class="row flex-column mb-5 ml-5">
+                        <div class="row flex-column mb-5 ml-0">
                           <p class="category_label"><b>Pending</b></p>
                           <span class="less-emphasis font-lato-16" *ngIf="!hasPending(scrum)">No issues <img class="ml-3" src="static/img/confetti.png"></span>
                           <div *ngFor="let issue of scrum.issue_logs" class="box-shadow mb-3 d-flex">
                             <div class="redmarker align-self-center"></div>
                             <div class="d-flex flex-column flex-fill">
-                              <div class="row d-flex flex-column pt-3 pl-4 pr-3 pb-0 ml-2 mr-2 mb-2 clickable" (click)="issue.open = !issue.open">
+                              <div class="row d-flex flex-column pt-3 pl-4 pr-2 pb-0 ml-3 mr-2 mb-2 clickable" (click)="issue.open = !issue.open">
                                 <div class="d-flex justify-content-between">
-                                  <p class="mb-1 ml-0 issue-collapsable-box font-lato-16 font-color-black">{{ issue.issue }}</p>
+                                  <p class="mb-1 ml-0 pl-0 issue-collapsable-box font-lato-16 font-color-black">{{ issue.issue }}</p>
                                   <div class="d-flex align-items-center">
-                                    <p *ngIf="issue.is_urgent" class="urgent p-1 pl-2 pr-2 rounded-left rounded-right mb-1 mr-2 ml-2">Urgent</p>
+                                    <p *ngIf="issue.is_urgent" class="urgent p-1 mt-1 rounded-left rounded-right scrumbot-urgent mr-4 mr-5px">Urgent</p>
                                     <fa-icon [icon]="icons.angle_down" class="less-emphasis ml-4" *ngIf="!issue.open"></fa-icon>
                                     <fa-icon [icon]="icons.angle_up" class="less-emphasis ml-4" *ngIf="issue.open"></fa-icon>
                                   </div>
@@ -162,27 +163,27 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="ml-3 mr-2" [collapse]="!issue.open">
-                                <div class="d-flex ml-4">
-                                  <div class="d-flex flex-column mr-3">
-                                    <span class="label less-emphasis pb-2">Date</span>
-                                    <div class="input-group">
-                                      <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today" />
-                                      <div class="input-group-append">
-                                        <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
-                                          <fa-icon [icon]="icons.angle_down" class="less-emphasis"></fa-icon>
-                                        </button>
+                                <div class="ml-3 mr-2" [collapse]="!issue.open">
+                                  <div class="d-flex ml-4 mr-3">
+                                    <div class="d-flex flex-column mr-2 col-6 p-0">
+                                      <span class="label less-emphasis pb-2">Date</span>
+                                      <div class="input-group">
+                                        <input type="text" bsDatepicker class="form-control border deadline_picker" #deadline_date="bsDatepicker" [bsConfig]="{ dateInputFormat: 'MMMM D, YYYY' }" [(ngModel)]="issue.deadline" (bsValueChange)="updateDeadline(issue.id, issue.deadline)" [minDate]="today" />
+                                        <div class="input-group-append">
+                                          <button class="btn btn-light border border-left-0" (click)="deadline_date.toggle()">
+                                            <fa-icon [icon]="icons.angle_down" class="less-emphasis"></fa-icon>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
+                                    <div class="d-flex flex-column col-6 align-items-center">
+                                      <span class="label less-emphasis pb-2">Time</span>
+                                      <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
+                                    </div>
                                   </div>
-                                  <div class="d-flex flex-column">
-                                    <span class="label less-emphasis pb-2">Time</span>
-                                    <timepicker [(ngModel)]="issue.deadline" [showSpinners]="false" minuteStep='1' (isValid)="updateDeadline(issue.id, issue.deadline)"></timepicker>
-                                  </div>
-                                </div>
-                                <div class="d-flex">
-                                  <button #rButton type="button" class="statusbtn btn btn-outline-success m-3 ml-4" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
-                                  <button #cButton type="button" class="statusbtn btn btn-outline-warning m-3" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
+                                <div class="mt-3 mb-3 ml-4 mr-3 d-flex ">
+                                  <button #rButton type="button" class="statusbtn btn btn-outline-success col-6 mr-2" (click)="updateStatus(issue.id, rButton.value)" *ngIf="issue.status == 'P'" value="R">Mark as Solved</button>
+                                  <button #cButton type="button" class="statusbtn btn btn-outline-warning col-6" (click)="updateStatus(issue.id, cButton.value)" *ngIf="issue.status == 'P'" value="C">Close</button>
                                 </div>
                               </div>
                             </div>
@@ -198,25 +199,25 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-3 col-md-12 col-sm-12 border-left issuelist p-0">
-      <div class="row m-4">
+    <div class="col-lg-3 col-md-12 col-sm-12 border-left issuelist p-0 pt-4">
+      <div class="row mt-4 ml-4 mr-4 mb-0">
         <b class="category_label">Issues stream</b>
       </div>
       <div class="d-flex flex-column">
         <div *ngFor="let issue of issues">
-          <div class="d-flex pl-4 pt-3 pb-3 hoverable clickable   " (click)="getIssue(issue.id)" *ngIf="issue.status=='P'">
+          <div class="d-flex pl-4 pt-3 pb-3 hoverable clickable" (click)="getIssue(issue.id)" *ngIf="issue.status=='P'">
             <div class="d-flex">
               <app-avatar [username]="issue.scrum_data.user_username" [id]="issue.scrum_data.user_username"></app-avatar>
             </div>
-            <div class="d-flex flex-fill flex-column ml-3 mr-2">
+            <div class="d-flex flex-fill flex-column ml-3 mr-2 overflow-x-hidden">
               <div class="d-flex justify-content-between mb-1 w-100">
-                <p class="m-0 sidebar_username text-truncate"><b>{{ issue.scrum_data.user_username }}</b></p>
+                <p class="m-0 sidebar_username text-truncate">{{ issue.scrum_data.user_username }}</p>
                 <p class="m-0 project_label text-truncate label">#{{ issue.scrum_data.project_name }}</p>
                 <p class="m-0 less-emphasis project-time">{{ issue.scrum_data.date_created | date:'shortTime'}} </p>
               </div>
-              <div class="d-flex flex-fill justify-content-start mb-1 less-emphasis  ">
+              <div class="d-flex flex-fill justify-content-between mb-1 less-emphasis  ">
                 <span class="sidebar-issue mr-2">{{ issue.issue }}</span>
-                <p *ngIf="issue.is_urgent" class="urgent p-1 mt-1 rounded-left rounded-right scrumbot-urgent">Urgent</p>
+                <p *ngIf="issue.is_urgent" class="urgent p-1 mt-1 rounded-left rounded-right scrumbot-urgent mr-4 mr-5px">Urgent</p>
               </div>
             </div>
           </div>

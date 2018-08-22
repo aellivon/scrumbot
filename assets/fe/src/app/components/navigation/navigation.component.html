@@ -8,11 +8,11 @@
                  <p (click)="goToIssues()" class="fix-align navigation-text w-100">All Issues</p>
             </div>
             <div class="pl-0">
-                <fa-icon [icon]="icons.search" class="pr-2"></fa-icon>
+                <fa-icon [icon]="icons.search" class="pr-2 color-custom-gray"></fa-icon>
                 <input type="text" placeholder="Search" class="border-0 less-emphasis searchbar" (input)="searchSetter(search.value)" #search>
             </div>
         </div>
-        <div class="mt-4 ml-3 col-lg-1 col-md-1 col-sm-1" >
+        <div class="mt-4 mr-4  col-lg-1 col-md-1 col-sm-1  d-flex justify-content-end" >
             <app-avatar [username]="logged_user" [id]="logged_user" [satPopoverAnchorFor]="contactPopover" (click)="contactPopover.toggle()"></app-avatar>
         </div>
 </div>

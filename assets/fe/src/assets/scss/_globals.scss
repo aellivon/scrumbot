@@ -7,6 +7,11 @@
     background-color: #dd2556;
     color: white;
     font-size: 12px;
+    width: 45px;
+}
+
+.color-custom-gray{
+  color: #adb4b7;
 }
 
 
@@ -23,8 +28,12 @@
 }
 
 
+.mr-5px{
+  margin-right: 10px;
+}
+
 .inital-truncate{
-    width: 200px;
+    width: 100px;
     overflow-wrap: hidden;
     height: 14px;
     font-family: Lato;
@@ -65,7 +74,7 @@
 }
 
 .project_label{
-  width: 51px;
+  width: 33%;
   height: 17px;
   font-family: $Lato-Regular;
   font-size: 14px;

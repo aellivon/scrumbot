@@ -3,7 +3,7 @@
 }
 
 .issue_box{
-    max-width: 400px;
+    max-width: 100px;
 }
 
 .issue_details{
@@ -18,7 +18,7 @@
      // Overriding fron bootsrap style
     .text-center{
         font-family: $Lato-Regular;
-        font-size: 16px;
+        font-size: 13px;
         font-weight: normal;
         font-style: normal;
         font-stretch: normal;
@@ -32,11 +32,14 @@
     }
 }
 
+.w-55{
+    width: calc(50% + 20px + 0.5rem);
+}
 
 .bs-timepicker-field{
     // Overriding fron bootsrap style
     font-family: $Lato-Regular;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
