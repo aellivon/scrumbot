@@ -1,6 +1,7 @@
 from django.db import models
 
 from accounts.models import User, Project
+from django.contrib.humanize.templatetags.humanize import naturalday
         
 
 class Scrum(models.Model):
@@ -16,6 +17,11 @@ class Scrum(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    @property
+    def humanize_time(self):
+        return naturalday(self.date_created)
+    
 
 
 

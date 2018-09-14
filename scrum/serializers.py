@@ -17,7 +17,7 @@ class ScrumSerializer(serializers.ModelSerializer):
         model = Scrum
         fields = ('user', 'project', 'hours',
                 'date_created', 'user_username',
-                'project_name', 'is_edited')
+                'project_name', 'is_edited', 'humanize_time')
 
 class LogSerializer(serializers.ModelSerializer):
     """Serializer of a log model"""
@@ -60,7 +60,7 @@ class ScrumReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scrum
         fields = ('id', 'user', 'project', 'hours', 'date_created',
-                    'done_logs', 'wip_logs', 'issue_logs', 'is_edited')
+                    'done_logs', 'wip_logs', 'issue_logs', 'is_edited', 'humanize_time')
 
 
 class IssueStatusSerializer(serializers.ModelSerializer):

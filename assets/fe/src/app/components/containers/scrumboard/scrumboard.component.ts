@@ -16,6 +16,7 @@ import { faCircleNotch, faCheck, faSearch,
           faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
+
 @Component({
   selector: 'app-scrumboard',
   templateUrl: './scrumboard.component.html',
@@ -125,6 +126,11 @@ export class ScrumboardComponent implements OnInit {
       this.fetchUsers();
       this.fetchProjects();
       this.logged_user =this.authService.getUser();
+
+  }
+
+
+  returnToDisplayHumanizeTime(){
 
   }
 

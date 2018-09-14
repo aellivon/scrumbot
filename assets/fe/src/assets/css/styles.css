@@ -17,6 +17,19 @@
   background-color: blue;
 }
 
+/* line 10, ../scss/_avatars.scss */
+.dot {
+  font-family: "Lato";
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
 /* line 1, ../scss/_text.scss */
 .less-emphasis {
   color: #9093a3;
@@ -45,16 +58,17 @@
 /* line 5, ../scss/_scrumboard.scss */
 .message-box {
   background-color: #f8fbff;
+  height: 150px;
 }
 
-/* line 9, ../scss/_scrumboard.scss */
+/* line 10, ../scss/_scrumboard.scss */
 .check {
   color: #2be5ac;
 }
 
-/* line 14, ../scss/_scrumboard.scss */
+/* line 18, ../scss/_scrumboard.scss */
 .sidebar_username {
-  width: 110px;
+  width: 33%;
   height: 19px;
   font-family: "Lato";
   font-size: 16px;
@@ -67,7 +81,44 @@
   color: #172236;
 }
 
-/* line 28, ../scss/_scrumboard.scss */
+/* line 32, ../scss/_scrumboard.scss */
+.label-filter-date {
+  height: 27px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  color: #9093a3;
+}
+
+/* line 45, ../scss/_scrumboard.scss */
+.w-33 {
+  width: 33%;
+}
+
+/* line 50, ../scss/_scrumboard.scss */
+.scrumboard-header-title {
+  height: 15px;
+  font-family: "Lato";
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  color: #172236;
+}
+
+/* line 63, ../scss/_scrumboard.scss */
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+/* line 67, ../scss/_scrumboard.scss */
 .project-time {
   width: 70px;
   height: 15px;
@@ -82,7 +133,7 @@
   color: #9093a3;
 }
 
-/* line 42, ../scss/_scrumboard.scss */
+/* line 81, ../scss/_scrumboard.scss */
 .user {
   width: 110px;
   height: 19px;
@@ -97,19 +148,19 @@
   color: #172236;
 }
 
-/* line 56, ../scss/_scrumboard.scss */
+/* line 95, ../scss/_scrumboard.scss */
 .height-200 {
   height: 200px;
 }
 
-/* line 60, ../scss/_scrumboard.scss */
+/* line 99, ../scss/_scrumboard.scss */
 .overflow-hidden {
   overflow-x: hidden;
 }
 
-/* line 64, ../scss/_scrumboard.scss */
+/* line 103, ../scss/_scrumboard.scss */
 .close-welcome-message {
-  width: 11px;
+  width: 20px;
   height: 20px;
   font-size: 20px;
   font-weight: normal;
@@ -122,7 +173,7 @@
   cursor: pointer;
 }
 
-/* line 78, ../scss/_scrumboard.scss */
+/* line 117, ../scss/_scrumboard.scss */
 .scrumbot-urgent {
   width: 18%;
   height: 20px;
@@ -137,7 +188,7 @@
   color: #ffffff;
 }
 
-/* line 93, ../scss/_scrumboard.scss */
+/* line 132, ../scss/_scrumboard.scss */
 .sidebar-issue {
   word-wrap: break;
   width: 70%;
@@ -162,57 +213,57 @@
   padding-right: 0px;
 }
 
-/* line 119, ../scss/_scrumboard.scss */
+/* line 158, ../scss/_scrumboard.scss */
 .wip {
   color: #ffc455;
 }
 
-/* line 123, ../scss/_scrumboard.scss */
+/* line 162, ../scss/_scrumboard.scss */
 .issueitem {
   box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
 }
 
-/* line 127, ../scss/_scrumboard.scss */
+/* line 166, ../scss/_scrumboard.scss */
 .label {
   font-size: 14px;
 }
 
-/* line 131, ../scss/_scrumboard.scss */
+/* line 170, ../scss/_scrumboard.scss */
 .date_filters {
   width: 170px;
 }
 
-/* line 135, ../scss/_scrumboard.scss */
+/* line 174, ../scss/_scrumboard.scss */
 .box-shadow {
   box-shadow: 0 3px 8px 0 rgba(111, 126, 147, 0.16);
 }
 
-/* line 139, ../scss/_scrumboard.scss */
+/* line 178, ../scss/_scrumboard.scss */
 .redmarker {
   width: 2px;
   height: 37px;
   background-color: #dd2556;
 }
 
-/* line 145, ../scss/_scrumboard.scss */
+/* line 184, ../scss/_scrumboard.scss */
 .scrumlist {
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* line 150, ../scss/_scrumboard.scss */
+/* line 189, ../scss/_scrumboard.scss */
 .issuelist {
   overflow-y: auto;
   overflow-x: hidden;
   height: 1350px;
 }
 
-/* line 156, ../scss/_scrumboard.scss */
+/* line 195, ../scss/_scrumboard.scss */
 .datepicker {
   width: 130px;
 }
 
-/* line 160, ../scss/_scrumboard.scss */
+/* line 199, ../scss/_scrumboard.scss */
 .label-filter-members {
   height: 27px;
   font-family: "Lato";
@@ -227,7 +278,7 @@
   width: 30%;
 }
 
-/* line 174, ../scss/_scrumboard.scss */
+/* line 213, ../scss/_scrumboard.scss */
 .label-filter-project {
   width: 30%;
   height: 27px;
@@ -242,28 +293,28 @@
   color: #9093a3;
 }
 
-/* line 188, ../scss/_scrumboard.scss */
+/* line 227, ../scss/_scrumboard.scss */
 .initial-box {
   word-wrap: break-word;
   max-height: 50px;
   max-width: 400px;
 }
 
-/* line 195, ../scss/_scrumboard.scss */
+/* line 234, ../scss/_scrumboard.scss */
 .issue-collapsable-box {
   word-wrap: break-word;
   width: 300px;
   overflow-x: hidden;
 }
 
-/* line 202, ../scss/_scrumboard.scss */
+/* line 241, ../scss/_scrumboard.scss */
 .collapsable-box {
   word-wrap: break-word;
   width: 300px;
   overflow-x: hidden;
 }
 
-/* line 208, ../scss/_scrumboard.scss */
+/* line 247, ../scss/_scrumboard.scss */
 .wraplongtext {
   word-wrap: break-word;
 }
@@ -275,7 +326,7 @@
 
 /* line 5, ../scss/_issueboard.scss */
 .issue_box {
-  max-width: 400px;
+  max-width: 100px;
 }
 
 /* line 9, ../scss/_issueboard.scss */
@@ -290,7 +341,7 @@
 /* line 19, ../scss/_issueboard.scss */
 .ng-star-inserted .text-center {
   font-family: "Lato";
-  font-size: 16px;
+  font-size: 13px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -303,10 +354,15 @@
   height: calc(2.25rem + 2px);
 }
 
-/* line 36, ../scss/_issueboard.scss */
+/* line 35, ../scss/_issueboard.scss */
+.w-55 {
+  width: calc(50% + 20px + 0.5rem);
+}
+
+/* line 39, ../scss/_issueboard.scss */
 .bs-timepicker-field {
   font-family: "Lato";
-  font-size: 16px;
+  font-size: 13px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -316,7 +372,7 @@
   color: #9093a3;
 }
 
-/* line 49, ../scss/_issueboard.scss */
+/* line 52, ../scss/_issueboard.scss */
 .marker_static {
   width: 5px;
   height: 61px;
@@ -324,18 +380,18 @@
   background-color: #2be5ac;
 }
 
-/* line 56, ../scss/_issueboard.scss */
+/* line 59, ../scss/_issueboard.scss */
 .summary_box {
   background-color: #effffa;
 }
 
-/* line 60, ../scss/_issueboard.scss */
+/* line 63, ../scss/_issueboard.scss */
 .title {
   font-size: 18px;
   color: #2be5ac;
 }
 
-/* line 65, ../scss/_issueboard.scss */
+/* line 70, ../scss/_issueboard.scss */
 .deadline_label {
   color: #dd2556;
 }
@@ -365,16 +421,32 @@
 /* line 2, ../scss/_globals.scss */
 .searchbar {
   width: 600px;
+  height: 19px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: black;
 }
 
-/* line 6, ../scss/_globals.scss */
+/* line 16, ../scss/_globals.scss */
 .urgent {
   background-color: #dd2556;
   color: white;
   font-size: 12px;
+  width: 45px;
 }
 
-/* line 13, ../scss/_globals.scss */
+/* line 23, ../scss/_globals.scss */
+.color-custom-gray {
+  color: #adb4b7;
+}
+
+/* line 28, ../scss/_globals.scss */
 .font-lato-16 {
   font-family: "Lato";
   font-size: 16px;
@@ -387,12 +459,17 @@
   color: #9093a3;
 }
 
-/* line 26, ../scss/_globals.scss */
+/* line 41, ../scss/_globals.scss */
+.mr-5px {
+  margin-right: 10px;
+}
+
+/* line 45, ../scss/_globals.scss */
 .inital-truncate {
-  width: 200px;
+  width: 100px;
   overflow-wrap: hidden;
   height: 14px;
-  font-family: Lato;
+  font-family: "Lato";
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
@@ -403,12 +480,12 @@
   color: #9093a3;
 }
 
-/* line 41, ../scss/_globals.scss */
+/* line 63, ../scss/_globals.scss */
 .header-title-size {
   font-size: 24px;
 }
 
-/* line 45, ../scss/_globals.scss */
+/* line 67, ../scss/_globals.scss */
 .pop-over-issues {
   width: 100%;
   overflow-wrap: hidden;
@@ -419,24 +496,24 @@
   hyphens: auto;
 }
 
-/* line 55, ../scss/_globals.scss */
+/* line 77, ../scss/_globals.scss */
 .override-font-24px {
   font-size: 24px;
 }
 
-/* line 59, ../scss/_globals.scss */
+/* line 81, ../scss/_globals.scss */
 .font-color-black {
   color: #172236;
 }
 
-/* line 63, ../scss/_globals.scss */
+/* line 85, ../scss/_globals.scss */
 .override-14-px {
   font-size: 14px;
 }
 
-/* line 67, ../scss/_globals.scss */
+/* line 89, ../scss/_globals.scss */
 .project_label {
-  width: 51px;
+  width: 33%;
   height: 17px;
   font-family: "Lato";
   font-size: 14px;
@@ -449,7 +526,7 @@
   color: #4361ff;
 }
 
-/* line 82, ../scss/_globals.scss */
+/* line 104, ../scss/_globals.scss */
 .select-project {
   width: 107px;
   height: 27px;
@@ -464,35 +541,56 @@
   color: #9093a3;
 }
 
-/* line 96, ../scss/_globals.scss */
+/* line 118, ../scss/_globals.scss */
 .scrumitem {
   box-shadow: 0 7px 8px 0 rgba(157, 173, 195, 0.16);
   border: solid 1px #f7f7fa;
 }
 
-/* line 101, ../scss/_globals.scss */
+/* line 123, ../scss/_globals.scss */
+.hours-title {
+  height: 19px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #172236;
+}
+
+/* line 136, ../scss/_globals.scss */
 .deadline_picker {
   width: 164px;
 }
 
-/* line 105, ../scss/_globals.scss */
+/* line 140, ../scss/_globals.scss */
 .statusbtn {
   width: 185px;
   height: 45px;
 }
 
-/* line 110, ../scss/_globals.scss */
+/* line 145, ../scss/_globals.scss */
 .tabs {
   margin: 0px 30px;
   width: 150px;
 }
 
-/* line 115, ../scss/_globals.scss */
+/* line 150, ../scss/_globals.scss */
 .clickable {
   cursor: pointer;
 }
 
-/* line 119, ../scss/_globals.scss */
+/* line 154, ../scss/_globals.scss */
+.font-lato-16-height-19 {
+  height: 19px;
+  font-family: "Lato";
+  font-size: 16px;
+}
+
+/* line 161, ../scss/_globals.scss */
 .mydrp .selectiongroup {
   height: 38px;
 }

@@ -100,6 +100,16 @@ export class IssueboardComponent implements OnInit {
   };
 
 
+  returnToDisplayHumanizeTime(data){
+    const humanize_time = data.issues[0].scrum_data.humanize_time.charAt(0).toUpperCase() + data.issues[0].scrum_data.humanize_time.slice(1);
+    if (humanize_time == "Today" || humanize_time == "Tomorrow" || humanize_time == "Yesterday"){
+       return humanize_time + " - ";
+    }else{
+      return "";
+    }
+    
+  }
+
   filteredExists(to_filter){
 
     let x = to_filter.filter(x => {
@@ -107,7 +117,6 @@ export class IssueboardComponent implements OnInit {
                x.scrum_data.project_name.search(new RegExp(this.filter_project, 'i')) >= 0 &&
                x.status.search(new RegExp(this.filter_status, 'i')) >= 0
       });
-    console.log(x);
     return x.length;
   }
 
