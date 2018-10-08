@@ -159,9 +159,9 @@ class ProduceReportMixin(UsefulFuncitons):
                 'to_display': sentence_string
             }
 
-        #     summary_report.append(object_to_insert)
+            summary_report.append(object_to_insert)
 
-        # return summary_report
+        return summary_report
 
 
     def get_hours_of_person_per_project(self, scrums):
