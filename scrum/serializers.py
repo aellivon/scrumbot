@@ -6,6 +6,7 @@ class ScrumSerializer(serializers.ModelSerializer):
     """Serializer of a scrum model"""
     user_username = serializers.SerializerMethodField()
     project_name = serializers.SerializerMethodField()
+    hours = serializers.SerializerMethodField()
 
     def get_user_username(self, obj):
         return obj.user.username
@@ -13,9 +14,13 @@ class ScrumSerializer(serializers.ModelSerializer):
     def get_project_name(self, obj):
         return obj.project.name
 
+    def get_hours(self, obj):
+        return obj.hours
+
     class Meta:
         model = Scrum
-        fields = ('user', 'project', 'hours',
+        # Adding minutes to save it properly
+        fields = ('user', 'project', 'hours', 'minutes',
                 'date_created', 'user_username',
                 'project_name', 'is_edited', 'humanize_time')
 
@@ -46,6 +51,7 @@ class ScrumReportSerializer(serializers.ModelSerializer):
     done_logs = serializers.SerializerMethodField()
     wip_logs = serializers.SerializerMethodField()
     issue_logs = serializers.SerializerMethodField()
+    hours = serializers.SerializerMethodField()
 
     def get_done_logs(self, obj):
         return LogSerializer(obj.log_set.filter(log_type='1'), many=True).data
@@ -57,9 +63,12 @@ class ScrumReportSerializer(serializers.ModelSerializer):
         issues = obj.issue_set.filter(status="P").order_by('is_urgent').reverse()
         return IssueSerializer(issues, many=True).data
 
+    def get_hours(self, obj):
+        return obj.hours
+
     class Meta:
         model = Scrum
-        fields = ('id', 'user', 'project', 'hours', 'date_created',
+        fields = ('id', 'user', 'project', 'hours' ,'date_created',
                     'done_logs', 'wip_logs', 'issue_logs', 'is_edited', 'humanize_time')
 
 

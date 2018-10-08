@@ -18,11 +18,8 @@ class UsefulFuncitons():
 
     def extract_hours_and_minutes(self, to_extract):
         # accepts a float then return the hours and minutes from it.
-        to_extract = round(to_extract, 2)
-        to_extract = str(to_extract).split('.')
-
-        hours = to_extract[0]
-        minutes = to_extract[1]
+        minutes = to_extract % 60
+        hours = to_extract / 60
 
         time = {
             'hours': float(hours),
@@ -110,7 +107,7 @@ class ProduceReportMixin(UsefulFuncitons):
 
         # Total hours rendered in a project
 
-        project_reports = scrums.values('project').order_by('project').annotate(total_hours=Sum('hours'))
+        project_reports = scrums.values('project').order_by('project').annotate(total_minutes=Sum('minutes'))
 
         summary_report = []
         object_to_insert = {}
@@ -118,7 +115,7 @@ class ProduceReportMixin(UsefulFuncitons):
         for report in project_reports:
             project = Project.objects.get(id=report['project'])
 
-            time = self.extract_hours_and_minutes(report['total_hours'])
+            time = self.extract_hours_and_minutes(report['total_minutes'])
 
             sentence_string = ""
 
@@ -137,19 +134,21 @@ class ProduceReportMixin(UsefulFuncitons):
 
     def get_hours_of_members(self, scrums):
 
-        # Total hours rendered of a person
+        # Extracting the hours from the user
 
-        user_reports = scrums.values('user').order_by('user').annotate(total_hours=Sum('hours'))
+
+        user_reports = scrums.values('user').order_by('user').annotate(total_minutes=Sum('minutes'))
         
+
         summary_report = []
         object_to_insert = {}
 
         for report in user_reports:
             user = User.objects.get(id=report['user'])
             sentence_string = ""
+            
 
-            time = self.extract_hours_and_minutes(report['total_hours'])
-
+            time = self.extract_hours_and_minutes(report['total_minutes'])
             # string builder
             sentence_string += f"'{user.username}' worked for a total of {time['hours']:.0f} hour/s"
             if time['minutes'] != 0:
@@ -160,16 +159,16 @@ class ProduceReportMixin(UsefulFuncitons):
                 'to_display': sentence_string
             }
 
-            summary_report.append(object_to_insert)
+        #     summary_report.append(object_to_insert)
 
-        return summary_report
+        # return summary_report
 
 
     def get_hours_of_person_per_project(self, scrums):
        
         # Total hours a person rendered in a project
 
-        user_per_project_reports = scrums.values('user','project').order_by('user','project').annotate(total_hours=Sum('hours'))
+        user_per_project_reports = scrums.values('user','project').order_by('user','project').annotate(total_minutes=Sum('minutes'))
 
         summary_report = []
         object_to_insert = {}
@@ -180,7 +179,7 @@ class ProduceReportMixin(UsefulFuncitons):
 
             sentence_string = ""
 
-            time = self.extract_hours_and_minutes(report['total_hours'])
+            time = self.extract_hours_and_minutes(report['total_minutes'])
 
             sentence_string = ""
 

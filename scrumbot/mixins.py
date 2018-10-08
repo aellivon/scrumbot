@@ -62,3 +62,21 @@ class ParseMixin(object):
                 
             except:
                 return Response(data="Invalid input format on "+idx+" log")
+
+
+class TimeMixin():
+
+    """
+        Mixin for time conversions
+    """
+
+    def convert_hours_to_minutes(self, float_hours):
+       # Since a float maybe '8.2', We need to make suer it has two decimals
+       #  so it won't be lost when it is converted into an integer
+       hours = '{0:.2f}'.format(float_hours)
+       list_time = hours.split(".")
+       # Convert hours into minutes
+       final_minutes = int(list_time[0]) * 60
+       # Add the remaining minutes to the converted hours
+       final_minutes += int(list_time[1])
+       return final_minutes

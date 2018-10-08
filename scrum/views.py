@@ -12,7 +12,7 @@ from django.conf import settings
 
 from .models import Log, Issue, Scrum
 
-from scrumbot.mixins import CRUDMixin, ParseMixin
+from scrumbot.mixins import CRUDMixin, ParseMixin, TimeMixin
 
 
 from rest_framework.response import Response
@@ -30,14 +30,14 @@ from .serializers import (
                         )
 
 
-class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
+class ScrumAPI(ViewSet, CRUDMixin, ParseMixin, TimeMixin):
     """
     Scrum API
     """
     
     def create_scrum(self, request, *args, **kwargs):
         """
-        adds scrum reports to db
+            adds scrum reports to db
         """
         data = self.parseData(request.POST)
 
@@ -69,14 +69,17 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
         scrum_data['project'] = project.id
         try:
             hoursIndex = data['text'].index("4.")+2
-            scrum_data['hours'] = data['text'][hoursIndex:]
-            if('-' in scrum_data['hours']):
-                scrum_data['hours'] = scrum_data['hours'].replace('-','')
-            if(not scrum_data['hours']):
+            scrum_data['minutes'] = data['text'][hoursIndex:]
+            if('-' in scrum_data['minutes']):
+                scrum_data['minutes'] = scrum_data['minutes'].replace('-','')
+            if(not scrum_data['minutes']):
                 return Response(data="HOURS log is required")
-            1 / float(scrum_data['hours'].strip())
+            1 / float(scrum_data['minutes'].strip())
         except:
             return Response(data="Invalid input format on HOURS log")
+
+        # Before saving, convert the input hours into minutes
+        scrum_data['minutes'] = self.convert_hours_to_minutes(float(scrum_data["minutes"]))
         scrum = self.create(scrum_data, Scrum, ScrumSerializer)
 
         isNotValid = self.validateData(data)
@@ -140,7 +143,8 @@ class ScrumAPI(ViewSet, CRUDMixin, ParseMixin):
             1 / float(hours.strip())
         except:
             return Response(data="Invalid input format on HOURS log")
-        scrum.hours = hours
+        # Convert the user input to minutes
+        scrum.minutes = self.convert_hours_to_minutes(float(hours))
 
         isNotValid = self.validateData(data)
         if (isNotValid):
