@@ -17,7 +17,8 @@ def transfer_hours_to_minutes(apps, schema_editor):
        # Add the remaining minutes to the converted hours
        final_minutes += int(list_time[1])
        scrum.minutes = final_minutes
-       scrum.save()
+       # Define what fields are updated so it won't update the time
+       scrum.save(update_fields=['minutes'])
 
 class Migration(migrations.Migration):
 

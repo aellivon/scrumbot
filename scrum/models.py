@@ -12,7 +12,7 @@ class Scrum(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # hours = models.FloatField()
+    hours = models.FloatField()
     minutes = models.IntegerField()
     is_edited = models.BooleanField(default=False)
 
