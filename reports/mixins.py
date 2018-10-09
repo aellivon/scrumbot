@@ -18,8 +18,9 @@ class UsefulFuncitons():
 
     def extract_hours_and_minutes(self, to_extract):
         # accepts a float then return the hours and minutes from it.
+      
         minutes = to_extract % 60
-        hours = to_extract / 60
+        hours = to_extract / 60 
 
         time = {
             'hours': float(hours),
@@ -147,7 +148,7 @@ class ProduceReportMixin(UsefulFuncitons):
             user = User.objects.get(id=report['user'])
             sentence_string = ""
             
-
+            # import pdb; pdb.set_trace()
             time = self.extract_hours_and_minutes(report['total_minutes'])
             # string builder
             sentence_string += f"'{user.username}' worked for a total of {time['hours']:.0f} hour/s"

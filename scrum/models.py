@@ -26,10 +26,15 @@ class Scrum(models.Model):
     @property
     def hours(self):
         # Gets the hours to display
-        minutes = int(self.minutes % 60)
-        hours = int(self.minutes / 60)
+        over_minutes = self.minutes % 60
+        hours = int((self.minutes-over_minutes) / 60)
+
+        if len(str(over_minutes)) == 1:
+            # add padding if it's a  single digit
+            over_minutes = "0" + str(over_minutes)
+
         # Covnert to float so there won't be any conflict on the front end
-        float_time = float(f"{hours}.{minutes}")
+        float_time = float(f"{hours}.{over_minutes}")
         return float_time
 
 
