@@ -20,7 +20,6 @@ export class AvatarComponent implements OnInit {
       
   }
 
-  c
 
   getColor(id: string){
       if(!id){

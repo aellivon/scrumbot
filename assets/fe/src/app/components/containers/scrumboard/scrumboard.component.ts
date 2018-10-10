@@ -348,9 +348,17 @@ export class ScrumboardComponent implements OnInit {
     const filter_from = this.formatDateToPython(this.filter_from);
     const filter_to = this.formatDateToPython(this.filter_to);
 
+    // TODO: There might be a better solution to this. This looks ugly.
+    //  Letting the angular url 'scope' see the django url 'scope' would be best.
 
-    // Vanilla javascript so I can access the django template outside
-    //   the angular scope
+    // Setting a cookie for the token, since this is better than storing the token 
+    //  on the 'get' method. (It's unsafe)
+    // We also can't use the post data (or can we?) since we are using 
+    //  the "location.href" to contact the server.
+    
+    // calling the service that appends it to cookies
+    this.authService.appendTokenToCookie();
+
     window.location.href = OVERALL_RESULTS(
       filter_project, filter_user, filter_from, filter_to);
   }

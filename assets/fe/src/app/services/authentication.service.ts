@@ -8,6 +8,10 @@ import { LOGIN_USER, REFRESH_TOKEN } from 'app/constants/endpoints';
 @Injectable({
   providedIn: 'root'
 })
+
+// TODO: Most authentication saves the token as object! Save them
+//       as string or something.
+
 export class AuthenticationService {
 
   constructor(
@@ -87,6 +91,21 @@ export class AuthenticationService {
       if (!d) { return null; };
 
       return JSON.parse(d);
+  }
+
+  appendTokenToCookie(){
+    // name for the jwt token
+    const name = "token"
+    const cookie_value = this.getToken()['token'];
+
+    // Set the expiry to ten minutes (We will destroy the cookie after anyway)
+    const thirty_minutes = 10 * 60 * 1000;;
+    const date = new Date();
+    date.setTime(date.getTime() + (thirty_minutes));
+    const expires = "; expires=" + date.toUTCString();
+
+    // Attaching the cookie to the browser itself
+    document.cookie = name + "=" + (cookie_value|| "")  + expires + "; path=/";
   }
 
   rmToken () {

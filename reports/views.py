@@ -6,21 +6,19 @@ from django.template import Context
 
 from xhtml2pdf import pisa
 
-from rest_framework.permissions import IsAuthenticated
-
 from scrum.models import Scrum
 
 from datetime import datetime
 
-from .mixins import ProduceReportMixin 
+from accounts.mixins import JwtViewLoginRequiredMixIn
 
-class OverAllReviewReport(View, ProduceReportMixin):
+from .mixins import ProduceReportMixin
+
+class OverAllReviewReport(JwtViewLoginRequiredMixIn, View, ProduceReportMixin):
     # Generating the report for the overall report
 
-    permission_classes = (IsAuthenticated,)
 
     def get(self, *args, **kwargs):
-
         # Setting up the neccessary filter values
         filter_project = self.kwargs.get('project')
         filter_user = self.kwargs.get('member')
@@ -78,14 +76,13 @@ class OverAllReviewReport(View, ProduceReportMixin):
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
         response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
-
+        # Deletes the token that was passed since we don't need it anyway
+        response.delete_cookie('token')
         return response
 
 
-class IssueReport(View, ProduceReportMixin):
+class IssueReport(JwtViewLoginRequiredMixIn, View, ProduceReportMixin):
     # Generating the report for the issue report
-
-    permission_classes = (IsAuthenticated,)
 
     def get(self, *args, **kwargs):
 

@@ -255,7 +255,20 @@ export class IssueboardComponent implements OnInit {
     if (this.filter_status){
       filter_status = this.filter_status;
     }
+
+    // TODO: There might be a better solution to this. This looks ugly.
+    //  Letting the angular url 'scope' see the django url 'scope' would be best.
+
+    // Setting a cookie for the token, since this is better than storing the token 
+    //  on the 'get' method. (It's unsafe)
+    // We also can't use the post data (or can we?) since we are using 
+    //  the "location.href" to contact the server.
+    
+    // calling the service that appends it to cookies
+    this.authService.appendTokenToCookie();
+
     window.location.href = ISSUE_RESULTS(
       filter_project, filter_user, filter_from, filter_to, filter_status);
+
   }
 }
