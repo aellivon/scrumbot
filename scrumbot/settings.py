@@ -153,6 +153,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'assets/'),
+    # This is needed so that the path will point directly 
+    #   to the inner assets folder
+    os.path.join(BASE_DIR, 'assets/fe/src/assets/'),
 ]
 
 # Constant variables
