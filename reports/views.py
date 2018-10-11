@@ -59,7 +59,7 @@ class OverAllReviewReport(JwtViewLoginRequiredMixIn, View, ProduceReportMixin):
 
         # rendering of template
         html  = template.render(context)
-        file = open('test.pdf', "w+b")
+        file = open('buffer.pdf', "w+b")
 
         # Convert to html to PDF
         pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
@@ -76,7 +76,7 @@ class OverAllReviewReport(JwtViewLoginRequiredMixIn, View, ProduceReportMixin):
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
         response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
-        # Deletes the token that was passed since we don't need it anyway
+        # Deletes the token that was passed since we don't need it
         response.delete_cookie('token')
         return response
 
@@ -123,7 +123,7 @@ class IssueReport(JwtViewLoginRequiredMixIn, View, ProduceReportMixin):
 
         # rendering of template
         html  = template.render(context)
-        file = open('test.pdf', "w+b")
+        file = open('buffer.pdf', "w+b")
 
         # Convert to html to PDF
         pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,

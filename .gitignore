@@ -2,6 +2,8 @@
 *.sqlite3
 scrumbot/local_settings.py
 *.DS_Store
+buffer.pdf
+test.pdf
 
 *__pycache__
 static/
@@ -9,3 +11,5 @@ media/
 dist/
 assets/fe/node_modules/
 assets/fe/dist/
+
+
