@@ -138,7 +138,8 @@ class IssueReport(JwtViewLoginRequiredMixIn, View, ProduceReportMixin):
         #   must be downloaded once the linked is accessed
         file_name = f"{filters['project']} by {filters['user']} from {filter_from_date.date()} until {filter_until_date.date()}"
         response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
-
+         # Deletes the token that was passed since we don't need it after
+        response.delete_cookie('token')
         return response
 
 

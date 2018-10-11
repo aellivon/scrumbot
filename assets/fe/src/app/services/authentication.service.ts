@@ -99,7 +99,7 @@ export class AuthenticationService {
     const cookie_value = this.getToken()['token'];
 
     // Set the expiry to ten minutes (We will destroy the cookie after anyway)
-    const thirty_minutes = 10 * 60 * 1000;;
+    const thirty_minutes = 10 * 60 * 1000;
     const date = new Date();
     date.setTime(date.getTime() + (thirty_minutes));
     const expires = "; expires=" + date.toUTCString();
